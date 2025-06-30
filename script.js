@@ -16,8 +16,8 @@ sunCoin.addEventListener("click", () => {
   scoreDisplay.textContent = score;
 
   // Decrease energy
-  energy -= 5;
-  if (energy < 0) energy = 0;
+  energy -= 05;
+  if (energy < 0) energy = 100;
   energyBar.style.width = `${energy}%`;
 
   // Remove animation after 150ms
