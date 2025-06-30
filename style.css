@@ -1,0 +1,90 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* حداقل ارتفاع تمام صفحه */
+    margin: 0;
+    background-color: #1a1a2e; /* رنگ پس زمینه تیره عمیق */
+    color: #e0e0ff; /* رنگ متن روشن بنفش مایل به آبی */
+    padding: 20px;
+    box-sizing: border-box; /* اطمینان از اینکه پدینگ به عرض و ارتفاع اضافه نشود */
+}
+
+.container {
+    text-align: center;
+    background-color: #2a2a4a; /* پس زمینه روشن‌تر برای کانتینر */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    max-width: 90%;
+    width: 400px;
+}
+
+h1 {
+    color: #FFD700; /* طلایی روشن */
+    margin-bottom: 10px;
+    font-size: 2.2em;
+}
+
+.welcome-text {
+    font-size: 1.1em;
+    color: #bbb;
+    margin-bottom: 25px;
+}
+
+.score-display {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #aaffaa; /* سبز روشن برای امتیاز */
+    margin-bottom: 30px;
+    background-color: #3a3a5a;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block; /* برای اینکه باکس امتیاز فقط به اندازه متن باشد */
+}
+
+.sun-icon {
+    width: 100px; /* اندازه آیکون خورشید */
+    height: 100px;
+    margin-bottom: 15px;
+    transition: transform 0.1s ease-out; /* برای انیمیشن کوچک شدن موقع تپ */
+}
+
+.tap-button {
+    background: linear-gradient(145deg, #FFD700, #FFA500); /* گرادیانت طلایی نارنجی */
+    border: none;
+    padding: 20px 30px;
+    border-radius: 50%; /* دکمه گرد */
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 180px; /* اندازه دکمه گرد */
+    height: 180px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333; /* متن تیره روی دکمه روشن */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.tap-button:hover {
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+.tap-button:active {
+    background: linear-gradient(145deg, #FFA500, #FFD700); /* تغییر گرادیانت هنگام کلیک */
+    transform: scale(0.95); /* کمی کوچک‌تر شدن دکمه هنگام کلیک */
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.6);
+}
+
+.footer-text {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #888;
+}
