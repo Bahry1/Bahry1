@@ -23,5 +23,5 @@ sunCoin.addEventListener("click", () => {
   // Remove animation after 150ms
   setTimeout(() => {
     sunCoin.classList.remove("coin-tap-animation");
-  }, 150);
+  }, 10);
 });
