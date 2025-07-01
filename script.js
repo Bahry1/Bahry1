@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderCupSlider(activeLeagueName) {
     cupSlider.innerHTML = "";
-    leagues.forEach(cup => {
+    leagues.forEach((cup) => {
       const card = document.createElement("div");
       card.className = `cup-card ${cup.class}`;
       if (cup.name === activeLeagueName) card.classList.add("active");
@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.appendChild(name);
       card.appendChild(description);
       card.appendChild(progress);
+
       cupSlider.appendChild(card);
     });
   }
