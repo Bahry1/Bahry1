@@ -17,20 +17,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeCupBtn = document.getElementById("close-cup");
   const cupSlider = document.getElementById("cup-slider");
 
+  // Cup popup current details
+  const popupLeagueName = document.getElementById("popup-league-name");
+  const popupLeagueRange = document.getElementById("popup-league-range");
+  const popupLeagueScore = document.getElementById("popup-league-score");
+
   let score = 0;
   let totalScore = 0;
   let energy = 50;
   let lastReset = Date.now();
 
   const leagues = [
-    { name: "Bronze", required: 0, class: "bronze", description: "0–10 SUN" },
-    { name: "Silver", required: 11, class: "silver", description: "11–20 SUN" },
-    { name: "Gold", required: 21, class: "gold", description: "21–30 SUN" },
-    { name: "Emerald", required: 31, class: "emerald", description: "31–40 SUN" },
-    { name: "Sapphire", required: 41, class: "sapphire", description: "41–50 SUN" },
-    { name: "Ruby", required: 51, class: "ruby", description: "51–60 SUN" },
-    { name: "Diamond", required: 61, class: "diamond", description: "61–75 SUN" },
-    { name: "Legendary", required: 76, class: "legendary", description: "76+ SUN" }
+    { name: "Bronze", required: 0, class: "bronze", description: "0–10 SUN", color: "#4e3b24" },
+    { name: "Silver", required: 11, class: "silver", description: "11–20 SUN", color: "#777" },
+    { name: "Gold", required: 21, class: "gold", description: "21–30 SUN", color: "#bfa039" },
+    { name: "Emerald", required: 31, class: "emerald", description: "31–40 SUN", color: "#115a42" },
+    { name: "Sapphire", required: 41, class: "sapphire", description: "41–50 SUN", color: "#0e2a66" },
+    { name: "Ruby", required: 51, class: "ruby", description: "51–60 SUN", color: "#75002b" },
+    { name: "Diamond", required: 61, class: "diamond", description: "61–75 SUN", color: "#37577f" },
+    { name: "Legendary", required: 76, class: "legendary", description: "76+ SUN", color: "#222" }
   ];
 
   function getCurrentLeague(score) {
@@ -67,6 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCupDisplay() {
     const current = getCurrentLeague(totalScore);
     currentCupDisplay.textContent = `${current.name} League`;
+
+    // Update popup visuals
+    popupLeagueName.textContent = `${current.name} League`;
+    popupLeagueRange.textContent = `Required: ${current.description}`;
+    popupLeagueScore.textContent = `Your Score: ${totalScore}`;
+    cupPopup.style.backgroundColor = current.color;
+
     renderCupSlider(current.name);
   }
 
@@ -121,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cupPopup.classList.remove("hidden");
   });
 
-  closeDailyBtn.addEventListener("click", () => {
+  closeDailyBtn && closeDailyBtn.addEventListener("click", () => {
     dailyPopup.classList.add("hidden");
   });
 
