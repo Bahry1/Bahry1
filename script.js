@@ -77,6 +77,11 @@ function renderCupSlider() {
       cupImg.classList.add("active");
     }
 
+    // Error handling for broken image
+    cupImg.onerror = () => {
+      console.error(`Failed to load image: ${cupImg.src}`);
+    };
+
     cupSlider.appendChild(cupImg);
   });
 }
@@ -136,8 +141,11 @@ setInterval(() => {
   }
 }, 1000);
 
-updateScore();
-updateTotalScoreDisplay();
-updateEnergyBar();
-updateEnergyValue();
-updateCup();
+// Run initial setup after DOM loaded
+window.addEventListener("DOMContentLoaded", () => {
+  updateScore();
+  updateTotalScoreDisplay();
+  updateEnergyBar();
+  updateEnergyValue();
+  updateCup();
+});
