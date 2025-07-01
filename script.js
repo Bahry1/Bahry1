@@ -22,23 +22,71 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastReset = Date.now();
 
   const cupLeagues = [
-    { name: "Bronze", image: "bronze-cup.png", required: 0 },
-    { name: "Silver", image: "silver-cup.png", required: 60 },
-    { name: "Gold", image: "gold-cup.png", required: 80 },
-    { name: "Emerald", image: "emerald-cup.png", required: 110 },
-    { name: "Sapphire", image: "sapphire-cup.png", required: 140 },
-    { name: "Ruby", image: "ruby-cup.png", required: 180 },
-    { name: "Diamond", image: "diamond-cup.png", required: 220 },
-    { name: "Legendary", image: "legendary-cup.png", required: 270 }
+    {
+      name: "Bronze",
+      image: "bronze-cup.png",
+      required: 0,
+      background: "#2d2d2d",
+      description: "Beginner tier. Everyone starts here."
+    },
+    {
+      name: "Silver",
+      image: "silver-cup.png",
+      required: 60,
+      background: "#555",
+      description: "You've gained some experience."
+    },
+    {
+      name: "Gold",
+      image: "gold-cup.png",
+      required: 80,
+      background: "#664400",
+      description: "Your shine stands out."
+    },
+    {
+      name: "Emerald",
+      image: "emerald-cup.png",
+      required: 110,
+      background: "#0f4d4d",
+      description: "Green brilliance emerges."
+    },
+    {
+      name: "Sapphire",
+      image: "sapphire-cup.png",
+      required: 140,
+      background: "#001f3f",
+      description: "Blue royalty unlocked."
+    },
+    {
+      name: "Ruby",
+      image: "ruby-cup.png",
+      required: 180,
+      background: "#660033",
+      description: "Bold and brilliant in red."
+    },
+    {
+      name: "Diamond",
+      image: "diamond-cup.png",
+      required: 220,
+      background: "#223344",
+      description: "Shining like a gem."
+    },
+    {
+      name: "Legendary",
+      image: "legendary-cup.png",
+      required: 270,
+      background: "#000000",
+      description: "Only the top reach here."
+    }
   ];
 
   function getCurrentCup(score) {
     for (let i = cupLeagues.length - 1; i >= 0; i--) {
       if (score >= cupLeagues[i].required) {
-        return `${cupLeagues[i].name} League`;
+        return cupLeagues[i];
       }
     }
-    return "Bronze League";
+    return cupLeagues[0];
   }
 
   function updateScore() {
@@ -60,31 +108,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateCup() {
-    currentCupDisplay.textContent = getCurrentCup(totalScore);
-    renderCupSlider();
+    const current = getCurrentCup(totalScore);
+    currentCupDisplay.textContent = `${current.name} League`;
+    cupPopup.style.background = current.background;
+    renderCupSlider(current.name);
   }
 
-  function renderCupSlider() {
+  function renderCupSlider(activeLeagueName) {
     cupSlider.innerHTML = "";
 
-    cupLeagues.forEach((cup, i) => {
+    cupLeagues.forEach((cup) => {
+      const card = document.createElement("div");
+      card.className = "cup-card";
+      if (cup.name === activeLeagueName) card.classList.add("active");
+
       const img = document.createElement("img");
       img.src = `images/cups/${cup.image}`;
       img.alt = `${cup.name} Cup`;
-      img.className = "league-cup";
 
-      const nextLeague = cupLeagues[i + 1];
-      const maxScore = nextLeague ? nextLeague.required - 1 : Infinity;
+      const caption = document.createElement("div");
+      caption.className = "cup-info-text";
+      caption.textContent = `${cup.name} — ${cup.description}`;
 
-      if (totalScore >= cup.required && totalScore <= maxScore) {
-        img.classList.add("active");
-      }
-
-      img.onerror = () => {
-        console.error("Image not found:", img.src);
-      };
-
-      cupSlider.appendChild(img);
+      card.appendChild(img);
+      card.appendChild(caption);
+      cupSlider.appendChild(card);
     });
   }
 
@@ -115,45 +163,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   cupButton.addEventListener("click", () => {
-    cupPopup.classList.remove("hidden");
-  });
-
-  closeDailyBtn.addEventListener("click", () => {
-    dailyPopup.classList.add("hidden");
-  });
-
-  closeCupBtn.addEventListener("click", () => {
-    cupPopup.classList.add("hidden");
-  });
-
-  setInterval(() => {
-    const now = Date.now();
-    const timeLeft = 86400000 - (now - lastReset);
-
-    if (timeLeft <= 0) {
-      energy = 50;
-      score = 0;
-      clickCount = 0;
-      lastReset = now;
-      updateScore();
-      updateEnergyBar();
-      updateEnergyValue();
-      updateCup();
-    }
-
-    if (timeLeft <= 0) {
-      dailyTimer.textContent = "Energy is full!";
-    } else {
-      const hours = Math.floor(timeLeft / 3600000);
-      const minutes = Math.floor((timeLeft % 3600000) / 60000);
-      const seconds = Math.floor((timeLeft % 60000) / 1000);
-      dailyTimer.textContent = `Energy refreshes in: ${hours}h ${minutes}m ${seconds}s`;
-    }
-  }, 1000);
-
-  updateScore();
-  updateTotalScoreDisplay();
-  updateEnergyBar();
-  updateEnergyValue();
-  updateCup();
-});
+    cupPopup.class
