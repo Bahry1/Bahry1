@@ -18,73 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let score = 0;
   let totalScore = 0;
   let energy = 50;
-  let clickCount = 0;
   let lastReset = Date.now();
 
   const cupLeagues = [
-    {
-      name: "Bronze",
-      image: "bronze-cup.png",
-      required: 0,
-      background: "#2d2d2d",
-      description: "Beginner tier. Everyone starts here."
-    },
-    {
-      name: "Silver",
-      image: "silver-cup.png",
-      required: 60,
-      background: "#555",
-      description: "You've gained some experience."
-    },
-    {
-      name: "Gold",
-      image: "gold-cup.png",
-      required: 80,
-      background: "#664400",
-      description: "Your shine stands out."
-    },
-    {
-      name: "Emerald",
-      image: "emerald-cup.png",
-      required: 110,
-      background: "#0f4d4d",
-      description: "Green brilliance emerges."
-    },
-    {
-      name: "Sapphire",
-      image: "sapphire-cup.png",
-      required: 140,
-      background: "#001f3f",
-      description: "Blue royalty unlocked."
-    },
-    {
-      name: "Ruby",
-      image: "ruby-cup.png",
-      required: 180,
-      background: "#660033",
-      description: "Bold and brilliant in red."
-    },
-    {
-      name: "Diamond",
-      image: "diamond-cup.png",
-      required: 220,
-      background: "#223344",
-      description: "Shining like a gem."
-    },
-    {
-      name: "Legendary",
-      image: "legendary-cup.png",
-      required: 270,
-      background: "#000000",
-      description: "Only the top reach here."
-    }
+    { name: "Bronze", image: "bronze-cup.png", required: 0, background: "#2d2d2d", description: "Beginner tier. Everyone starts here." },
+    { name: "Silver", image: "silver-cup.png", required: 60, background: "#555", description: "You've gained some experience." },
+    { name: "Gold", image: "gold-cup.png", required: 80, background: "#664400", description: "Your shine stands out." },
+    { name: "Emerald", image: "emerald-cup.png", required: 110, background: "#0f4d4d", description: "Green brilliance emerges." },
+    { name: "Sapphire", image: "sapphire-cup.png", required: 140, background: "#001f3f", description: "Blue royalty unlocked." },
+    { name: "Ruby", image: "ruby-cup.png", required: 180, background: "#660033", description: "Bold and brilliant in red." },
+    { name: "Diamond", image: "diamond-cup.png", required: 220, background: "#223344", description: "Shining like a gem." },
+    { name: "Legendary", image: "legendary-cup.png", required: 270, background: "#000000", description: "Only the top reach here." }
   ];
 
   function getCurrentCup(score) {
     for (let i = cupLeagues.length - 1; i >= 0; i--) {
-      if (score >= cupLeagues[i].required) {
-        return cupLeagues[i];
-      }
+      if (score >= cupLeagues[i].required) return cupLeagues[i];
     }
     return cupLeagues[0];
   }
@@ -116,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderCupSlider(activeLeagueName) {
     cupSlider.innerHTML = "";
-
     cupLeagues.forEach((cup) => {
       const card = document.createElement("div");
       card.className = "cup-card";
@@ -137,26 +85,62 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   sunCoin.addEventListener("click", () => {
-    const cost = 0.01;
-    if (energy < cost) return;
-
+    if (energy < 0.01) return;
     sunCoin.classList.add("coin-tap-animation");
-
     score++;
     totalScore++;
-    energy -= cost;
-    clickCount++;
-
+    energy -= 0.01;
     updateScore();
     updateTotalScoreDisplay();
     updateEnergyBar();
     updateEnergyValue();
     updateCup();
-
     setTimeout(() => {
       sunCoin.classList.remove("coin-tap-animation");
     }, 150);
   });
 
   dailyButton.addEventListener("click", () => {
-   
+    dailyPopup.classList.remove("hidden");
+  });
+
+  cupButton.addEventListener("click", () => {
+    cupPopup.classList.remove("hidden");
+  });
+
+  closeDailyBtn.addEventListener("click", () => {
+    dailyPopup.classList.add("hidden");
+  });
+
+  closeCupBtn.addEventListener("click", () => {
+    cupPopup.classList.add("hidden");
+  });
+
+  setInterval(() => {
+    const now = Date.now();
+    const timeLeft = 86400000 - (now - lastReset);
+    if (timeLeft <= 0) {
+      energy = 50;
+      score = 0;
+      lastReset = now;
+      updateScore();
+      updateEnergyBar();
+      updateEnergyValue();
+      updateCup();
+    }
+    if (timeLeft <= 0) {
+      dailyTimer.textContent = "Energy is full!";
+    } else {
+      const hours = Math.floor(timeLeft / 3600000);
+      const minutes = Math.floor((timeLeft % 3600000) / 60000);
+      const seconds = Math.floor((timeLeft % 60000) / 1000);
+      dailyTimer.textContent = `Energy refreshes in: ${hours}h ${minutes}m ${seconds}s`;
+    }
+  }, 1000);
+
+  updateScore();
+  updateTotalScoreDisplay();
+  updateEnergyBar();
+  updateEnergyValue();
+  updateCup();
+});
