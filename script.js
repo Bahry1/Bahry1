@@ -23,46 +23,51 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastReset = Date.now();
 
   const leagues = [
-    { name: "Bronze", required: 0, image: "bronze-cup.png", description: "0 to 10 SUN", background: "#2d2d2d" },
-    { name: "Silver", required: 11, image: "silver-cup.png", description: "11 to 20 SUN", background: "#555" },
-    { name: "Gold", required: 21, image: "gold-cup.png", description: "21 to 30 SUN", background: "#664400" },
-    { name: "Emerald", required: 31, image: "emerald-cup.png", description: "31 to 40 SUN", background: "#0f4d4d" },
-    { name: "Sapphire", required: 41, image: "sapphire-cup.png", description: "41 to 50 SUN", background: "#001f3f" },
-    { name: "Ruby", required: 51, image: "ruby-cup.png", description: "51 to 60 SUN", background: "#660033" },
-    { name: "Diamond", required: 61, image: "diamond-cup.png", description: "61 to 75 SUN", background: "#223344" },
-    { name: "Legendary", required: 76, image: "legendary-cup.png", description: "76+ SUN", background: "#000000" }
+    { name: "Bronze", required: 0, class: "bronze", description: "0–10 SUN" },
+    { name: "Silver", required: 11, class: "silver", description: "11–20 SUN" },
+    { name: "Gold", required: 21, class: "gold", description: "21–30 SUN" },
+    { name: "Emerald", required: 31, class: "emerald", description: "31–40 SUN" },
+    { name: "Sapphire", required: 41, class: "sapphire", description: "41–50 SUN" },
+    { name: "Ruby", required: 51, class: "ruby", description: "51–60 SUN" },
+    { name: "Diamond", required: 61, class: "diamond", description: "61–75 SUN" },
+    { name: "Legendary", required: 76, class: "legendary", description: "76+ SUN" }
   ];
 
   function getCurrentLeague(score) {
     return leagues.slice().reverse().find(l => score >= l.required) || leagues[0];
   }
 
-  function updateCupDisplay() {
-    const current = getCurrentLeague(totalScore);
-    currentCupDisplay.textContent = `${current.name} League`;
-    cupPopup.style.background = current.background;
-    renderCupSlider(current.name);
-  }
-
   function renderCupSlider(activeLeagueName) {
     cupSlider.innerHTML = "";
     leagues.forEach((cup) => {
       const card = document.createElement("div");
-      card.className = "cup-card";
+      card.className = `cup-card ${cup.class}`;
       if (cup.name === activeLeagueName) card.classList.add("active");
 
-      const img = document.createElement("img");
-      img.src = `images/cups/${cup.image}`;
-      img.alt = `${cup.name} Cup`;
+      const name = document.createElement("div");
+      name.className = "cup-name";
+      name.textContent = `${cup.name} League`;
 
-      const caption = document.createElement("div");
-      caption.className = "cup-info-text";
-      caption.textContent = `${cup.name} – ${cup.description}`;
+      const description = document.createElement("div");
+      description.className = "cup-description";
+      description.textContent = `Required: ${cup.description}`;
 
-      card.appendChild(img);
-      card.appendChild(caption);
+      const progress = document.createElement("div");
+      progress.className = "cup-score";
+      progress.textContent = `Your Score: ${totalScore}`;
+
+      card.appendChild(name);
+      card.appendChild(description);
+      card.appendChild(progress);
+
       cupSlider.appendChild(card);
     });
+  }
+
+  function updateCupDisplay() {
+    const current = getCurrentLeague(totalScore);
+    currentCupDisplay.textContent = `${current.name} League`;
+    renderCupSlider(current.name);
   }
 
   function updateScore() {
@@ -91,14 +96,16 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCupDisplay();
   }
 
-  sunCoin.addEventListener("click", (event) => {
+  sunCoin.addEventListener("click", () => {
     const cost = 0.01;
     if (energy < cost) return;
 
     sunCoin.classList.add("coin-tap-animation");
+
     score++;
     totalScore++;
     energy -= cost;
+
     updateAll();
 
     setTimeout(() => {
@@ -110,12 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
     dailyPopup.classList.remove("hidden");
   });
 
-  closeDailyBtn.addEventListener("click", () => {
-    dailyPopup.classList.add("hidden");
-  });
-
   cupButton.addEventListener("click", () => {
     cupPopup.classList.remove("hidden");
+  });
+
+  closeDailyBtn.addEventListener("click", () => {
+    dailyPopup.classList.add("hidden");
   });
 
   closeCupBtn.addEventListener("click", () => {
