@@ -6,18 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const dailyEnergyBar = document.getElementById("daily-energy-bar-fill");
   const totalScoreDisplay = document.getElementById("total-score");
   const currentCupDisplay = document.getElementById("current-cup");
-
   const dailyButton = document.getElementById("daily-button");
   const dailyPopup = document.getElementById("daily-popup");
   const dailyTimer = document.getElementById("daily-timer");
   const closeDailyBtn = document.getElementById("close-daily");
   const dailyEnergyText = document.getElementById("daily-energy-text");
-
   const cupButton = document.getElementById("cup-details-button");
   const cupPopup = document.getElementById("cup-popup");
   const closeCupBtn = document.getElementById("close-cup");
   const cupSlider = document.getElementById("cup-slider");
-
   const popupLeagueName = document.getElementById("popup-league-name");
   const popupLeagueRange = document.getElementById("popup-league-range");
   const popupLeagueScore = document.getElementById("popup-league-score");
@@ -48,28 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = `cup-card ${cup.class}`;
       if (cup.name === activeLeagueName) card.classList.add("active");
-
       const img = document.createElement("img");
       img.src = `images/cups/${cup.name.toLowerCase()}-cup.png`;
       img.alt = `${cup.name} Cup`;
-
       const name = document.createElement("div");
       name.className = "cup-name";
       name.textContent = `${cup.name} League`;
-
       const description = document.createElement("div");
       description.className = "cup-description";
       description.textContent = `Required: ${cup.description}`;
-
       const progress = document.createElement("div");
       progress.className = "cup-score";
       progress.textContent = `Your Score: ${totalScore}`;
-
       card.appendChild(img);
       card.appendChild(name);
       card.appendChild(description);
       card.appendChild(progress);
-
       cupSlider.appendChild(card);
     });
   }
@@ -77,12 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCupDisplay() {
     const current = getCurrentLeague(totalScore);
     currentCupDisplay.textContent = `${current.name} League`;
-
     popupLeagueName.textContent = `${current.name} League`;
     popupLeagueRange.textContent = `Required: ${current.description}`;
     popupLeagueScore.textContent = `Your Score: ${totalScore}`;
     cupPopup.style.backgroundColor = current.color;
-
     renderCupSlider(current.name);
   }
 
@@ -115,14 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
   sunCoin.addEventListener("click", () => {
     const cost = 0.01;
     if (energy < cost) return;
-
     sunCoin.classList.add("coin-tap-animation");
     score++;
     totalScore++;
     energy -= cost;
-
     updateAll();
-
     setTimeout(() => {
       sunCoin.classList.remove("coin-tap-animation");
     }, 150);
@@ -147,14 +133,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     const now = Date.now();
     const timeLeft = 86400000 - (now - lastReset);
-
     if (timeLeft <= 0) {
       energy = 50;
       score = 0;
       lastReset = now;
       updateAll();
     }
-
     if (timeLeft <= 0) {
       dailyTimer.textContent = "Energy is full!";
     } else {
