@@ -1,20 +1,24 @@
 function renderCupSlider() {
+  cupPopup.classList.remove("hidden"); // فقط برای تست: پنجره باز باشه
   cupSlider.innerHTML = "";
 
-  const testImages = ["bronze-cup.png", "silver-cup.png", "gold-cup.png"];
+  const images = [
+    "bronze-cup.png",
+    "silver-cup.png",
+    "gold-cup.png"
+  ];
 
-  testImages.forEach((filename) => {
-    const testImg = document.createElement("img");
-    testImg.src = `images/cups/${filename}`;
-    testImg.alt = filename;
-    testImg.style.width = "100px";
-    testImg.style.marginRight = "10px";
-    testImg.style.border = "2px solid lime";
-
-    testImg.onerror = () => {
-      console.error("Failed to load:", testImg.src);
+  images.forEach((file) => {
+    const img = document.createElement("img");
+    img.src = `images/cups/${file}`;
+    img.alt = file;
+    img.style.width = "100px";
+    img.style.margin = "10px";
+    img.style.border = "2px solid lime";
+    img.style.background = "#222";
+    img.onerror = () => {
+      console.error("Could not load:", img.src);
     };
-
-    cupSlider.appendChild(testImg);
+    cupSlider.appendChild(img);
   });
 }
