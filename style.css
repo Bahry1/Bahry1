@@ -13,6 +13,7 @@ body {
   color: white;
 }
 
+/* Stars */
 #stars-container {
   position: fixed;
   top: 0;
@@ -36,6 +37,7 @@ body {
   100% { opacity: 0.9; transform: scale(1.3); }
 }
 
+/* App Container */
 #app {
   position: relative;
   z-index: 1;
@@ -45,7 +47,7 @@ body {
   justify-content: space-between;
 }
 
-/* Score and league */
+/* Score and Cup */
 #score-area {
   text-align: center;
   padding: 20px;
@@ -71,7 +73,7 @@ body {
   margin-top: 5px;
 }
 
-/* Coin area */
+/* Coin Section */
 #coin-area {
   flex-grow: 1;
   display: flex;
@@ -98,7 +100,7 @@ body {
   100% { transform: scale(1); }
 }
 
-/* Energy bar */
+/* Energy Bar Main */
 #energy-bar-container {
   width: 100%;
   height: 10px;
@@ -112,6 +114,7 @@ body {
   transition: width 0.3s ease;
 }
 
+/* Energy Bar in Daily Popup */
 #daily-energy-bar-container {
   width: 80%;
   height: 10px;
@@ -128,7 +131,7 @@ body {
   border-radius: 4px;
 }
 
-/* Navbar */
+/* Navbar Bottom */
 #navbar {
   position: fixed;
   bottom: 0;
@@ -185,7 +188,7 @@ body {
   display: none;
 }
 
-/* Cup list */
+/* Cup List */
 #cup-list {
   list-style: none;
   padding: 0;
