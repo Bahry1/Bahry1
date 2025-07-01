@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeCupBtn = document.getElementById("close-cup");
   const cupSlider = document.getElementById("cup-slider");
 
-  // Cup popup current details
   const popupLeagueName = document.getElementById("popup-league-name");
   const popupLeagueRange = document.getElementById("popup-league-range");
   const popupLeagueScore = document.getElementById("popup-league-score");
@@ -49,6 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = `cup-card ${cup.class}`;
       if (cup.name === activeLeagueName) card.classList.add("active");
 
+      const img = document.createElement("img");
+      img.src = `images/cups/${cup.name.toLowerCase()}-cup.png`;
+      img.alt = `${cup.name} Cup`;
+
       const name = document.createElement("div");
       name.className = "cup-name";
       name.textContent = `${cup.name} League`;
@@ -61,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       progress.className = "cup-score";
       progress.textContent = `Your Score: ${totalScore}`;
 
+      card.appendChild(img);
       card.appendChild(name);
       card.appendChild(description);
       card.appendChild(progress);
@@ -73,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const current = getCurrentLeague(totalScore);
     currentCupDisplay.textContent = `${current.name} League`;
 
-    // Update popup visuals
     popupLeagueName.textContent = `${current.name} League`;
     popupLeagueRange.textContent = `Required: ${current.description}`;
     popupLeagueScore.textContent = `Your Score: ${totalScore}`;
@@ -133,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cupPopup.classList.remove("hidden");
   });
 
-  closeDailyBtn && closeDailyBtn.addEventListener("click", () => {
+  closeDailyBtn.addEventListener("click", () => {
     dailyPopup.classList.add("hidden");
   });
 
