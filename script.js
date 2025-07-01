@@ -6,117 +6,90 @@ document.addEventListener("DOMContentLoaded", () => {
   const dailyEnergyBar = document.getElementById("daily-energy-bar-fill");
   const totalScoreDisplay = document.getElementById("total-score");
   const currentCupDisplay = document.getElementById("current-cup");
-
   const dailyButton = document.getElementById("daily-button");
   const dailyPopup = document.getElementById("daily-popup");
   const dailyTimer = document.getElementById("daily-timer");
   const closeDailyBtn = document.getElementById("close-daily");
-
   const cupButton = document.getElementById("cup-details-button");
   const cupPopup = document.getElementById("cup-popup");
   const closeCupBtn = document.getElementById("close-cup");
+  const cupSlider = document.getElementById("cup-slider");
 
   let score = 0;
   let totalScore = 0;
   let energy = 50;
-  let clickCount = 0;
   let lastReset = Date.now();
 
-  function updateScore() {
-    scoreDisplay.textContent = score;
+  const leagues = [
+    { name: "Bronze", required: 0, image: "bronze-cup.png", description: "0 to 10 SUN" },
+    { name: "Silver", required: 11, image: "silver-cup.png", description: "11 to 20 SUN" },
+    { name: "Gold", required: 21, image: "gold-cup.png", description: "21 to 30 SUN" },
+    { name: "Emerald", required: 31, image: "emerald-cup.png", description: "31 to 40 SUN" },
+    { name: "Sapphire", required: 41, image: "sapphire-cup.png", description: "41 to 50 SUN" },
+    { name: "Ruby", required: 51, image: "ruby-cup.png", description: "51 to 60 SUN" },
+    { name: "Diamond", required: 61, image: "diamond-cup.png", description: "61 to 75 SUN" },
+    { name: "Legendary", required: 76, image: "legendary-cup.png", description: "76+ SUN" }
+  ];
+
+  function createTapPulse(x, y) {
+    const pulse = document.createElement("div");
+    pulse.className = "tap-pulse";
+    pulse.style.left = x + "px";
+    pulse.style.top = y + "px";
+    document.body.appendChild(pulse);
+    setTimeout(() => pulse.remove(), 500);
   }
 
-  function updateTotalScoreDisplay() {
-    totalScoreDisplay.textContent = totalScore;
+  function getCurrentLeague(score) {
+    return leagues.slice().reverse().find(l => score >= l.required) || leagues[0];
   }
 
-  function updateEnergyBar() {
-    const percent = Math.max(0, Math.min((energy / 50) * 100, 100));
-    energyBar.style.width = `${percent}%`;
-    dailyEnergyBar.style.width = `${percent}%`;
+  function updateCupDisplay() {
+    const current = getCurrentLeague(totalScore);
+    currentCupDisplay.textContent = `${current.name} League`;
+    renderCupSlider(current.name);
   }
 
-  function updateEnergyValue() {
-    energyValueDisplay.textContent = energy.toFixed(2);
+  function renderCupSlider(activeLeagueName) {
+    cupSlider.innerHTML = "";
+    leagues.forEach((cup) => {
+      const card = document.createElement("div");
+      card.className = "cup-card";
+      if (cup.name === activeLeagueName) card.classList.add("active");
+
+      const img = document.createElement("img");
+      img.src = `images/cups/${cup.image}`;
+      img.alt = `${cup.name} Cup`;
+
+      const caption = document.createElement("div");
+      caption.className = "cup-info-text";
+      caption.textContent = `${cup.name} – ${cup.description}`;
+
+      card.appendChild(img);
+      card.appendChild(caption);
+      cupSlider.appendChild(card);
+    });
   }
 
-  function updateCup() {
-    if (totalScore >= 76) currentCupDisplay.textContent = "Legendary League";
-    else if (totalScore >= 61) currentCupDisplay.textContent = "Diamond League";
-    else if (totalScore >= 51) currentCupDisplay.textContent = "Ruby League";
-    else if (totalScore >= 41) currentCupDisplay.textContent = "Sapphire League";
-    else if (totalScore >= 31) currentCupDisplay.textContent = "Emerald League";
-    else if (totalScore >= 21) currentCupDisplay.textContent = "Gold League";
-    else if (totalScore >= 11) currentCupDisplay.textContent = "Silver League";
-    else currentCupDisplay.textContent = "Bronze League";
-  }
-
-  sunCoin.addEventListener("click", () => {
-    const cost = 0.01;
-    if (energy < cost) return;
-
+  sunCoin.addEventListener("click", (event) => {
+    if (energy < 0.01) return;
     sunCoin.classList.add("coin-tap-animation");
-
+    createTapPulse(event.clientX, event.clientY);
     score++;
     totalScore++;
-    energy -= cost;
-    clickCount++;
-
-    updateScore();
-    updateTotalScoreDisplay();
-    updateEnergyBar();
-    updateEnergyValue();
-    updateCup();
-
-    setTimeout(() => {
-      sunCoin.classList.remove("coin-tap-animation");
-    }, 150);
+    energy -= 0.01;
+    updateAll();
+    setTimeout(() => sunCoin.classList.remove("coin-tap-animation"), 150);
   });
 
-  dailyButton.addEventListener("click", () => {
-    dailyPopup.classList.remove("hidden");
-  });
+  function updateAll() {
+    scoreDisplay.textContent = score;
+    totalScoreDisplay.textContent = totalScore;
+    energyBar.style.width = `${(energy / 50) * 100}%`;
+    dailyEnergyBar.style.width = `${(energy / 50) * 100}%`;
+    energyValueDisplay.textContent = energy.toFixed(2);
+    updateCupDisplay();
+  }
 
-  cupButton.addEventListener("click", () => {
-    cupPopup.classList.remove("hidden");
-  });
-
-  closeDailyBtn.addEventListener("click", () => {
-    dailyPopup.classList.add("hidden");
-  });
-
-  closeCupBtn.addEventListener("click", () => {
-    cupPopup.classList.add("hidden");
-  });
-
-  setInterval(() => {
-    const now = Date.now();
-    const timeLeft = 86400000 - (now - lastReset);
-
-    if (timeLeft <= 0) {
-      energy = 50;
-      clickCount = 0;
-      score = 0;
-      lastReset = now;
-      updateScore();
-      updateEnergyBar();
-      updateEnergyValue();
-      updateCup();
-    }
-
-    if (timeLeft <= 0) {
-      dailyTimer.textContent = "Energy is full!";
-    } else {
-      const hours = Math.floor(timeLeft / 3600000);
-      const minutes = Math.floor((timeLeft % 3600000) / 60000);
-      const seconds = Math.floor((timeLeft % 60000) / 1000);
-      dailyTimer.textContent = `Energy refreshes in: ${hours}h ${minutes}m ${seconds}s`;
-    }
-  }, 1000);
-
-  updateScore();
-  updateTotalScoreDisplay();
-  updateEnergyBar();
-  updateEnergyValue();
-  updateCup();
-});
+  dailyButton.addEventListener("click", () => dailyPopup.classList.remove("hidden"));
+ 
