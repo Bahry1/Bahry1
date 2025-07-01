@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dailyPopup = document.getElementById("daily-popup");
   const dailyTimer = document.getElementById("daily-timer");
   const closeDailyBtn = document.getElementById("close-daily");
+  const dailyEnergyText = document.getElementById("daily-energy-text");
 
   const cupButton = document.getElementById("cup-details-button");
   const cupPopup = document.getElementById("cup-popup");
@@ -101,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateEnergyValue() {
     energyValueDisplay.textContent = energy.toFixed(2);
+    dailyEnergyText.textContent = `Energy: ${energy.toFixed(2)} / 50`;
   }
 
   function updateAll() {
@@ -116,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (energy < cost) return;
 
     sunCoin.classList.add("coin-tap-animation");
-
     score++;
     totalScore++;
     energy -= cost;
