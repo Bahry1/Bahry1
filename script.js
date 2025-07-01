@@ -6,19 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const dailyEnergyBar = document.getElementById("daily-energy-bar-fill");
   const totalScoreDisplay = document.getElementById("total-score");
   const currentCupDisplay = document.getElementById("current-cup");
-
   const dailyButton = document.getElementById("daily-button");
   const dailyPopup = document.getElementById("daily-popup");
   const dailyTimer = document.getElementById("daily-timer");
   const closeDailyBtn = document.getElementById("close-daily");
-
-  const cupButton = document.getElementById("cup-details-button");
+  const cupButton = document.getElementById("cup-button");
   const cupPopup = document.getElementById("cup-popup");
   const closeCupBtn = document.getElementById("close-cup");
   const cupSlider = document.getElementById("cup-slider");
   const popupLeagueName = document.getElementById("popup-league-name");
   const popupLeagueRange = document.getElementById("popup-league-range");
   const popupLeagueScore = document.getElementById("popup-league-score");
+  const bottomEnergyBar = document.getElementById("bottom-energy-bar-fill");
 
   let score = 0;
   let totalScore = 0;
@@ -74,12 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCupDisplay() {
     const current = getCurrentLeague(totalScore);
     currentCupDisplay.textContent = `${current.name} League`;
-
     popupLeagueName.textContent = `${current.name} League`;
     popupLeagueRange.textContent = `Required: ${current.description}`;
     popupLeagueScore.textContent = `Your Score: ${totalScore}`;
     cupPopup.style.backgroundColor = current.color;
-
     renderCupSlider(current.name);
   }
 
@@ -95,10 +92,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const percent = Math.max(0, Math.min((energy / 50) * 100, 100));
     energyBar.style.width = `${percent}%`;
     dailyEnergyBar.style.width = `${percent}%`;
+    if (bottomEnergyBar) {
+      bottomEnergyBar.style.width = `${percent}%`;
+    }
   }
 
   function updateEnergyValue() {
-    energyValueDisplay.textContent = energy.toFixed(2);
+    if (energyValueDisplay) {
+      energyValueDisplay.textContent = energy.toFixed(2);
+    }
   }
 
   function updateAll() {
@@ -140,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cupPopup.classList.add("hidden");
   });
 
-  // تایمر برای ریست انرژی
+  // تایمر برای بازیابی انرژی
   setInterval(() => {
     const now = Date.now();
     const timeLeft = 86400000 - (now - lastReset);
