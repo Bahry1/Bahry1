@@ -100,10 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
     dailyEnergyBar.style.width = `${percent}%`;
   }
 
- function updateEnergyValue() {
-  energyValueDisplay.textContent = energy.toFixed(2);
-  dailyEnergyText.textContent = `Energy: ${energy.toFixed(2)} / 50`;
-}
+  function updateEnergyValue() {
+    energyValueDisplay.textContent = energy.toFixed(2);
+    dailyEnergyText.textContent = `Energy: ${energy.toFixed(2)} / 50`;
+  }
 
   function updateAll() {
     updateScore();
