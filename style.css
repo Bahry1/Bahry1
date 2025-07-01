@@ -162,7 +162,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(17, 24, 39, 0.9); /* شفافیت متعادل */
+  background-color: rgba(17, 24, 39, 0.9);
   color: white;
   z-index: 30;
   padding: 30px;
@@ -183,7 +183,7 @@ body {
   display: none;
 }
 
-/* Close Buttons پایین */
+/* Close Buttons */
 #close-daily,
 #close-cup {
   margin-top: auto;
@@ -195,6 +195,14 @@ body {
   border-radius: 8px;
   color: white;
   cursor: pointer;
+}
+
+/* خط انرژی پایین دکمه Close در daily */
+#daily-energy-text {
+  margin-top: 10px;
+  font-size: 1em;
+  color: #8aff8a;
+  text-align: center;
 }
 
 /* بخش کاپ فعلی */
