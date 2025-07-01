@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZerinSun</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="stars-container"></div>
+
+  <div id="app">
+    <div id="score-area">
+      <p id="current-score">0</p>
+      <span class="score-label">SUN</span>
+      <div id="cup-info">
+        <span id="current-cup">Bronze League</span>
+        <button id="cup-details-button">Details</button>
+      </div>
+    </div>
+
+    <div id="coin-area">
+      <img id="sun-coin" src="sun-icon.png" alt="Zerin Sun Coin">
+    </div>
+
+    <nav id="navbar">
+      <button class="nav-button">
+        <img src="referral-icon.png" alt="Referral Icon">
+        <span>Referral</span>
+      </button>
+      <button class="nav-button">
+        <img src="channels-icon.png" alt="Channels Icon">
+        <span>Channels</span>
+      </button>
+      <button class="nav-button">
+        <img src="wallet-icon.png" alt="Wallet Icon">
+        <span>Wallet</span>
+      </button>
+      <button class="nav-button" id="daily-button">
+        <img src="daily-icon.png" alt="Daily Icon">
+        <span>Daily</span>
+      </button>
+    </nav>
+
+    <div id="energy-bar-container">
+      <div id="energy-bar-fill"></div>
+    </div>
+  </div>
+
+  <div id="daily-popup" class="popup hidden">
+    <div id="daily-timer"></div>
+    <p>Daily rewards and info will go here...</p>
+  </div>
+
+  <div id="cup-popup" class="popup hidden">
+    <h3>Leagues & Cups</h3>
+    <ul id="cup-list">
+      <li>Bronze League – Reach 10 points</li>
+      <li>Silver League – Reach 15 points</li>
+      <li>Gold League – Reach 20 points</li>
+      <!-- 8 cups will be added later -->
+    </ul>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="stars.js"></script>
+</body>
+</html>
