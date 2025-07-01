@@ -5,19 +5,38 @@ const energyValueDisplay = document.getElementById("energy-value");
 const dailyEnergyBar = document.getElementById("daily-energy-bar-fill");
 const totalScoreDisplay = document.getElementById("total-score");
 const currentCupDisplay = document.getElementById("current-cup");
-
 const dailyButton = document.getElementById("daily-button");
 const dailyPopup = document.getElementById("daily-popup");
 const dailyTimer = document.getElementById("daily-timer");
-
 const cupButton = document.getElementById("cup-details-button");
 const cupPopup = document.getElementById("cup-popup");
+const cupSlider = document.getElementById("cup-slider");
 
 let score = 0;
 let totalScore = 0;
 let energy = 50;
 let clickCount = 0;
 let lastReset = Date.now();
+
+const cupLeagues = [
+  { name: "Bronze", image: "bronze-cup.png", required: 0 },
+  { name: "Silver", image: "silver-cup.png", required: 60 },
+  { name: "Gold", image: "gold-cup.png", required: 80 },
+  { name: "Emerald", image: "emerald-cup.png", required: 110 },
+  { name: "Sapphire", image: "sapphire-cup.png", required: 140 },
+  { name: "Ruby", image: "ruby-cup.png", required: 180 },
+  { name: "Diamond", image: "diamond-cup.png", required: 220 },
+  { name: "Legendary", image: "legendary-cup.png", required: 270 }
+];
+
+function getCurrentCup(score) {
+  for (let i = cupLeagues.length - 1; i >= 0; i--) {
+    if (score >= cupLeagues[i].required) {
+      return cupLeagues[i].name + " League";
+    }
+  }
+  return "Bronze League";
+}
 
 function updateScore() {
   scoreDisplay.textContent = score;
@@ -38,14 +57,28 @@ function updateEnergyValue() {
 }
 
 function updateCup() {
-  if (score >= 76) currentCupDisplay.textContent = "Legendary League";
-  else if (score >= 61) currentCupDisplay.textContent = "Diamond League";
-  else if (score >= 51) currentCupDisplay.textContent = "Ruby League";
-  else if (score >= 41) currentCupDisplay.textContent = "Sapphire League";
-  else if (score >= 31) currentCupDisplay.textContent = "Emerald League";
-  else if (score >= 21) currentCupDisplay.textContent = "Gold League";
-  else if (score >= 11) currentCupDisplay.textContent = "Silver League";
-  else currentCupDisplay.textContent = "Bronze League";
+  currentCupDisplay.textContent = getCurrentCup(totalScore);
+  renderCupSlider();
+}
+
+function renderCupSlider() {
+  cupSlider.innerHTML = "";
+
+  cupLeagues.forEach((cup, i) => {
+    const cupImg = document.createElement("img");
+    cupImg.src = `images/cups/${cup.image}`;
+    cupImg.alt = `${cup.name} Cup`;
+    cupImg.className = "league-cup";
+
+    const nextLeague = cupLeagues[i + 1];
+    const maxScore = nextLeague ? nextLeague.required - 1 : Infinity;
+
+    if (totalScore >= cup.required && totalScore <= maxScore) {
+      cupImg.classList.add("active");
+    }
+
+    cupSlider.appendChild(cupImg);
+  });
 }
 
 sunCoin.addEventListener("click", () => {
