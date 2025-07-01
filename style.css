@@ -86,6 +86,7 @@ body {
   display: none;
 }
 
+/* نوار انرژی در پاپ‌آپ Daily */
 #daily-energy-bar-container {
   width: 85%;
   height: 14px;
@@ -102,6 +103,7 @@ body {
   border-radius: 6px;
 }
 
+/* ✅ بخش پایین پاپ‌آپ شامل دکمه + نوشته انرژی */
 .daily-bottom {
   margin-top: auto;
   display: flex;
@@ -126,6 +128,7 @@ body {
   text-align: center;
 }
 
+/* جزئیات کاپ */
 #current-cup-details {
   text-align: center;
   margin: 15px 0;
@@ -141,6 +144,7 @@ body {
   margin: 3px 0;
 }
 
+/* اسلایدر کاپ‌ها */
 #cup-slider {
   display: flex;
   overflow-x: auto;
