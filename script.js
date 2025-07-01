@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateEnergyValue() {
     energyValueDisplay.textContent = energy.toFixed(2);
-    dailyEnergyText.textContent = `Energy: ${energy.toFixed(2)} / 50`;
   }
 
   function updateAll() {
