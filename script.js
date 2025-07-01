@@ -159,8 +159,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   dailyButton.addEventListener("click", () => {
-    dailyPopup.classList.remove("hidden");
-  });
-
-  cupButton.addEventListener("click", () => {
-    cupPopup.class
+   
