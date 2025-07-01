@@ -8,8 +8,10 @@
 </head>
 <body>
 
+  <!-- پس‌زمینه ستاره‌ای -->
   <div id="stars-container"></div>
 
+  <!-- اپلیکیشن اصلی -->
   <div id="app">
     <div id="score-area">
       <p id="current-score">0</p>
@@ -20,36 +22,34 @@
       </div>
     </div>
 
+    <!-- تصویر سکه زرین سان -->
     <div id="coin-area">
       <img id="sun-coin" src="sun-icon.png" alt="Zerin Sun Coin" />
     </div>
 
+    <!-- نوار انرژی بالا -->
     <div id="energy-bar-container">
       <div id="energy-bar-fill"></div>
     </div>
   </div>
 
-  <!-- ✳️ پاپ‌آپ Daily Energy -->
+  <!-- ✳️ پاپ‌آپ Daily -->
   <div id="daily-popup" class="fullscreen-popup hidden">
     <h3>Daily Energy Info</h3>
     <div id="daily-timer"></div>
-
-    <!-- مجموع خورشیدها -->
     <p>Total Suns Collected: <span id="total-score">0</span></p>
 
-    <!-- دکمه + متن انرژی -->
     <div class="daily-bottom">
       <button id="close-daily">Close</button>
       <p id="daily-energy-text">Energy: <span id="energy-value">50</span> / 50</p>
     </div>
 
-    <!-- ✅ نوار انرژی باید پایین باشه -->
     <div id="daily-energy-bar-container">
       <div id="daily-energy-bar-fill"></div>
     </div>
   </div>
 
-  <!-- ✳️ پاپ‌آپ Cup League -->
+  <!-- ✳️ پاپ‌آپ Cup -->
   <div id="cup-popup" class="fullscreen-popup hidden">
     <h3>Cup System</h3>
     <div id="current-cup-details">
@@ -61,7 +61,7 @@
     <button id="close-cup">Close</button>
   </div>
 
-  <!-- ✳️ نوار پایین (Navigation) -->
+  <!-- نوار پایین (Navigation) -->
   <nav id="navbar">
     <button class="nav-button">
       <img src="referral-icon.png" alt="Referral Icon" />
@@ -75,12 +75,22 @@
       <img src="wallet-icon.png" alt="Wallet Icon" />
       <span>Wallet</span>
     </button>
+    <button class="nav-button" id="cup-button">
+      <img src="cup-icon.png" alt="Cup Icon" />
+      <span>Cups</span>
+    </button>
     <button class="nav-button" id="daily-button">
       <img src="daily-icon.png" alt="Daily Icon" />
       <span>Daily</span>
     </button>
   </nav>
 
+  <!-- نوار انرژی پایین صفحه -->
+  <div id="bottom-energy-bar-container">
+    <div id="bottom-energy-bar-fill"></div>
+  </div>
+
+  <!-- اسکریپت‌ها -->
   <script src="script.js"></script>
   <script src="stars.js"></script>
 
