@@ -14,44 +14,10 @@ const cupButton = document.getElementById("cup-details-button");
 const cupPopup = document.getElementById("cup-popup");
 
 let score = 0;
+let totalScore = 0;
 let energy = 50;
 let clickCount = 0;
-let totalScore = 0;
-
-const energyMax = 50;
-const resetKey = 'lastEnergyReset';
-const energyKey = 'currentEnergy';
-const clickKey = 'clickCount';
-const scoreKey = 'userScore';
-const totalScoreKey = 'totalScore';
-
-function loadGame() {
-  const savedEnergy = parseFloat(localStorage.getItem(energyKey));
-  const savedClicks = parseInt(localStorage.getItem(clickKey));
-  const savedScore = parseInt(localStorage.getItem(scoreKey));
-  const savedTotal = parseInt(localStorage.getItem(totalScoreKey));
-  const lastReset = parseInt(localStorage.getItem(resetKey));
-  const now = Date.now();
-
-  totalScore = isNaN(savedTotal) ? 0 : savedTotal;
-  score = isNaN(savedScore) ? 0 : savedScore;
-
-  if (!lastReset || now - lastReset > 86400000) {
-    energy = energyMax;
-    clickCount = 0;
-    score = 0;
-    localStorage.setItem(resetKey, now.toString());
-  } else {
-    energy = isNaN(savedEnergy) ? energyMax : savedEnergy;
-    clickCount = isNaN(savedClicks) ? 0 : savedClicks;
-  }
-
-  updateScore();
-  updateEnergyBar();
-  updateCup();
-  updateEnergyValue();
-  updateTotalScoreDisplay();
-}
+let lastReset = Date.now();
 
 function updateScore() {
   scoreDisplay.textContent = score;
@@ -64,7 +30,7 @@ function updateTotalScoreDisplay() {
 }
 
 function updateEnergyBar() {
-  const percent = Math.max(0, Math.min((energy / energyMax) * 100, 100));
+  const percent = Math.max(0, Math.min((energy / 50) * 100, 100));
   energyBar.style.width = `${percent}%`;
   if (dailyEnergyBar) {
     dailyEnergyBar.style.width = `${percent}%`;
@@ -86,15 +52,8 @@ function updateCup() {
   else currentCupDisplay.textContent = "Bronze League";
 }
 
-function saveGame() {
-  localStorage.setItem(energyKey, energy.toString());
-  localStorage.setItem(clickKey, clickCount.toString());
-  localStorage.setItem(scoreKey, score.toString());
-  localStorage.setItem(totalScoreKey, totalScore.toString());
-}
-
 sunCoin.addEventListener("click", () => {
-  const cost = (clickCount + 1) * 0.01;
+  const cost = Math.round((clickCount + 1) * 0.01 * 1000) / 1000;
   if (energy < cost) return;
 
   sunCoin.classList.add("coin-tap-animation");
@@ -109,7 +68,6 @@ sunCoin.addEventListener("click", () => {
   updateEnergyValue();
   updateCup();
   updateTotalScoreDisplay();
-  saveGame();
 
   setTimeout(() => {
     sunCoin.classList.remove("coin-tap-animation");
@@ -125,9 +83,19 @@ cupButton.addEventListener("click", () => {
 });
 
 setInterval(() => {
-  const lastReset = parseInt(localStorage.getItem(resetKey));
   const now = Date.now();
   const timeLeft = 86400000 - (now - lastReset);
+
+  if (timeLeft <= 0) {
+    energy = 50;
+    clickCount = 0;
+    score = 0;
+    lastReset = now;
+    updateScore();
+    updateEnergyBar();
+    updateEnergyValue();
+    updateCup();
+  }
 
   if (timeLeft <= 0) {
     dailyTimer.textContent = "Energy is full!";
@@ -139,4 +107,8 @@ setInterval(() => {
   }
 }, 1000);
 
-loadGame();
+updateScore();
+updateEnergyBar();
+updateEnergyValue();
+updateCup();
+updateTotalScoreDisplay();
