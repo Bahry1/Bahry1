@@ -1,5 +1,5 @@
 function renderCupSlider() {
-  cupPopup.classList.remove("hidden"); // فقط برای تست: پنجره باز باشه
+  cupPopup.classList.remove("hidden"); //
   cupSlider.innerHTML = "";
 
   const images = [
