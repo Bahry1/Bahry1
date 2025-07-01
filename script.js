@@ -24,17 +24,13 @@ function updateScore() {
 }
 
 function updateTotalScoreDisplay() {
-  if (totalScoreDisplay) {
-    totalScoreDisplay.textContent = totalScore;
-  }
+  totalScoreDisplay.textContent = totalScore;
 }
 
 function updateEnergyBar() {
   const percent = Math.max(0, Math.min((energy / 50) * 100, 100));
   energyBar.style.width = `${percent}%`;
-  if (dailyEnergyBar) {
-    dailyEnergyBar.style.width = `${percent}%`;
-  }
+  dailyEnergyBar.style.width = `${percent}%`;
 }
 
 function updateEnergyValue() {
@@ -53,7 +49,7 @@ function updateCup() {
 }
 
 sunCoin.addEventListener("click", () => {
-  const cost = Math.round((clickCount + 1) * 0.01 * 1000) / 1000;
+  const cost = 0.01;
   if (energy < cost) return;
 
   sunCoin.classList.add("coin-tap-animation");
@@ -64,10 +60,10 @@ sunCoin.addEventListener("click", () => {
   clickCount++;
 
   updateScore();
+  updateTotalScoreDisplay();
   updateEnergyBar();
   updateEnergyValue();
   updateCup();
-  updateTotalScoreDisplay();
 
   setTimeout(() => {
     sunCoin.classList.remove("coin-tap-animation");
@@ -108,7 +104,7 @@ setInterval(() => {
 }, 1000);
 
 updateScore();
+updateTotalScoreDisplay();
 updateEnergyBar();
 updateEnergyValue();
 updateCup();
-updateTotalScoreDisplay();
