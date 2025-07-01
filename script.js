@@ -11,13 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const dailyPopup = document.getElementById("daily-popup");
   const dailyTimer = document.getElementById("daily-timer");
   const closeDailyBtn = document.getElementById("close-daily");
-  const dailyEnergyText = document.getElementById("daily-energy-text");
 
   const cupButton = document.getElementById("cup-details-button");
   const cupPopup = document.getElementById("cup-popup");
   const closeCupBtn = document.getElementById("close-cup");
   const cupSlider = document.getElementById("cup-slider");
-
   const popupLeagueName = document.getElementById("popup-league-name");
   const popupLeagueRange = document.getElementById("popup-league-range");
   const popupLeagueScore = document.getElementById("popup-league-score");
@@ -130,18 +128,19 @@ document.addEventListener("DOMContentLoaded", () => {
     dailyPopup.classList.remove("hidden");
   });
 
-  cupButton.addEventListener("click", () => {
-    cupPopup.classList.remove("hidden");
-  });
-
   closeDailyBtn.addEventListener("click", () => {
     dailyPopup.classList.add("hidden");
+  });
+
+  cupButton.addEventListener("click", () => {
+    cupPopup.classList.remove("hidden");
   });
 
   closeCupBtn.addEventListener("click", () => {
     cupPopup.classList.add("hidden");
   });
 
+  // تایمر برای ریست انرژی
   setInterval(() => {
     const now = Date.now();
     const timeLeft = 86400000 - (now - lastReset);
