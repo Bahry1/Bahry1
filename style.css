@@ -110,6 +110,7 @@ body {
   transition: width 0.3s ease;
 }
 
+/* نوار پایین اپ */
 #navbar {
   position: fixed;
   bottom: 0;
@@ -139,7 +140,7 @@ body {
   filter: drop-shadow(0 0 2px black);
 }
 
-/* 🔶 پاپ‌آپ Daily */
+/* پاپ‌آپ‌ها */
 .fullscreen-popup {
   position: fixed;
   top: 0;
@@ -167,18 +168,10 @@ body {
   display: none;
 }
 
-/* ✳️ نوشته انرژی روزانه بالای نوار */
-#daily-energy-text {
-  font-size: 1em;
-  color: #8aff8a;
-  text-align: center;
-  margin: 10px 0 6px 0;
-}
-
-/* ✳️ نوار انرژی بزرگ پایین صفحه */
+/* ✳️ نوار انرژی در پاپ‌آپ Daily */
 #daily-energy-bar-container {
   width: 85%;
-  height: 16px;
+  height: 14px;
   background-color: #333;
   margin-bottom: 20px;
   border-radius: 6px;
@@ -196,7 +189,6 @@ body {
 #close-daily,
 #close-cup {
   margin-top: auto;
-  align-self: center;
   font-size: 1em;
   padding: 10px 20px;
   background-color: #444;
@@ -206,7 +198,15 @@ body {
   cursor: pointer;
 }
 
-/* پاپ‌آپ Cup */
+/* ✳️ نوشته انرژی زیر دکمه */
+#daily-energy-text {
+  font-size: 1em;
+  color: #8aff8a;
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+
+/* جزئیات کاپ */
 #current-cup-details {
   text-align: center;
   margin: 15px 0;
@@ -222,6 +222,7 @@ body {
   margin: 3px 0;
 }
 
+/* اسلایدر کاپ‌ها */
 #cup-slider {
   display: flex;
   overflow-x: auto;
@@ -270,7 +271,7 @@ body {
   color: #FFD700;
 }
 
-/* رنگ‌های کاپ */
+/* رنگ کاپ‌ها */
 .cup-card.bronze { background: #4e3b24; }
 .cup-card.silver { background: #777; }
 .cup-card.gold { background: #bfa039; }
