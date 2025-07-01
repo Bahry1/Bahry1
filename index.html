@@ -28,15 +28,16 @@
     </div>
   </div>
 
-  <!-- Fullscreen DAILY -->
   <div id="daily-popup" class="fullscreen-popup hidden">
     <h3>Daily Energy Info</h3>
     <div id="daily-timer"></div>
     <p>Energy: <span id="energy-value">50</span> / 50</p>
+    <div id="daily-energy-bar-container">
+      <div id="daily-energy-bar-fill"></div>
+    </div>
     <button onclick="dailyPopup.classList.add('hidden')">Close</button>
   </div>
 
-  <!-- Fullscreen CUP -->
   <div id="cup-popup" class="fullscreen-popup hidden">
     <h3>Cup System</h3>
     <ul id="cup-list">
