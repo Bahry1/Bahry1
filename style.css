@@ -199,10 +199,10 @@ body {
 
 /* خط انرژی قبل از دکمه Close */
 #daily-energy-text {
-  margin-top: 10px;
   font-size: 1em;
   color: #8aff8a;
   text-align: center;
+  margin-top: 10px;
   margin-bottom: 15px;
 }
 
