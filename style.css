@@ -13,6 +13,7 @@ body {
   color: white;
 }
 
+/* Stars */
 #stars-container {
   position: fixed;
   top: 0;
@@ -36,6 +37,7 @@ body {
   100% { opacity: 0.9; transform: scale(1.3); }
 }
 
+/* App Layout */
 #app {
   position: relative;
   z-index: 1;
@@ -45,6 +47,7 @@ body {
   justify-content: space-between;
 }
 
+/* Score Section */
 #score-area {
   text-align: center;
   padding: 20px;
@@ -71,12 +74,13 @@ body {
   cursor: pointer;
 }
 
+/* Coin Section */
 #coin-area {
   flex-grow: 1;
   display: flex;
-  margin-bottom: 20px;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 #sun-coin {
@@ -97,6 +101,7 @@ body {
   100% { transform: scale(1); }
 }
 
+/* Energy Bar Main */
 #energy-bar-container {
   width: 100%;
   height: 10px;
@@ -110,6 +115,7 @@ body {
   transition: width 0.3s ease;
 }
 
+/* Energy Bar in Daily Popup */
 #daily-energy-bar-container {
   width: 80%;
   height: 10px;
@@ -126,6 +132,7 @@ body {
   border-radius: 4px;
 }
 
+/* Navbar */
 #navbar {
   position: fixed;
   bottom: 0;
@@ -155,6 +162,7 @@ body {
   filter: drop-shadow(0 0 2px black);
 }
 
+/* Popups */
 .fullscreen-popup {
   position: fixed;
   top: 0;
@@ -181,35 +189,16 @@ body {
   display: none;
 }
 
-#cup-slider {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 20px;
-  gap: 20px;
+/* Cup List */
+#cup-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
 }
 
-.cup-card {
-  flex: 0 0 auto;
-  min-width: 160px;
-  margin-right: 25px;
-  scroll-snap-align: center;
-  text-align: center;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.cup-card img {
-  width: 100px;
-  opacity: 0.5;
-}
-
-.cup-card.active img {
-  transform: scale(1.3);
-  opacity: 1;
-}
-
-.cup-info-text {
-  margin-top: 10px;
-  font-size: 0.85em;
-  color: #ddd;
+#cup-list li {
+  margin: 6px 0;
+  font-size: 1em;
+  color: #FFD700;
+  text-shadow: 0 0 2px #444;
 }
