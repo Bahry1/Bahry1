@@ -110,22 +110,6 @@ body {
   transition: width 0.3s ease;
 }
 
-#daily-energy-bar-container {
-  width: 80%;
-  height: 10px;
-  background-color: #333;
-  margin: 10px auto;
-  border-radius: 4px;
-}
-
-#daily-energy-bar-fill {
-  height: 100%;
-  background-color: #00ffae;
-  width: 100%;
-  transition: width 0.3s ease;
-  border-radius: 4px;
-}
-
 #navbar {
   position: fixed;
   bottom: 0;
@@ -155,7 +139,7 @@ body {
   filter: drop-shadow(0 0 2px black);
 }
 
-/* Popups */
+/* 🔶 پاپ‌آپ Daily */
 .fullscreen-popup {
   position: fixed;
   top: 0;
@@ -170,6 +154,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   transition: background-color 0.4s ease;
 }
 
@@ -182,7 +167,32 @@ body {
   display: none;
 }
 
-/* Close Buttons */
+/* ✳️ نوشته انرژی روزانه بالای نوار */
+#daily-energy-text {
+  font-size: 1em;
+  color: #8aff8a;
+  text-align: center;
+  margin: 10px 0 6px 0;
+}
+
+/* ✳️ نوار انرژی بزرگ پایین صفحه */
+#daily-energy-bar-container {
+  width: 85%;
+  height: 16px;
+  background-color: #333;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+#daily-energy-bar-fill {
+  height: 100%;
+  background-color: #00ffae;
+  width: 100%;
+  transition: width 0.3s ease;
+  border-radius: 6px;
+}
+
+/* ✳️ دکمه Close پایین */
 #close-daily,
 #close-cup {
   margin-top: auto;
@@ -196,16 +206,7 @@ body {
   cursor: pointer;
 }
 
-/* خط انرژی بعد از دکمه Close */
-#daily-energy-text {
-  font-size: 1em;
-  color: #8aff8a;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-/* بخش کاپ فعلی */
+/* پاپ‌آپ Cup */
 #current-cup-details {
   text-align: center;
   margin: 15px 0;
@@ -221,7 +222,6 @@ body {
   margin: 3px 0;
 }
 
-/* اسکرول کاپ‌ها */
 #cup-slider {
   display: flex;
   overflow-x: auto;
