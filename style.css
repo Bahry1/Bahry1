@@ -168,7 +168,7 @@ body {
   display: none;
 }
 
-/* ✳️ نوار انرژی در پاپ‌آپ Daily */
+/* نوار انرژی در پاپ‌آپ Daily */
 #daily-energy-bar-container {
   width: 85%;
   height: 14px;
@@ -185,10 +185,15 @@ body {
   border-radius: 6px;
 }
 
-/* ✳️ دکمه Close پایین */
-#close-daily,
-#close-cup {
+/* ✅ بخش پایین پاپ‌آپ شامل دکمه + نوشته انرژی */
+.daily-bottom {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#close-daily {
   font-size: 1em;
   padding: 10px 20px;
   background-color: #444;
@@ -196,14 +201,13 @@ body {
   border-radius: 8px;
   color: white;
   cursor: pointer;
+  margin-bottom: 6px;
 }
 
-/* ✳️ نوشته انرژی زیر دکمه */
 #daily-energy-text {
   font-size: 1em;
   color: #8aff8a;
   text-align: center;
-  margin: 10px 0 0 0;
 }
 
 /* جزئیات کاپ */
