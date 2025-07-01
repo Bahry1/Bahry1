@@ -155,13 +155,14 @@ body {
   filter: drop-shadow(0 0 2px black);
 }
 
-/* Fullscreen Popups */
+/* Popups */
 .fullscreen-popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  background-color: rgba(17, 24, 39, 0.9); /* شفافیت متعادل */
   color: white;
   z-index: 30;
   padding: 30px;
@@ -170,26 +171,49 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  transition: background-color 0.5s ease;
+  transition: background-color 0.4s ease;
 }
 
-/* Cup Popup Info */
+.fullscreen-popup h3 {
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Close Buttons پایین */
+#close-daily,
+#close-cup {
+  margin-top: auto;
+  align-self: center;
+  font-size: 1em;
+  padding: 10px 20px;
+  background-color: #444;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+/* بخش کاپ فعلی */
 #current-cup-details {
   text-align: center;
-  margin-bottom: 20px;
+  margin: 15px 0;
 }
 
 #current-cup-details h4 {
-  font-size: 1.4em;
+  font-size: 1.3em;
   margin-bottom: 5px;
 }
 
 #current-cup-details p {
   font-size: 1em;
-  margin: 4px 0;
+  margin: 3px 0;
 }
 
-/* Cup Slider */
+/* اسکرول کاپ‌ها */
 #cup-slider {
   display: flex;
   overflow-x: auto;
@@ -202,8 +226,8 @@ body {
 
 .cup-card {
   flex: 0 0 auto;
-  min-width: 220px;
-  max-width: 240px;
+  min-width: 230px;
+  max-width: 260px;
   text-align: center;
   border-radius: 16px;
   padding: 20px;
@@ -218,7 +242,7 @@ body {
 }
 
 .cup-card.active {
-  transform: scale(1.15);
+  transform: scale(1.2);
 }
 
 .cup-name {
@@ -238,7 +262,7 @@ body {
   color: #FFD700;
 }
 
-/* Cup Backgrounds */
+/* رنگ‌های کاپ */
 .cup-card.bronze { background: #4e3b24; }
 .cup-card.silver { background: #777; }
 .cup-card.gold { background: #bfa039; }
@@ -247,7 +271,3 @@ body {
 .cup-card.ruby { background: #75002b; }
 .cup-card.diamond { background: #37577f; }
 .cup-card.legendary { background: #222; }
-
-.hidden {
-  display: none;
-}
