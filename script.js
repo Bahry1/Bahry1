@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cupButton = document.getElementById("cup-details-button");
   const cupPopup = document.getElementById("cup-popup");
   const cupSlider = document.getElementById("cup-slider");
+  const closeDailyBtn = document.getElementById("close-daily");
+  const closeCupBtn = document.getElementById("close-cup");
 
   let score = 0;
   let totalScore = 0;
@@ -116,6 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
     cupPopup.classList.remove("hidden");
   });
 
+  closeDailyBtn.addEventListener("click", () => {
+    dailyPopup.classList.add("hidden");
+  });
+
+  closeCupBtn.addEventListener("click", () => {
+    cupPopup.classList.add("hidden");
+  });
+
   setInterval(() => {
     const now = Date.now();
     const timeLeft = 86400000 - (now - lastReset);
@@ -141,7 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 1000);
 
-  // Initial setup
   updateScore();
   updateTotalScoreDisplay();
   updateEnergyBar();
