@@ -197,12 +197,13 @@ body {
   cursor: pointer;
 }
 
-/* خط انرژی پایین دکمه Close در daily */
+/* خط انرژی قبل از دکمه Close */
 #daily-energy-text {
   margin-top: 10px;
   font-size: 1em;
   color: #8aff8a;
   text-align: center;
+  margin-bottom: 15px;
 }
 
 /* بخش کاپ فعلی */
