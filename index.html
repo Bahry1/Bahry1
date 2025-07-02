@@ -8,53 +8,55 @@
 </head>
 <body>
 
-  <!-- ستاره‌ها یا پس‌زمینه دلخواه -->
-  <div id="stars-container"></div>
+  <!-- 📦 محفظه کلی اپ -->
+  <main class="main-container">
 
-  <!-- اسکلت اصلی اپ -->
-  <div id="app">
-
-    <!-- 🏅 لیگ فعلی + لینک رفتن به صفحه کاپ -->
-    <p id="current-league-label" class="league-label">Bronze League</p>
+    <!-- 🔢 امتیاز و لیگ -->
+    <section class="top-panel">
+      <div class="sun-score">
+        <span id="sun-count">0.00</span> <span class="unit">SUN</span>
+      </div>
+      <div class="league-info">
+        <span id="league-label">Bronze League</span>
+        <button id="league-details-btn" onclick="window.location.href='cups.html'">Details</button>
+      </div>
+    </section>
 
     <!-- 🪙 سکه زرین سان -->
-    <div id="coin-area">
-      <img id="sun-coin" src="sun-coin.png" alt="Zerin Sun Coin" />
+    <section class="coin-panel">
+      <div class="coin-wrapper">
+        <img id="sun-coin" src="images/sun-icon.png" alt="Sun Coin" />
+      </div>
+    </section>
+
+    <!-- 📱 منوی پایین -->
+    <nav class="bottom-nav">
+      <button class="nav-btn" onclick="window.location.href='referral.html'">
+        <img src="images/icons/referral.png" />
+        <span>Referral</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='channels.html'">
+        <img src="images/icons/channels.png" />
+        <span>Channels</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='wallet.html'">
+        <img src="images/icons/wallet.png" />
+        <span>Wallet</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='daily.html'">
+        <img src="images/icons/daily.png" />
+        <span>Daily</span>
+      </button>
+    </nav>
+
+    <!-- ⚡ نوار انرژی -->
+    <div class="energy-bar-container">
+      <div id="energy-bar-fill"></div>
     </div>
 
-    <!-- 🔢 امتیاز -->
-    <div id="score-area">
-      <p id="current-score">0 <span class="score-label">SUN</span></p>
-    </div>
+  </main>
 
-  </div>
-
-  <!-- 📱 نوار پایین -->
-  <nav id="navbar">
-    <button class="nav-button" onclick="window.location.href='referral.html'">
-      <img src="referral-icon.png" alt="Referral Icon" />
-      <span>Referral</span>
-    </button>
-    <button class="nav-button" onclick="window.location.href='channels.html'">
-      <img src="channels-icon.png" alt="Channels Icon" />
-      <span>Channels</span>
-    </button>
-    <button class="nav-button" onclick="window.location.href='wallet.html'">
-      <img src="wallet-icon.png" alt="Wallet Icon" />
-      <span>Wallet</span>
-    </button>
-    <button class="nav-button" onclick="window.location.href='daily.html'">
-      <img src="daily-icon.png" alt="Daily Icon" />
-      <span>Daily</span>
-    </button>
-  </nav>
-
-  <!-- ⚡ نوار انرژی پایین -->
-  <div id="bottom-energy-bar-container">
-    <div id="bottom-energy-bar-fill"></div>
-  </div>
-
-  <!-- اسکریپت -->
+  <!-- اسکریپت عملکرد -->
   <script src="script.js"></script>
 </body>
 </html>
