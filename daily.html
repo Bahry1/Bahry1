@@ -13,12 +13,14 @@
       padding: 60px 20px;
       margin: 0;
     }
+
     h1 {
       font-size: 1.8em;
       color: #ffcc00;
       text-shadow: 0 0 6px #ffdd55;
       margin-bottom: 20px;
     }
+
     #timer {
       font-size: 2em;
       font-weight: bold;
@@ -26,6 +28,7 @@
       color: #00e6ff;
       text-shadow: 0 0 6px #00ffffaa;
     }
+
     button {
       padding: 12px 26px;
       font-size: 1em;
@@ -37,12 +40,13 @@
       box-shadow: 0 0 10px #ffd70055;
       cursor: pointer;
     }
+
     button:disabled {
       opacity: 0.4;
       cursor: default;
     }
 
-    /* --- Energy Bar --- */
+    /* نوار انرژی */
     .energy-bar-container {
       width: 90%;
       max-width: 360px;
@@ -62,7 +66,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
 
     .energy-label {
@@ -100,7 +103,7 @@
 
   <div class="energy-bar-container">
     <div id="energy-bar-fill">
-      <span class="energy-label">50 / 50 Energy</span>
+      <span class="energy-label" id="energy-label">-- / -- Energy</span>
     </div>
   </div>
 
@@ -109,6 +112,18 @@
   <script>
     const timerEl = document.getElementById("timer");
     const btn = document.getElementById("collect-btn");
+    const energyBar = document.getElementById("energy-bar-fill");
+    const energyLabel = document.getElementById("energy-label");
+
+    const maxEnergy = 50;
+    let energy = parseFloat(localStorage.getItem("energy")) || 50;
+
+    function updateEnergyUI() {
+      const width = Math.max(0, (energy / maxEnergy) * 100);
+      energyLabel.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
+      energyBar.style.width = width + "%";
+      localStorage.setItem("energy", energy.toFixed(2));
+    }
 
     function getResetTime() {
       const now = new Date();
@@ -145,36 +160,14 @@
     btn.addEventListener("click", () => {
       btn.disabled = true;
       btn.textContent = "Collected ✅";
+      energy = maxEnergy; // یا می‌تونی مقداری انرژی اضافه کنی
+      updateEnergyUI();
       startTimer();
     });
 
-    // Optional: disable button until first claim
-    // btn.disabled = true;
+    // شروع اولیه
+    updateEnergyUI();
     startTimer();
   </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Wallet - ZerinSun</title>
-  <style>
-    body {
-      background: #111;
-      color: #eee;
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-
-    h1 {
-      color: #00e6ff;
-      margin-bottom: 40px;
-    }
-
-    
