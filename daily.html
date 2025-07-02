@@ -2,172 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Daily Energy - ZerinSun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Reward - ZerinSun</title>
   <style>
     body {
-      background: radial-gradient(circle at bottom, #121212, #000000);
-      color: white;
-      font-family: "Segoe UI", sans-serif;
-      text-align: center;
-      padding: 60px 20px;
       margin: 0;
-    }
-
-    h1 {
-      font-size: 1.8em;
-      color: #ffcc00;
-      text-shadow: 0 0 6px #ffdd55;
-      margin-bottom: 20px;
-    }
-
-    #timer {
-      font-size: 2em;
-      font-weight: bold;
-      margin: 20px 0;
-      color: #00e6ff;
-      text-shadow: 0 0 6px #00ffffaa;
-    }
-
-    button {
-      padding: 12px 26px;
-      font-size: 1em;
-      border: none;
-      border-radius: 8px;
-      background: linear-gradient(90deg, #ffd700, #ffa500);
-      color: #000;
-      font-weight: bold;
-      box-shadow: 0 0 10px #ffd70055;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
-
-    /* نوار انرژی */
-    .energy-bar-container {
-      width: 90%;
-      max-width: 360px;
-      height: 26px;
-      margin: 40px auto 12px;
-      background: #222;
-      position: relative;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 5px #00e6ff33;
-    }
-
-    #energy-bar-fill {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #00ffcc, #00e6ff);
+      background-color: #000;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    .energy-label {
-      color: #000;
-      font-size: 0.8em;
-      font-weight: bold;
-      text-shadow: 0 0 2px #ffffffaa;
-      pointer-events: none;
+    .timer {
+      text-align: center;
+      font-size: 1rem;
+      padding: 12px;
+      color: #ffe066;
+      background: #111;
+      border-bottom: 1px solid #333;
+      box-shadow: 0 1px 4px #000;
+    }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .energy-section {
+      text-align: center;
+      padding: 24px 16px 12px;
+      background: linear-gradient(to top, #111, #000);
+      border-top: 1px solid #333;
+    }
+
+    .energy-bar-wrapper {
+      background-color: #222;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 18px;
+      margin-bottom: 10px;
+      width: 90%;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: inset 0 0 6px #000;
+    }
+
+    .energy-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ffda44, #ffaa00);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .energy-text {
+      font-size: 0.9em;
+      color: #88ffcc;
+    }
+
+    .footer {
+      text-align: center;
+      padding-bottom: 20px;
     }
 
     .back-btn {
-      display: block;
-      margin: 6px auto 32px;
-      padding: 8px 20px;
-      background: rgba(255,255,255,0.05);
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 24px;
+      background-color: rgba(255, 255, 255, 0.07);
       color: #ffd700;
+      border: 1px solid #ffaa00aa;
+      border-radius: 10px;
       font-weight: bold;
       text-decoration: none;
-      border-radius: 10px;
-      border: 1px solid #ffaa00aa;
-      box-shadow: 0 0 6px #ffcc00aa;
-      transition: background 0.2s ease;
+      box-shadow: 0 0 6px #ffaa00aa;
+      transition: background 0.2s;
     }
 
     .back-btn:hover {
-      background: rgba(255,255,255,0.12);
+      background-color: rgba(255, 255, 255, 0.15);
     }
   </style>
 </head>
 <body>
+  <div class="timer" id="daily-timer"></div>
 
-  <h1>🎁 Daily Reward</h1>
-  <div id="timer">00:00:00</div>
-  <button id="collect-btn">Collect SUN</button>
+  <div class="spacer"></div> <!-- فضای خالی وسط برای آینده -->
 
-  <div class="energy-bar-container">
-    <div id="energy-bar-fill">
-      <span class="energy-label" id="energy-label">-- / -- Energy</span>
+  <div class="energy-section">
+    <div class="energy-bar-wrapper">
+      <div class="energy-bar-fill" id="energy-fill"></div>
     </div>
+    <div class="energy-text" id="energy-display">Loading...</div>
   </div>
 
-  <a href="index.html" class="back-btn">← Back to Home</a>
+  <div class="footer">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </div>
 
+  <script src="core.js"></script>
   <script>
-    const timerEl = document.getElementById("timer");
-    const btn = document.getElementById("collect-btn");
-    const energyBar = document.getElementById("energy-bar-fill");
-    const energyLabel = document.getElementById("energy-label");
+    document.addEventListener("DOMContentLoaded", () => {
+      const fill = document.getElementById("energy-fill");
+      const display = document.getElementById("energy-display");
+      const timer = document.getElementById("daily-timer");
 
-    const maxEnergy = 50;
-    let energy = parseFloat(localStorage.getItem("energy")) || 50;
+      // انرژی
+      const energy = ZerinCore.getEnergy();
+      const percent = (energy / ZerinCore.MAX_ENERGY) * 100;
 
-    function updateEnergyUI() {
-      const width = Math.max(0, (energy / maxEnergy) * 100);
-      energyLabel.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
-      energyBar.style.width = width + "%";
-      localStorage.setItem("energy", energy.toFixed(2));
-    }
+      fill.style.width = percent + "%";
+      display.textContent = ZerinCore.getEnergyDisplay();
 
-    function getResetTime() {
+      // تاریخ امروز
       const now = new Date();
-      const next = new Date();
-      next.setHours(24, 0, 0, 0);
-      return next - now;
-    }
-
-    function format(ms) {
-      const totalSec = Math.floor(ms / 1000);
-      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
-      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
-      const s = String(totalSec % 60).padStart(2, "0");
-      return `${h}:${m}:${s}`;
-    }
-
-    function startTimer() {
-      let timeLeft = getResetTime();
-      timerEl.textContent = format(timeLeft);
-
-      const interval = setInterval(() => {
-        timeLeft -= 1000;
-        if (timeLeft <= 0) {
-          clearInterval(interval);
-          btn.disabled = false;
-          btn.textContent = "Collect SUN";
-          timerEl.textContent = "00:00:00";
-        } else {
-          timerEl.textContent = format(timeLeft);
-        }
-      }, 1000);
-    }
-
-    btn.addEventListener("click", () => {
-      btn.disabled = true;
-      btn.textContent = "Collected ✅";
-      energy = maxEnergy; // یا می‌تونی مقداری انرژی اضافه کنی
-      updateEnergyUI();
-      startTimer();
+      const dateString = now.toLocaleDateString("en-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      });
+      timer.textContent = `📅 Today: ${dateString}`;
     });
-
-    // شروع اولیه
-    updateEnergyUI();
-    startTimer();
   </script>
 </body>
 </html>
