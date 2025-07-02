@@ -49,12 +49,24 @@
     </nav>
 
     <div class="energy-bar-container">
-      <div id="energy-bar-fill"></div>
+      <div id="energy-bar-fill">
+        <span class="energy-label"></span>
+      </div>
     </div>
 
   </main>
 
-  <script src="script.js"></script>
+  <script src="core.js"></script>
+  <script>
+    const coin = document.getElementById("sun-coin");
+    coin.addEventListener("click", () => {
+      if (ZerinCore.useEnergy(0.01)) {
+        ZerinCore.addSun(0.01);
+        coin.style.transform = "scale(0.94)";
+        setTimeout(() => coin.style.transform = "scale(1)", 150);
+      }
+    });
+  </script>
   <script src="stars.js"></script>
 </body>
 </html>
