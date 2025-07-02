@@ -1,11 +1,17 @@
-// core.js — مغز ZerinSun (نسخه با Tap Count)
+// core.js — نسخه نهایی زریـن‌سان
 
-document.addEventListener("DOMContentLoaded", () => {
+(function () {
   const maxEnergy = 50;
 
-  let sun = parseFloat(localStorage.getItem("sun")) || 0.0;
-  let energy = parseFloat(localStorage.getItem("energy")) || maxEnergy;
-  let tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
+  let sun = 0.0;
+  let energy = maxEnergy;
+  let tapCount = 0;
+
+  function loadData() {
+    sun = parseFloat(localStorage.getItem("sun")) || 0.0;
+    energy = parseFloat(localStorage.getItem("energy")) || maxEnergy;
+    tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
+  }
 
   function saveData() {
     localStorage.setItem("sun", sun.toFixed(2));
@@ -14,77 +20,78 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateSun() {
-    const sunEl = document.getElementById("sun-count");
-    if (sunEl) sunEl.textContent = sun.toFixed(2);
+    const el = document.getElementById("sun-count");
+    if (el) el.textContent = sun.toFixed(2);
   }
 
   function updateEnergyBar() {
-    const energyFill = document.getElementById("energy-bar-fill");
-    const energyLabel = document.querySelector(".energy-label");
-
-    if (energyFill) {
-      energyFill.style.width = `${(energy / maxEnergy) * 100}%`;
-    }
-
-    if (energyLabel) {
-      energyLabel.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
-    }
+    const bar = document.getElementById("energy-bar-fill");
+    const label = document.getElementById("energy-display") || document.querySelector(".energy-label");
+    if (bar) bar.style.width = `${(energy / maxEnergy) * 100}%`;
+    if (label) label.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
   }
 
-  function updateTapCount() {
-    const tapEl = document.getElementById("tap-count");
-    if (tapEl) tapEl.textContent = tapCount.toString();
+  function updateTap() {
+    const el = document.getElementById("tap-count");
+    if (el) el.textContent = tapCount.toString();
   }
 
   window.ZerinCore = {
     getSun: () => sun,
     getEnergy: () => energy,
     getTapCount: () => tapCount,
-    addSun: (amount) => {
-      sun += amount;
+    addSun: (val) => {
+      sun += val;
       saveData();
       updateSun();
     },
-    useEnergy: (amount) => {
-      if (energy >= amount) {
-        energy -= amount;
+    addTap: () => {
+      tapCount++;
+      saveData();
+      updateTap();
+    },
+    useEnergy: (val) => {
+      if (energy >= val) {
+        energy -= val;
         saveData();
         updateEnergyBar();
         return true;
       }
       return false;
     },
-    rechargeEnergy: (amount) => {
-      energy = Math.min(energy + amount, maxEnergy);
+    rechargeEnergy: (val) => {
+      energy = Math.min(energy + val, maxEnergy);
       saveData();
       updateEnergyBar();
     },
-    resetEnergy: () => {
+    resetAll: () => {
+      sun = 0;
       energy = maxEnergy;
-      saveData();
-      updateEnergyBar();
-    },
-    addTap: () => {
-      tapCount++;
-      saveData();
-      updateTapCount();
-    },
-    resetTapCount: () => {
       tapCount = 0;
       saveData();
-      updateTapCount();
+      ZerinCore.updateUI();
     },
     updateUI: () => {
       updateSun();
       updateEnergyBar();
-      updateTapCount();
+      updateTap();
     },
+    loadData: loadData,
     MAX_ENERGY: maxEnergy
   };
 
-  ZerinCore.updateUI();
-});
+  document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+    ZerinCore.updateUI();
+  });
 
-window.addEventListener("pageshow", () => {
-  if (window.ZerinCore) ZerinCore.updateUI();
-});
+  window.addEventListener("pageshow", () => {
+    loadData();
+    ZerinCore.updateUI();
+  });
+
+  window.addEventListener("focus", () => {
+    loadData();
+    ZerinCore.updateUI();
+  });
+})();
