@@ -18,11 +18,17 @@
     .timer {
       text-align: center;
       font-size: 1rem;
-      padding: 12px;
+      padding: 12px 8px 6px;
       color: #ffe066;
       background: #111;
       border-bottom: 1px solid #333;
       box-shadow: 0 1px 4px #000;
+    }
+
+    .clock-text {
+      font-size: 0.85rem;
+      color: #bbb;
+      margin-top: 4px;
     }
 
     .spacer {
@@ -86,7 +92,10 @@
   </style>
 </head>
 <body>
-  <div class="timer" id="daily-timer"></div>
+  <div class="timer" id="daily-timer">
+    <div id="daily-date">📅 Today</div>
+    <div class="clock-text" id="clock-time">🕒 Now</div>
+  </div>
 
   <div class="spacer"></div> <!-- فضای خالی وسط برای آینده -->
 
@@ -103,26 +112,36 @@
 
   <script src="core.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const fill = document.getElementById("energy-fill");
-      const display = document.getElementById("energy-display");
-      const timer = document.getElementById("daily-timer");
-
-      // انرژی
+    function updateEnergy() {
       const energy = ZerinCore.getEnergy();
       const percent = (energy / ZerinCore.MAX_ENERGY) * 100;
+      document.getElementById("energy-fill").style.width = percent + "%";
+      document.getElementById("energy-display").textContent = ZerinCore.getEnergyDisplay();
+    }
 
-      fill.style.width = percent + "%";
-      display.textContent = ZerinCore.getEnergyDisplay();
+    function updateClock() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, "0");
+      const m = now.getMinutes().toString().padStart(2, "0");
+      const s = now.getSeconds().toString().padStart(2, "0");
+      document.getElementById("clock-time").textContent = `🕒 Now: ${h}:${m}:${s}`;
+    }
 
-      // تاریخ امروز
+    function updateDate() {
       const now = new Date();
       const dateString = now.toLocaleDateString("en-CA", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit"
       });
-      timer.textContent = `📅 Today: ${dateString}`;
+      document.getElementById("daily-date").textContent = `📅 Today: ${dateString}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateDate();
+      updateClock();
+      updateEnergy();
+      setInterval(updateClock, 1000);
     });
   </script>
 </body>
