@@ -1,5 +1,3 @@
-// core.js — نسخه نهایی زریـن‌سان
-
 (function () {
   const maxEnergy = 50;
 
@@ -9,7 +7,11 @@
 
   function loadData() {
     sun = parseFloat(localStorage.getItem("sun")) || 0.0;
+    sun = parseFloat(sun.toFixed(2)); // ⬅️ رُند کردن دقیق
+
     energy = parseFloat(localStorage.getItem("energy")) || maxEnergy;
+    energy = parseFloat(energy.toFixed(2)); // ⬅️ رُند کردن دقیق
+
     tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
   }
 
@@ -27,7 +29,14 @@
   function updateEnergyBar() {
     const bar = document.getElementById("energy-bar-fill");
     const label = document.getElementById("energy-display") || document.querySelector(".energy-label");
-    if (bar) bar.style.width = `${(energy / maxEnergy) * 100}%`;
+    const percent = (energy / maxEnergy) * 100;
+
+    if (bar) {
+      bar.style.width = percent + "%";
+      bar.classList.remove("low", "normal");
+      bar.classList.add(percent <= 10 ? "low" : "normal");
+    }
+
     if (label) label.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
   }
 
@@ -40,30 +49,38 @@
     getSun: () => sun,
     getEnergy: () => energy,
     getTapCount: () => tapCount,
+
     addSun: (val) => {
       sun += val;
+      sun = parseFloat(sun.toFixed(2)); // ⬅️ رُند شدن پس از اضافه شدن
       saveData();
       updateSun();
     },
+
     addTap: () => {
       tapCount++;
       saveData();
       updateTap();
     },
+
     useEnergy: (val) => {
       if (energy >= val) {
         energy -= val;
+        energy = parseFloat(energy.toFixed(2)); // ⬅️ رُند کردن انرژی پس از مصرف
         saveData();
         updateEnergyBar();
         return true;
       }
       return false;
     },
+
     rechargeEnergy: (val) => {
       energy = Math.min(energy + val, maxEnergy);
+      energy = parseFloat(energy.toFixed(2)); // ⬅️ رُند کردن پس از شارژ
       saveData();
       updateEnergyBar();
     },
+
     resetAll: () => {
       sun = 0;
       energy = maxEnergy;
@@ -71,11 +88,13 @@
       saveData();
       ZerinCore.updateUI();
     },
+
     updateUI: () => {
       updateSun();
       updateEnergyBar();
       updateTap();
     },
+
     loadData: loadData,
     MAX_ENERGY: maxEnergy
   };
