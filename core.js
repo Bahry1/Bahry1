@@ -1,35 +1,30 @@
 (function () {
-  const maxEnergy = 50;
-
-  let sun = 0.0;
-  let energy = maxEnergy;
+  const maxEnergyRaw = 5000; // یعنی 50.00
+  let sun = 0;        // ← یعنی 0.00
+  let energy = maxEnergyRaw; // ← یعنی 50.00
   let tapCount = 0;
 
   function loadData() {
-    sun = parseFloat(localStorage.getItem("sun")) || 0.0;
-    sun = parseFloat(sun.toFixed(2)); // ⬅️ رُند کردن دقیق
-
-    energy = parseFloat(localStorage.getItem("energy")) || maxEnergy;
-    energy = parseFloat(energy.toFixed(2)); // ⬅️ رُند کردن دقیق
-
+    sun = parseInt(localStorage.getItem("sunRaw")) || 0;
+    energy = parseInt(localStorage.getItem("energyRaw")) || maxEnergyRaw;
     tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
   }
 
   function saveData() {
-    localStorage.setItem("sun", sun.toFixed(2));
-    localStorage.setItem("energy", energy.toFixed(2));
+    localStorage.setItem("sunRaw", sun.toString());
+    localStorage.setItem("energyRaw", energy.toString());
     localStorage.setItem("tapCount", tapCount.toString());
   }
 
   function updateSun() {
     const el = document.getElementById("sun-count");
-    if (el) el.textContent = sun.toFixed(2);
+    if (el) el.textContent = (sun / 100).toFixed(2);
   }
 
   function updateEnergyBar() {
     const bar = document.getElementById("energy-bar-fill");
     const label = document.getElementById("energy-display") || document.querySelector(".energy-label");
-    const percent = (energy / maxEnergy) * 100;
+    const percent = (energy / maxEnergyRaw) * 100;
 
     if (bar) {
       bar.style.width = percent + "%";
@@ -37,7 +32,9 @@
       bar.classList.add(percent <= 10 ? "low" : "normal");
     }
 
-    if (label) label.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
+    if (label) {
+      label.textContent = `${(energy / 100).toFixed(0)} / ${(maxEnergyRaw / 100).toFixed(0)} Energy`;
+    }
   }
 
   function updateTap() {
@@ -46,57 +43,48 @@
   }
 
   window.ZerinCore = {
-    getSun: () => sun,
-    getEnergy: () => energy,
+    getSun: () => sun / 100,
+    getEnergy: () => energy / 100,
     getTapCount: () => tapCount,
-
     addSun: (val) => {
-      sun += val;
-      sun = parseFloat(sun.toFixed(2)); // ⬅️ رُند شدن پس از اضافه شدن
+      sun += Math.round(val * 100); // ← تبدیل به عدد صحیح
       saveData();
       updateSun();
     },
-
     addTap: () => {
       tapCount++;
       saveData();
       updateTap();
     },
-
     useEnergy: (val) => {
-      if (energy >= val) {
-        energy -= val;
-        energy = parseFloat(energy.toFixed(2)); // ⬅️ رُند کردن انرژی پس از مصرف
+      const cost = Math.round(val * 100);
+      if (energy >= cost) {
+        energy -= cost;
         saveData();
         updateEnergyBar();
         return true;
       }
       return false;
     },
-
     rechargeEnergy: (val) => {
-      energy = Math.min(energy + val, maxEnergy);
-      energy = parseFloat(energy.toFixed(2)); // ⬅️ رُند کردن پس از شارژ
+      energy = Math.min(energy + Math.round(val * 100), maxEnergyRaw);
       saveData();
       updateEnergyBar();
     },
-
     resetAll: () => {
       sun = 0;
-      energy = maxEnergy;
+      energy = maxEnergyRaw;
       tapCount = 0;
       saveData();
       ZerinCore.updateUI();
     },
-
     updateUI: () => {
       updateSun();
       updateEnergyBar();
       updateTap();
     },
-
     loadData: loadData,
-    MAX_ENERGY: maxEnergy
+    MAX_ENERGY: maxEnergyRaw / 100
   };
 
   document.addEventListener("DOMContentLoaded", () => {
