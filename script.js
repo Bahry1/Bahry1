@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sunCoin.addEventListener("click", () => {
     if (ZerinCore.useEnergy(1)) {
-      ZerinCore.addSun(0.25);
+      ZerinCore.addSun(0.01);
       ZerinCore.addTap();
 
       sunCoin.style.transform = "scale(0.94)";
