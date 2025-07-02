@@ -1,16 +1,46 @@
-const starsContainer = document.getElementById("stars-container");
+const canvas = document.getElementById("stars-canvas");
+const ctx = canvas.getContext("2d");
+let w, h;
+let stars = [];
 
-for (let i = 0; i < 100; i++) {
-  const star = document.createElement("div");
-  star.classList.add("star");
-
-  const size = Math.random() * 2 + 1;
-  star.style.width = `${size}px`;
-  star.style.height = `${size}px`;
-
-  star.style.top = `${Math.random() * 100}%`;
-  star.style.left = `${Math.random() * 100}%`;
-  star.style.animationDelay = `${Math.random() * 3}s`;
-
-  starsContainer.appendChild(star);
+function resizeCanvas() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
 }
+
+function createStars(count) {
+  stars = [];
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      radius: Math.random() * 1.2,
+      alpha: Math.random(),
+      speed: Math.random() * 0.015 + 0.002
+    });
+  }
+}
+
+function animateStars() {
+  ctx.clearRect(0, 0, w, h);
+  for (const star of stars) {
+    star.alpha += star.speed;
+    if (star.alpha <= 0 || star.alpha >= 1) {
+      star.speed = -star.speed;
+    }
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${star.alpha})`;
+    ctx.fill();
+  }
+  requestAnimationFrame(animateStars);
+}
+
+window.addEventListener("resize", () => {
+  resizeCanvas();
+  createStars(120);
+});
+
+resizeCanvas();
+createStars(120);
+animateStars();
