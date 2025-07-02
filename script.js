@@ -3,24 +3,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sunCoin || !window.ZerinCore) return;
 
-  // 💡 تاخیر کوتاه برای اطمینان از لود کامل اطلاعات
-  setTimeout(() => {
+  let loaded = false;
+
+  function initClick() {
+    if (loaded) return;
+    loaded = true;
+
     sunCoin.addEventListener("click", () => {
       const TAP_VALUE = 0.01;
-      const currentEnergy = ZerinCore.getEnergy();
+      const currentEnergy = parseFloat(ZerinCore.getEnergy().toFixed(2));
 
       if (currentEnergy >= TAP_VALUE) {
         if (ZerinCore.useEnergy(TAP_VALUE)) {
           ZerinCore.addSun(TAP_VALUE);
           ZerinCore.addTap();
 
-          // انیمیشن کلیک روی سکه
           sunCoin.style.transform = "scale(0.94)";
-          setTimeout(() => {
-            sunCoin.style.transform = "scale(1)";
-          }, 150);
+          setTimeout(() => sunCoin.style.transform = "scale(1)", 150);
         }
       }
     });
-  }, 100); // ⏱ تأخیر برای اطمینان از لود کامل core.js
+  }
+
+  setTimeout(() => {
+    ZerinCore.loadData(); // اطمینان بیشتر
+    initClick();
+  }, 200);
 });
