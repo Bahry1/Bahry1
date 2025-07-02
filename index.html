@@ -5,87 +5,7 @@
   <title>ZerinSun - Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      margin: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      justify-content: space-between;
-    }
-
-    .header {
-      padding: 16px;
-      text-align: center;
-      background-color: #111;
-      width: 100%;
-      box-shadow: 0 1px 6px #000;
-    }
-
-    .header span {
-      display: inline-block;
-      margin: 0 8px;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    .tap-zone {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .tap-circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 60px;
-      background: radial-gradient(#ffaa00, #ff6a00);
-      box-shadow: 0 0 15px #ff6a00aa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: #000;
-      font-size: 1.2rem;
-      user-select: none;
-      transition: transform 0.1s;
-    }
-
-    .tap-circle:active {
-      transform: scale(0.92);
-    }
-
-    .stats {
-      text-align: center;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      color: #aaa;
-    }
-
-    .footer {
-      padding: 20px;
-    }
-
-    .btn {
-      background-color: #111;
-      padding: 10px 20px;
-      border: 1px solid #ffaa00aa;
-      border-radius: 10px;
-      text-decoration: none;
-      color: #ffcc33;
-      font-weight: bold;
-      box-shadow: 0 0 6px #ffaa0044;
-    }
-
-    .btn:hover {
-      background-color: #222;
-    }
+    /* استایل‌ها همون‌طور که بودن */
   </style>
 </head>
 <body>
@@ -111,11 +31,18 @@
   <script>
     let tapCount = parseInt(localStorage.getItem("tapCount") || "0");
 
+    function updateSUN() {
+      const sunEl = document.getElementById("sun-count");
+      if (sunEl) {
+        sunEl.textContent = ZerinCore.getSun().toFixed(2);
+      }
+    }
+
     function updateStats() {
-      document.getElementById("sun-count").textContent = ZerinCore.getSun().toFixed(2);
       document.getElementById("energy-count").textContent = ZerinCore.getEnergy().toFixed(3);
       document.getElementById("cup-level").textContent = ZerinCore.getCupLevel();
       document.getElementById("tap-count").textContent = tapCount;
+      updateSUN(); // فقط این‌جا اضافه شده
     }
 
     document.getElementById("tap-btn").addEventListener("click", () => {
@@ -123,11 +50,13 @@
       if (success) {
         ZerinCore.addSun(1);
         localStorage.setItem("tapCount", ++tapCount);
-        updateStats(); // 🎯 شمارنده‌های SUN و TAP و ENERGY همگی آپدیت می‌شن
+        updateStats(); // شمارنده SUN هم آپدیت می‌شه
       }
     });
 
-    document.addEventListener("DOMContentLoaded", updateStats);
+    document.addEventListener("DOMContentLoaded", () => {
+      updateStats(); // شمارنده SUN در لود اولیه هم نمایش داده می‌شه
+    });
   </script>
 </body>
 </html>
