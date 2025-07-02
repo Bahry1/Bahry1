@@ -1,25 +1,23 @@
-// core.js — مغز ZerinSun
+// core.js — مغز ZerinSun (نسخه با Tap Count)
 
 document.addEventListener("DOMContentLoaded", () => {
   const maxEnergy = 50;
 
-  // خواندن مقدارها از localStorage یا مقدار پیش‌فرض
   let sun = parseFloat(localStorage.getItem("sun")) || 0.0;
   let energy = parseFloat(localStorage.getItem("energy")) || maxEnergy;
+  let tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
 
-  // به‌روزرسانی مقدار در localStorage
   function saveData() {
     localStorage.setItem("sun", sun.toFixed(2));
     localStorage.setItem("energy", energy.toFixed(2));
+    localStorage.setItem("tapCount", tapCount.toString());
   }
 
-  // نمایش مقدار SUN در المنتی با id="sun-count"
   function updateSun() {
     const sunEl = document.getElementById("sun-count");
     if (sunEl) sunEl.textContent = sun.toFixed(2);
   }
 
-  // نمایش نوار انرژی و مقدار آن
   function updateEnergyBar() {
     const energyFill = document.getElementById("energy-bar-fill");
     const energyLabel = document.querySelector(".energy-label");
@@ -33,10 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // public API برای استفاده در همه صفحات
+  function updateTapCount() {
+    const tapEl = document.getElementById("tap-count");
+    if (tapEl) tapEl.textContent = tapCount.toString();
+  }
+
   window.ZerinCore = {
     getSun: () => sun,
     getEnergy: () => energy,
+    getTapCount: () => tapCount,
     addSun: (amount) => {
       sun += amount;
       saveData();
@@ -61,20 +64,27 @@ document.addEventListener("DOMContentLoaded", () => {
       saveData();
       updateEnergyBar();
     },
+    addTap: () => {
+      tapCount++;
+      saveData();
+      updateTapCount();
+    },
+    resetTapCount: () => {
+      tapCount = 0;
+      saveData();
+      updateTapCount();
+    },
     updateUI: () => {
       updateSun();
       updateEnergyBar();
+      updateTapCount();
     },
     MAX_ENERGY: maxEnergy
   };
 
-  // اجرای اولیه
   ZerinCore.updateUI();
 });
 
-// ✅ تضمین اینکه هنگام بازگشت به صفحه، مقدارها دوباره نشون داده می‌شن
 window.addEventListener("pageshow", () => {
-  if (window.ZerinCore && typeof ZerinCore.updateUI === "function") {
-    ZerinCore.updateUI();
-  }
+  if (window.ZerinCore) ZerinCore.updateUI();
 });
