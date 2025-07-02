@@ -62,17 +62,31 @@
   <script src="script.js"></script>
   <script src="stars.js"></script>
 
-  <!-- ✅ وصله برای نمایش SUN و لیگ -->
+  <!-- ✨ آپدیت UI از داده‌های مرکزی -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const sun = ZerinCore.getSun().toFixed(2);
-      const league = ZerinCore.getCupLevel();
+    function refreshMainUI() {
+      if (window.ZerinCore) {
+        ZerinCore.loadData();
+        ZerinCore.updateUI();
 
-      const sunEl = document.getElementById("sun-count");
-      const leagueEl = document.getElementById("league-label");
+        const leagueEl = document.getElementById("league-label");
+        if (leagueEl) {
+          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
+        }
+      }
+    }
 
-      if (sunEl) sunEl.textContent = sun;
-      if (leagueEl) leagueEl.textContent = league + " League";
+    document.addEventListener("DOMContentLoaded", refreshMainUI);
+    window.addEventListener("pageshow", refreshMainUI);
+    window.addEventListener("focus", refreshMainUI);
+
+    // 🎯 کلیک روی سکه برای کسب SUN و مصرف انرژی
+    const sunCoin = document.getElementById("sun-coin");
+    sunCoin.addEventListener("click", () => {
+      if (ZerinCore.useEnergy(1)) {
+        ZerinCore.addSun(0.25);
+        ZerinCore.addTap();
+      }
     });
   </script>
 
