@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
   <meta charset="UTF-8" />
-  <title>Daily Energy - ZerinSun</title>
+  <title>انرژی روزانه - ZerinSun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="timer" id="daily-timer">
-    <div id="daily-date">📅 Today</div>
-    <div class="clock-text" id="clock-time">🕒 Now</div>
+    <div id="daily-date">📅 امروز</div>
+    <div class="clock-text" id="clock-time">🕒 حالا</div>
   </div>
 
   <div class="spacer"></div>
@@ -18,25 +18,31 @@
     <div class="energy-bar-wrapper">
       <div class="energy-bar-fill" id="energy-fill"></div>
     </div>
-    <div class="energy-text" id="energy-display">Loading...</div>
+    <div class="energy-text" id="energy-remaining">باقی‌مانده خط انرژی: ...</div>
   </div>
 
   <div class="footer">
-    <a href="index.html" class="back-btn">← Back to Home</a>
+    <a href="index.html" class="back-btn">← بازگشت به خانه</a>
   </div>
 
   <script src="core.js"></script>
   <script>
-    function updateEnergy() {
+    function updateEnergyDisplay() {
       const energy = ZerinCore.getEnergy();
       const max = ZerinCore.MAX_ENERGY;
       const percent = (energy / max) * 100;
 
       const bar = document.getElementById("energy-fill");
-      const label = document.getElementById("energy-display");
+      const label = document.getElementById("energy-remaining");
 
-      if (bar) bar.style.width = percent + "%";
-      if (label) label.textContent = `${energy.toFixed(0)} / ${max} Energy`;
+      if (bar) {
+        bar.style.width = percent + "%";
+        bar.style.background = percent <= 10
+          ? "linear-gradient(90deg, #ffc0a8, #ff8a65)"  // انرژی کم → نارنجی-صورتی لطیف
+          : "linear-gradient(90deg, #00ffcc, #00e6ff)"; // انرژی نرمال → فیروزه‌ای
+      }
+
+      if (label) label.textContent = `باقی‌مانده خط انرژی: ${energy.toFixed(2)}`;
     }
 
     function updateClock() {
@@ -44,24 +50,24 @@
       const h = now.getHours().toString().padStart(2, "0");
       const m = now.getMinutes().toString().padStart(2, "0");
       const s = now.getSeconds().toString().padStart(2, "0");
-      document.getElementById("clock-time").textContent = `🕒 Now: ${h}:${m}:${s}`;
+      document.getElementById("clock-time").textContent = `🕒 حالا: ${h}:${m}:${s}`;
     }
 
     function updateDate() {
       const now = new Date();
-      const dateString = now.toLocaleDateString("en-CA", {
+      const dateString = now.toLocaleDateString("fa-IR", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit"
       });
-      document.getElementById("daily-date").textContent = `📅 Today: ${dateString}`;
+      document.getElementById("daily-date").textContent = `📅 امروز: ${dateString}`;
     }
 
     function fullUpdate() {
       ZerinCore.loadData();
       updateDate();
       updateClock();
-      updateEnergy();
+      updateEnergyDisplay();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
