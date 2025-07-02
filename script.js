@@ -3,18 +3,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sunCoin || !window.ZerinCore) return;
 
-  sunCoin.addEventListener("click", () => {
-    const TAP_VALUE = 0.01; // ✅ مقدار استاندارد تب کردن
+  // 💡 تاخیر کوتاه برای اطمینان از لود کامل اطلاعات
+  setTimeout(() => {
+    sunCoin.addEventListener("click", () => {
+      const TAP_VALUE = 0.01;
+      const currentEnergy = ZerinCore.getEnergy();
 
-    if (ZerinCore.useEnergy(TAP_VALUE)) {
-      ZerinCore.addSun(TAP_VALUE);
-      ZerinCore.addTap();
+      if (currentEnergy >= TAP_VALUE) {
+        if (ZerinCore.useEnergy(TAP_VALUE)) {
+          ZerinCore.addSun(TAP_VALUE);
+          ZerinCore.addTap();
 
-      // افکت کلیک روی سکه
-      sunCoin.style.transform = "scale(0.94)";
-      setTimeout(() => {
-        sunCoin.style.transform = "scale(1)";
-      }, 150);
-    }
-  });
+          // انیمیشن کلیک روی سکه
+          sunCoin.style.transform = "scale(0.94)";
+          setTimeout(() => {
+            sunCoin.style.transform = "scale(1)";
+          }, 150);
+        }
+      }
+    });
+  }, 100); // ⏱ تأخیر برای اطمینان از لود کامل core.js
 });
