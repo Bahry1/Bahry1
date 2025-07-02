@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // API عمومی برای استفاده در تمام صفحات
+  // public API برای استفاده در همه صفحات
   window.ZerinCore = {
     getSun: () => sun,
     getEnergy: () => energy,
@@ -68,6 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
     MAX_ENERGY: maxEnergy
   };
 
-  // اجرای اولیه هنگام بارگذاری
+  // اجرای اولیه
   ZerinCore.updateUI();
+});
+
+// ✅ تضمین اینکه هنگام بازگشت به صفحه، مقدارها دوباره نشون داده می‌شن
+window.addEventListener("pageshow", () => {
+  if (window.ZerinCore && typeof ZerinCore.updateUI === "function") {
+    ZerinCore.updateUI();
+  }
 });
