@@ -1,13 +1,25 @@
 (function () {
-  const maxEnergyRaw = 5000; // یعنی 50.00
-  let sun = 0;        // ← یعنی 0.00
-  let energy = maxEnergyRaw; // ← یعنی 50.00
+  const maxEnergyRaw = 5000; // معادل 50.00
+  let sun = 0;
+  let energy = maxEnergyRaw;
   let tapCount = 0;
 
+  function getTodayKey() {
+    return new Date().toDateString(); // "Mon Jul 8 2025"
+  }
+
   function loadData() {
-    sun = parseInt(localStorage.getItem("sunRaw")) || 0;
-    energy = parseInt(localStorage.getItem("energyRaw")) || maxEnergyRaw;
-    tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
+    const rawSun = localStorage.getItem("sunRaw");
+    sun = rawSun !== null ? parseFloat(rawSun) : 0;
+
+    const rawEnergy = localStorage.getItem("energyRaw");
+    energy = rawEnergy !== null ? parseFloat(rawEnergy) : maxEnergyRaw;
+
+    const rawTap = localStorage.getItem("tapCount");
+    tapCount = rawTap !== null ? parseInt(rawTap) : 0;
+
+    sun = Math.round(sun);
+    energy = Math.round(energy);
   }
 
   function saveData() {
@@ -42,12 +54,38 @@
     if (el) el.textContent = tapCount.toString();
   }
 
+  function checkEnergyReset() {
+    const now = new Date();
+    const today = getTodayKey();
+    const alreadyReset = localStorage.getItem("energyReset") === today;
+
+    if (!alreadyReset && now.getHours() === 23 && now.getMinutes() >= 55) {
+      energy = 0;
+      saveData();
+      localStorage.setItem("energyReset", today);
+      console.log("🔥 Energy burned at 23:55");
+    }
+  }
+
+  function checkEnergyCharge() {
+    const now = new Date();
+    const today = getTodayKey();
+    const alreadyCharged = localStorage.getItem("energyCharge") === today;
+
+    if (!alreadyCharged && now.getHours() === 0 && now.getMinutes() >= 5) {
+      energy = maxEnergyRaw;
+      saveData();
+      localStorage.setItem("energyCharge", today);
+      console.log("⚡ Energy charged at 00:05");
+    }
+  }
+
   window.ZerinCore = {
     getSun: () => sun / 100,
     getEnergy: () => energy / 100,
     getTapCount: () => tapCount,
     addSun: (val) => {
-      sun += Math.round(val * 100); // ← تبدیل به عدد صحیح
+      sun += Math.round(val * 100);
       saveData();
       updateSun();
     },
@@ -84,12 +122,17 @@
       updateTap();
     },
     loadData: loadData,
-    MAX_ENERGY: maxEnergyRaw / 100
+    MAX_ENERGY: maxEnergyRaw / 100,
+    checkDailyCycle: () => {
+      checkEnergyReset();
+      checkEnergyCharge();
+    }
   };
 
   document.addEventListener("DOMContentLoaded", () => {
     loadData();
     ZerinCore.updateUI();
+    setInterval(ZerinCore.checkDailyCycle, 60000); // بررسی هر ۶۰ ثانیه
   });
 
   window.addEventListener("pageshow", () => {
