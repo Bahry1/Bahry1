@@ -151,6 +151,10 @@
     document.addEventListener("DOMContentLoaded", () => {
       fullUpdate();
       setInterval(updateClock, 1000);
+      setInterval(() => {
+        ZerinCore.checkDailyCycle();
+        updateEnergyDisplay();
+      }, 60000); // بررسی پایان روز و شارژ
     });
 
     window.addEventListener("pageshow", fullUpdate);
