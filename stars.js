@@ -1,6 +1,5 @@
 const canvas = document.getElementById("stars-canvas");
 const ctx = canvas.getContext("2d");
-
 let stars = [];
 let w, h;
 
@@ -15,9 +14,9 @@ function createStars(count) {
     stars.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      r: Math.random() * 1.2,
+      r: Math.random() * 1.5,
       alpha: Math.random(),
-      speed: Math.random() * 0.02 + 0.005
+      speed: Math.random() * 0.015 + 0.002
     });
   }
 }
