@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const sunCoin = document.getElementById("sun-coin");
   const energyBar = document.getElementById("energy-bar-fill");
 
-  let sunScore = 0.0;
-  let energy = 50.0;
-  const maxEnergy = 50.0;
-  const energyPerClick = 0.01;
+  let sunScore = 0.00;
+  let energy = 50.00;
+  const maxEnergy = 50.00;
+  const clickCost = 0.01;
 
   function updateUI() {
     sunCountEl.textContent = sunScore.toFixed(2);
@@ -15,14 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   sunCoin.addEventListener("click", () => {
-    if (energy >= energyPerClick) {
-      sunScore += energyPerClick;
-      energy -= energyPerClick;
+    if (energy >= clickCost) {
+      sunScore += clickCost;
+      energy -= clickCost;
 
       sunCoin.style.transform = "scale(0.94)";
-      setTimeout(() => {
-        sunCoin.style.transform = "scale(1)";
-      }, 120);
+      setTimeout(() => sunCoin.style.transform = "scale(1)", 150);
 
       updateUI();
     }
