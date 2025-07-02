@@ -1,88 +1,73 @@
-const ZerinCore = {
-  MAX_ENERGY: 50,
+// core.js — مغز ZerinSun
 
-  CUP_LEVELS: [
-    { name: "Bronze", min: 50 },
-    { name: "Silver", min: 100 },
-    { name: "Gold", min: 180 },
-    { name: "Emerald", min: 250 },
-    { name: "Sapphire", min: 340 },
-    { name: "Ruby", min: 410 },
-    { name: "Diamond", min: 500 },
-    { name: "Legendary", min: 600 }
-  ],
+document.addEventListener("DOMContentLoaded", () => {
+  const maxEnergy = 50;
 
-  init: function () {
-    this.checkEnergyDay();
-  },
+  // خواندن مقدارها از localStorage یا مقدار پیش‌فرض
+  let sun = parseFloat(localStorage.getItem("sun")) || 0.0;
+  let energy = parseFloat(localStorage.getItem("energy")) || maxEnergy;
 
-  // ☀ SUN
-  getSun: () => parseFloat(localStorage.getItem("sun") || "0"),
-  setSun: val => localStorage.setItem("sun", Math.max(0, val).toFixed(2)),
-  addSun: val => ZerinCore.setSun(ZerinCore.getSun() + val),
+  // به‌روزرسانی مقدار در localStorage
+  function saveData() {
+    localStorage.setItem("sun", sun.toFixed(2));
+    localStorage.setItem("energy", energy.toFixed(2));
+  }
 
-  // 🔋 ENERGY
-  checkEnergyDay: function () {
-    const now = new Date();
-    const last = new Date(parseInt(localStorage.getItem("energyResetAt") || "0"));
-    const isNewDay = now.toDateString() !== last.toDateString();
-    if (isNewDay) {
-      localStorage.setItem("energy", this.MAX_ENERGY.toFixed(3));
-      localStorage.setItem("energyResetAt", now.getTime().toString());
+  // نمایش مقدار SUN در المنتی با id="sun-count"
+  function updateSun() {
+    const sunEl = document.getElementById("sun-count");
+    if (sunEl) sunEl.textContent = sun.toFixed(2);
+  }
+
+  // نمایش نوار انرژی و مقدار آن
+  function updateEnergyBar() {
+    const energyFill = document.getElementById("energy-bar-fill");
+    const energyLabel = document.querySelector(".energy-label");
+
+    if (energyFill) {
+      energyFill.style.width = `${(energy / maxEnergy) * 100}%`;
     }
-  },
 
-  getEnergy: function () {
-    this.checkEnergyDay();
-    return parseFloat(localStorage.getItem("energy") || "0");
-  },
-
-  getEnergyDisplay: function () {
-    return this.getEnergy().toFixed(3) + " / " + this.MAX_ENERGY;
-  },
-
-  useEnergy: function (amt) {
-    this.checkEnergyDay();
-    let current = this.getEnergy();
-    if (current < amt) return false;
-    localStorage.setItem("energy", (current - amt).toFixed(3));
-    return true;
-  },
-
-  setEnergy: function (amt) {
-    const clean = Math.max(0, Math.min(amt, this.MAX_ENERGY));
-    localStorage.setItem("energy", clean.toFixed(3));
-  },
-
-  // 🎖️ کاپ‌ها
-  getCupLevel: () => localStorage.getItem("cupLevel") || "Bronze",
-  getCupProgress: () => parseFloat(localStorage.getItem("cupProgress") || "0"),
-
-  gainEnergy: function (amt) {
-    this.checkEnergyDay();
-    const current = this.getEnergy();
-    const canAdd = Math.min(this.MAX_ENERGY - current, amt);
-    if (canAdd <= 0) return false;
-
-    // اضافه کردن انرژی
-    localStorage.setItem("energy", (current + canAdd).toFixed(3));
-
-    // افزایش کاپ
-    let progress = this.getCupProgress() + canAdd;
-    localStorage.setItem("cupProgress", progress.toFixed(3));
-    this.checkCupLevelUp();
-    return true;
-  },
-
-  checkCupLevelUp: function () {
-    let progress = this.getCupProgress();
-    for (let i = this.CUP_LEVELS.length - 1; i >= 0; i--) {
-      if (progress >= this.CUP_LEVELS[i].min) {
-        localStorage.setItem("cupLevel", this.CUP_LEVELS[i].name);
-        break;
-      }
+    if (energyLabel) {
+      energyLabel.textContent = `${energy.toFixed(0)} / ${maxEnergy} Energy`;
     }
   }
-};
 
-ZerinCore.init();
+  // API عمومی برای استفاده در تمام صفحات
+  window.ZerinCore = {
+    getSun: () => sun,
+    getEnergy: () => energy,
+    addSun: (amount) => {
+      sun += amount;
+      saveData();
+      updateSun();
+    },
+    useEnergy: (amount) => {
+      if (energy >= amount) {
+        energy -= amount;
+        saveData();
+        updateEnergyBar();
+        return true;
+      }
+      return false;
+    },
+    rechargeEnergy: (amount) => {
+      energy = Math.min(energy + amount, maxEnergy);
+      saveData();
+      updateEnergyBar();
+    },
+    resetEnergy: () => {
+      energy = maxEnergy;
+      saveData();
+      updateEnergyBar();
+    },
+    updateUI: () => {
+      updateSun();
+      updateEnergyBar();
+    },
+    MAX_ENERGY: maxEnergy
+  };
+
+  // اجرای اولیه هنگام بارگذاری
+  ZerinCore.updateUI();
+});
