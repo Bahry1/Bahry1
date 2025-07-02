@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sunScore += energyPerClick;
       energy -= energyPerClick;
 
-      // افکت انیمیشن سکه
       sunCoin.style.transform = "scale(0.94)";
       setTimeout(() => {
         sunCoin.style.transform = "scale(1)";
