@@ -12,7 +12,7 @@
 
   <main class="main-container">
 
-    <!-- 🔢 SUN + لیگ -->
+    <!-- 🔢 SUN + سطح -->
     <section class="top-panel">
       <div class="sun-score">
         <span id="sun-count">0.00</span> <span class="unit">SUN</span>
@@ -62,32 +62,24 @@
   <script src="script.js"></script>
   <script src="stars.js"></script>
 
-  <!-- ✨ آپدیت UI از داده‌های مرکزی -->
+  <!-- ✨ آپدیت UI -->
   <script>
     function refreshMainUI() {
       if (window.ZerinCore) {
         ZerinCore.loadData();
         ZerinCore.updateUI();
 
-        const leagueEl = document.getElementById("league-label");
-        if (leagueEl) {
-          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
-        }
+        // این خط باعث خطا بود، فعلاً غیرفعال شد
+        // const leagueEl = document.getElementById("league-label");
+        // if (leagueEl) {
+        //   leagueEl.textContent = ZerinCore.getCupLevel() + " League";
+        // }
       }
     }
 
     document.addEventListener("DOMContentLoaded", refreshMainUI);
     window.addEventListener("pageshow", refreshMainUI);
     window.addEventListener("focus", refreshMainUI);
-
-    // 🎯 کلیک روی سکه برای کسب SUN و مصرف انرژی
-    const sunCoin = document.getElementById("sun-coin");
-    sunCoin.addEventListener("click", () => {
-      if (ZerinCore.useEnergy(1)) {
-        ZerinCore.addSun(0.25);
-        ZerinCore.addTap();
-      }
-    });
   </script>
 
 </body>
