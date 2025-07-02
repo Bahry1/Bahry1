@@ -10,8 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateUI() {
     sunCountEl.textContent = sunScore.toFixed(2);
-    const percent = Math.max(0, (energy / maxEnergy) * 100);
-    energyBar.style.width = `${percent}%`;
+    energyBar.style.width = `${Math.max(0, (energy / maxEnergy) * 100)}%`;
   }
 
   sunCoin.addEventListener("click", () => {
@@ -20,9 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       energy -= clickCost;
 
       sunCoin.style.transform = "scale(0.94)";
-      setTimeout(() => {
-        sunCoin.style.transform = "scale(1)";
-      }, 150);
+      setTimeout(() => sunCoin.style.transform = "scale(1)", 150);
 
       updateUI();
     }
