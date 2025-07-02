@@ -1,22 +1,29 @@
-body {
-  background-color: #000;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
   overflow: hidden;
+  background: #000;
   font-family: "Segoe UI", sans-serif;
-  color: white;
 }
 
 #stars-canvas {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   z-index: 0;
 }
 
 .main-container {
   position: relative;
   z-index: 1;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,55 +31,82 @@ body {
   padding: 20px 0;
 }
 
-/* SUN */
 .sun-score {
   font-size: 2.4em;
   color: #ffe14a;
-  text-shadow: 0 0 6px #ffd700;
+  text-shadow: 0 0 8px #ffdf47;
 }
 
-.league-info #league-label {
+.unit {
+  font-size: 0.5em;
+}
+
+.league-info {
+  margin-top: 4px;
+}
+
+#league-label {
   font-size: 1.1em;
   color: #ffd700;
   cursor: pointer;
 }
 
 #league-label:hover {
-  text-decoration: underline;
   color: #ffcc55;
+  text-decoration: underline;
 }
 
-/* Coin */
-.coin-wrapper {
-  width: 180px;
-  height: 180px;
-  margin-top: 30px;
-  background: url("background-coin.png") no-repeat center/cover;
-  border-radius: 50%;
-  box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
+.coin-panel {
+  flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.coin-wrapper {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: url("background-coin.png") no-repeat center/cover;
+  box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
 }
 
 #sun-coin {
   width: 90%;
   height: 90%;
   object-fit: contain;
-  transition: transform 0.2s ease;
   border-radius: 50%;
+  transition: transform 0.2s ease;
 }
 
 #sun-coin:active {
   transform: scale(0.94);
 }
 
-/* Footer Nav + Energy */
 .bottom-nav {
+  width: 100%;
   display: flex;
   justify-content: space-around;
-  width: 100%;
-  margin-bottom: 28px;
+  position: fixed;
+  bottom: 36px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 0.75em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .nav-btn img {
@@ -80,6 +114,11 @@ body {
   height: 28px;
   margin-bottom: 4px;
   filter: drop-shadow(0 0 5px #ffffff55);
+}
+
+.nav-btn span {
+  font-size: 0.7em;
+  color: #ccc;
 }
 
 .energy-bar-container {
@@ -91,8 +130,8 @@ body {
 }
 
 #energy-bar-fill {
-  height: 100%;
   width: 100%;
+  height: 100%;
   background: linear-gradient(90deg, #00ffcc, #00e6ff);
   transition: width 0.3s ease;
 }
