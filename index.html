@@ -8,60 +8,24 @@
 </head>
 <body>
 
-  <!-- پس‌زمینه ستاره‌ای -->
   <div id="stars-container"></div>
 
-  <!-- اپلیکیشن اصلی -->
   <div id="app">
+
+    <!-- ناحیه امتیاز و لیگ -->
     <div id="score-area">
-      <p id="current-score">0</p>
-      <span class="score-label">SUN</span>
-      <div id="cup-info">
-        <span id="current-cup">Bronze League</span>
-        <button id="cup-details-button">Details</button>
-      </div>
+      <p id="current-score">0 <span class="score-label">SUN</span></p>
+      <p id="current-league-label" class="league-label">Bronze League</p>
     </div>
 
-    <!-- تصویر سکه زرین سان -->
+    <!-- سکه زرین سان -->
     <div id="coin-area">
-      <img id="sun-coin" src="sun-icon.png" alt="Zerin Sun Coin" />
+      <img id="sun-coin" src="sun-coin.png" alt="Zerin Sun Coin" />
     </div>
 
-    <!-- نوار انرژی بالا -->
-    <div id="energy-bar-container">
-      <div id="energy-bar-fill"></div>
-    </div>
   </div>
 
-  <!-- ✳️ پاپ‌آپ Daily -->
-  <div id="daily-popup" class="fullscreen-popup hidden">
-    <h3>Daily Energy Info</h3>
-    <div id="daily-timer"></div>
-    <p>Total Suns Collected: <span id="total-score">0</span></p>
-
-    <div class="daily-bottom">
-      <button id="close-daily">Close</button>
-      <p id="daily-energy-text">Energy: <span id="energy-value">50</span> / 50</p>
-    </div>
-
-    <div id="daily-energy-bar-container">
-      <div id="daily-energy-bar-fill"></div>
-    </div>
-  </div>
-
-  <!-- ✳️ پاپ‌آپ Cup -->
-  <div id="cup-popup" class="fullscreen-popup hidden">
-    <h3>Cup System</h3>
-    <div id="current-cup-details">
-      <h4 id="popup-league-name">Bronze League</h4>
-      <p id="popup-league-range">Required: 0–10 SUN</p>
-      <p id="popup-league-score">Your Score: 0</p>
-    </div>
-    <div id="cup-slider"></div>
-    <button id="close-cup">Close</button>
-  </div>
-
-  <!-- نوار پایین (Navigation) -->
+  <!-- نوار پایین -->
   <nav id="navbar">
     <button class="nav-button">
       <img src="referral-icon.png" alt="Referral Icon" />
@@ -72,27 +36,21 @@
       <span>Channels</span>
     </button>
     <button class="nav-button">
-      <img src="wallet-icon.png" alt="Wallet Icon" />
-      <span>Wallet</span>
-    </button>
-    <button class="nav-button" id="cup-button">
-      <img src="cup-icon.png" alt="Cup Icon" />
+      <img src="wallet-icon.png" alt="Cups Icon" />
       <span>Cups</span>
     </button>
-    <button class="nav-button" id="daily-button">
+    <button class="nav-button">
       <img src="daily-icon.png" alt="Daily Icon" />
       <span>Daily</span>
     </button>
   </nav>
 
-  <!-- نوار انرژی پایین صفحه -->
+  <!-- نوار انرژی پایین -->
   <div id="bottom-energy-bar-container">
     <div id="bottom-energy-bar-fill"></div>
   </div>
 
   <!-- اسکریپت‌ها -->
   <script src="script.js"></script>
-  <script src="stars.js"></script>
-
 </body>
 </html>
