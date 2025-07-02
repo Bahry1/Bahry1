@@ -20,7 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
       energy -= clickCost;
 
       sunCoin.style.transform = "scale(0.94)";
-      setTimeout(() => sunCoin.style.transform = "scale(1)", 150);
+      setTimeout(() => {
+        sunCoin.style.transform = "scale(1)";
+      }, 150);
 
       updateUI();
     }
