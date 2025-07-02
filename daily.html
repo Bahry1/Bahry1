@@ -5,6 +5,74 @@
   <title>انرژی روزانه - ZerinSun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .energy-bar-wrapper {
+      height: 10px;
+      background: #222;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 16px auto;
+      width: 90%;
+    }
+
+    .energy-bar-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    .energy-bar-fill.normal {
+      background: linear-gradient(90deg, #00ffcc, #00e6ff);
+    }
+
+    .energy-bar-fill.low {
+      background: linear-gradient(90deg, #ffc0a8, #ff8a65);
+    }
+
+    .energy-text {
+      text-align: center;
+      margin-bottom: 16px;
+      color: #ffd;
+      font-family: "Segoe UI", sans-serif;
+      font-size: 0.9em;
+    }
+
+    .timer {
+      text-align: center;
+      margin-top: 24px;
+      color: #ffe14a;
+      font-size: 1.2em;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .clock-text {
+      margin-top: 4px;
+      font-size: 1.1em;
+    }
+
+    .spacer {
+      height: 100px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      color: #ccc;
+      font-size: 0.9em;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #555;
+    }
+
+    .back-btn:hover {
+      background: #111;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
   <div class="timer" id="daily-timer">
@@ -37,12 +105,13 @@
 
       if (bar) {
         bar.style.width = percent + "%";
-        bar.style.background = percent <= 10
-          ? "linear-gradient(90deg, #ffc0a8, #ff8a65)"  // انرژی کم → نارنجی-صورتی لطیف
-          : "linear-gradient(90deg, #00ffcc, #00e6ff)"; // انرژی نرمال → فیروزه‌ای
+        bar.classList.remove("normal", "low");
+        bar.classList.add(percent <= 10 ? "low" : "normal");
       }
 
-      if (label) label.textContent = `باقی‌مانده خط انرژی: ${energy.toFixed(2)}`;
+      if (label) {
+        label.textContent = `باقی‌مانده خط انرژی: ${energy.toFixed(2)}`;
+      }
     }
 
     function updateClock() {
