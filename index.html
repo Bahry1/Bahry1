@@ -1,72 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZerinSun</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>ZerinSun - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      justify-content: space-between;
+    }
+
+    .header {
+      padding: 16px;
+      text-align: center;
+      background-color: #111;
+      width: 100%;
+      box-shadow: 0 1px 6px #000;
+    }
+
+    .header span {
+      display: inline-block;
+      margin: 0 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .tap-zone {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .tap-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 60px;
+      background: radial-gradient(#ffaa00, #ff6a00);
+      box-shadow: 0 0 15px #ff6a00aa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #000;
+      font-size: 1.2rem;
+      user-select: none;
+      transition: transform 0.1s;
+    }
+
+    .tap-circle:active {
+      transform: scale(0.92);
+    }
+
+    .stats {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    .footer {
+      padding: 20px;
+    }
+
+    .btn {
+      background-color: #111;
+      padding: 10px 20px;
+      border: 1px solid #ffaa00aa;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #ffcc33;
+      font-weight: bold;
+      box-shadow: 0 0 6px #ffaa0044;
+    }
+
+    .btn:hover {
+      background-color: #222;
+    }
+  </style>
 </head>
 <body>
+  <div class="header">
+    <span>☀ SUN: <span id="sun-count">0.00</span></span>
+    <span>🔋 ENERGY: <span id="energy-count">0.000</span></span>
+    <span>🏆 CUP: <span id="cup-level">–</span></span>
+  </div>
 
-  <canvas id="stars-canvas"></canvas>
+  <div class="tap-zone">
+    <div class="tap-circle" id="tap-btn">TAP</div>
+  </div>
 
-  <main class="main-container">
+  <div class="stats">
+    Taps Today: <span id="tap-count">0</span>
+  </div>
 
-    <section class="top-panel">
-      <div class="sun-score">
-        <span id="sun-count">0.00</span> <span class="unit">SUN</span>
-      </div>
-      <div class="league-info">
-        <span id="league-label" onclick="location.href='cups.html'" style="cursor:pointer;">
-          Bronze League
-        </span>
-      </div>
-    </section>
-
-    <section class="coin-panel">
-      <div class="coin-wrapper">
-        <img id="sun-coin" src="sun-icon.png" alt="Sun Coin" />
-      </div>
-    </section>
-
-    <nav class="bottom-nav">
-      <button class="nav-btn" onclick="location.href='referral.html'">
-        <img src="referral-icon.png" />
-        <span>Referral</span>
-      </button>
-      <button class="nav-btn" onclick="location.href='channels.html'">
-        <img src="channels-icon.png" />
-        <span>Channels</span>
-      </button>
-      <button class="nav-btn" onclick="location.href='wallet.html'">
-        <img src="wallet-icon.png" />
-        <span>Wallet</span>
-      </button>
-      <button class="nav-btn" onclick="location.href='daily.html'">
-        <img src="daily-icon.png" />
-        <span>Daily</span>
-      </button>
-    </nav>
-
-    <div class="energy-bar-container">
-      <div id="energy-bar-fill">
-        <span class="energy-label"></span>
-      </div>
-    </div>
-
-  </main>
+  <div class="footer">
+    <a href="daily.html" class="btn">Go to Daily →</a>
+  </div>
 
   <script src="core.js"></script>
   <script>
-    const coin = document.getElementById("sun-coin");
-    coin.addEventListener("click", () => {
-      if (ZerinCore.useEnergy(0.01)) {
-        ZerinCore.addSun(0.01);
-        coin.style.transform = "scale(0.94)";
-        setTimeout(() => coin.style.transform = "scale(1)", 150);
+    let tapCount = parseInt(localStorage.getItem("tapCount") || "0");
+
+    function updateStats() {
+      document.getElementById("sun-count").textContent = ZerinCore.getSun().toFixed(2);
+      document.getElementById("energy-count").textContent = ZerinCore.getEnergy().toFixed(3);
+      document.getElementById("cup-level").textContent = ZerinCore.getCupLevel();
+      document.getElementById("tap-count").textContent = tapCount;
+    }
+
+    document.getElementById("tap-btn").addEventListener("click", () => {
+      const success = ZerinCore.gainEnergy(1);
+      if (success) {
+        ZerinCore.addSun(1);
+        localStorage.setItem("tapCount", ++tapCount);
+        updateStats(); // 🎯 شمارنده‌های SUN و TAP و ENERGY همگی آپدیت می‌شن
       }
     });
+
+    document.addEventListener("DOMContentLoaded", updateStats);
   </script>
-  <script src="stars.js"></script>
 </body>
 </html>
