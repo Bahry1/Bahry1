@@ -4,92 +4,7 @@
   <meta charset="UTF-8" />
   <title>Daily Energy - ZerinSun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      margin: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .timer {
-      text-align: center;
-      font-size: 1rem;
-      padding: 12px 8px 6px;
-      color: #ffe066;
-      background: #111;
-      border-bottom: 1px solid #333;
-      box-shadow: 0 1px 4px #000;
-    }
-
-    .clock-text {
-      font-size: 0.85rem;
-      color: #bbb;
-      margin-top: 4px;
-    }
-
-    .spacer {
-      flex-grow: 1;
-    }
-
-    .energy-section {
-      text-align: center;
-      padding: 24px 16px 12px;
-      background: linear-gradient(to top, #111, #000);
-      border-top: 1px solid #333;
-    }
-
-    .energy-bar-wrapper {
-      background-color: #222;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 18px;
-      margin-bottom: 10px;
-      width: 90%;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: inset 0 0 6px #000;
-    }
-
-    .energy-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #ffda44, #ffaa00);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-
-    .energy-text {
-      font-size: 0.9em;
-      color: #88ffcc;
-    }
-
-    .footer {
-      text-align: center;
-      padding-bottom: 20px;
-    }
-
-    .back-btn {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 8px 24px;
-      background-color: rgba(255, 255, 255, 0.07);
-      color: #ffd700;
-      border: 1px solid #ffaa00aa;
-      border-radius: 10px;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 0 6px #ffaa00aa;
-      transition: background 0.2s;
-    }
-
-    .back-btn:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="timer" id="daily-timer">
@@ -97,7 +12,7 @@
     <div class="clock-text" id="clock-time">🕒 Now</div>
   </div>
 
-  <div class="spacer"></div> <!-- فضای خالی وسط برای آینده -->
+  <div class="spacer"></div>
 
   <div class="energy-section">
     <div class="energy-bar-wrapper">
@@ -118,10 +33,10 @@
       const percent = (energy / max) * 100;
 
       const bar = document.getElementById("energy-fill");
-      const text = document.getElementById("energy-display");
+      const label = document.getElementById("energy-display");
 
       if (bar) bar.style.width = percent + "%";
-      if (text) text.textContent = `${energy.toFixed(0)} / ${max} Energy`;
+      if (label) label.textContent = `${energy.toFixed(0)} / ${max} Energy`;
     }
 
     function updateClock() {
@@ -142,19 +57,20 @@
       document.getElementById("daily-date").textContent = `📅 Today: ${dateString}`;
     }
 
-    function updateUI() {
+    function fullUpdate() {
+      ZerinCore.loadData();
       updateDate();
       updateClock();
       updateEnergy();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      updateUI();
+      fullUpdate();
       setInterval(updateClock, 1000);
     });
 
-    window.addEventListener("pageshow", updateUI);
-    window.addEventListener("focus", updateUI);
+    window.addEventListener("pageshow", fullUpdate);
+    window.addEventListener("focus", fullUpdate);
   </script>
 </body>
 </html>
