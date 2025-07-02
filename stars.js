@@ -1,7 +1,8 @@
 const canvas = document.getElementById("stars-canvas");
 const ctx = canvas.getContext("2d");
-let w, h;
+
 let stars = [];
+let w, h;
 
 function resizeCanvas() {
   w = canvas.width = window.innerWidth;
@@ -14,23 +15,21 @@ function createStars(count) {
     stars.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      radius: Math.random() * 1.2,
+      r: Math.random() * 1.2,
       alpha: Math.random(),
-      speed: Math.random() * 0.015 + 0.002
+      speed: Math.random() * 0.02 + 0.005
     });
   }
 }
 
 function animateStars() {
   ctx.clearRect(0, 0, w, h);
-  for (const star of stars) {
-    star.alpha += star.speed;
-    if (star.alpha <= 0 || star.alpha >= 1) {
-      star.speed = -star.speed;
-    }
+  for (let s of stars) {
+    s.alpha += s.speed;
+    if (s.alpha <= 0 || s.alpha >= 1) s.speed = -s.speed;
     ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${star.alpha})`;
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
     ctx.fill();
   }
   requestAnimationFrame(animateStars);
@@ -38,9 +37,9 @@ function animateStars() {
 
 window.addEventListener("resize", () => {
   resizeCanvas();
-  createStars(120);
+  createStars(100);
 });
 
 resizeCanvas();
-createStars(120);
+createStars(100);
 animateStars();
