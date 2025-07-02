@@ -114,9 +114,14 @@
   <script>
     function updateEnergy() {
       const energy = ZerinCore.getEnergy();
-      const percent = (energy / ZerinCore.MAX_ENERGY) * 100;
-      document.getElementById("energy-fill").style.width = percent + "%";
-      document.getElementById("energy-display").textContent = ZerinCore.getEnergyDisplay();
+      const max = ZerinCore.MAX_ENERGY;
+      const percent = (energy / max) * 100;
+
+      const bar = document.getElementById("energy-fill");
+      const text = document.getElementById("energy-display");
+
+      if (bar) bar.style.width = percent + "%";
+      if (text) text.textContent = `${energy.toFixed(0)} / ${max} Energy`;
     }
 
     function updateClock() {
@@ -137,12 +142,19 @@
       document.getElementById("daily-date").textContent = `📅 Today: ${dateString}`;
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    function updateUI() {
       updateDate();
       updateClock();
       updateEnergy();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateUI();
       setInterval(updateClock, 1000);
     });
+
+    window.addEventListener("pageshow", updateUI);
+    window.addEventListener("focus", updateUI);
   </script>
 </body>
 </html>
