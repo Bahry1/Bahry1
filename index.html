@@ -58,7 +58,23 @@
 
   </main>
 
+  <script src="core.js"></script>
   <script src="script.js"></script>
   <script src="stars.js"></script>
+
+  <!-- ✅ وصله برای نمایش SUN و لیگ -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const sun = ZerinCore.getSun().toFixed(2);
+      const league = ZerinCore.getCupLevel();
+
+      const sunEl = document.getElementById("sun-count");
+      const leagueEl = document.getElementById("league-label");
+
+      if (sunEl) sunEl.textContent = sun;
+      if (leagueEl) leagueEl.textContent = league + " League";
+    });
+  </script>
+
 </body>
 </html>
