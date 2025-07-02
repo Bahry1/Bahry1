@@ -2,102 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leagues - ZerinSun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cups - ZerinSun</title>
   <style>
     body {
-      background: #111;
-      font-family: "Segoe UI", sans-serif;
+      background: #000;
       color: white;
-      text-align: center;
-      padding: 30px 10px;
-    }
-    h1 {
-      color: #ffd700;
-      margin-bottom: 20px;
-      text-shadow: 0 0 4px #ffda50;
-    }
-    .cups {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .cup {
-      background: #1c1c1c;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 0 6px #00000088;
-    }
-    .cup img {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      margin-bottom: 8px;
-    }
-    .cup-name {
-      font-size: 0.9em;
-      color: #ddd;
-    }
-  </style>
-</head>
-<body>
-  <h1>🏆 League Cups</h1>
-  <div class="cups">
-    <div class="cup"><img src="images/cups/bronze.png" /><div class="cup-name">Bronze</div></div>
-    <div class="cup"><img src="images/cups/silver.png" /><div class="cup-name">Silver</div></div>
-    <div class="cup"><img src="images/cups/gold.png" /><div class="cup-name">Gold</div></div>
-    <div class="cup"><img src="images/cups/emerald.png" /><div class="cup-name">Emerald</div></div>
-    <div class="cup"><img src="images/cups/sapphire.png" /><div class="cup-name">Sapphire</div></div>
-    <div class="cup"><img src="images/cups/ruby.png" /><div class="cup-name">Ruby</div></div>
-    <div class="cup"><img src="images/cups/diamond.png" /><div class="cup-name">Diamond</div></div>
-    <div class="cup"><img src="images/cups/legendary.png" /><div class="cup-name">Legendary</div></div>
-  </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Wallet - ZerinSun</title>
-  <style>
-    body {
-      background: #111;
-      color: #eee;
       font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       margin: 0;
+      padding: 20px;
+      text-align: center;
     }
 
     h1 {
-      color: #00e6ff;
-      margin-bottom: 40px;
+      color: #ffd700;
+      margin-bottom: 30px;
+      text-shadow: 0 0 8px #ffdd55;
+    }
+
+    .cup-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 24px;
+      padding: 10px 10px 20px;
+      justify-content: start;
+      scroll-snap-type: x mandatory;
+    }
+
+    .cup-item {
+      flex: 0 0 auto;
+      width: 100px;
+      text-align: center;
+      scroll-snap-align: center;
+    }
+
+    .cup-item img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: radial-gradient(circle, #111 30%, #000);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .cup-item img:hover {
+      transform: scale(1.1);
+    }
+
+    .cup-label {
+      margin-top: 8px;
+      font-size: 0.9em;
+      color: #aaa;
     }
 
     .back-btn {
-      display: block;
-      margin: 16px auto 40px;
-      padding: 8px 20px;
+      display: inline-block;
+      margin-top: 30px;
+      padding: 8px 18px;
+      border-radius: 10px;
       background: rgba(255,255,255,0.05);
       color: #ffd700;
       font-weight: bold;
       text-decoration: none;
-      border-radius: 10px;
       border: 1px solid #ffaa00aa;
       box-shadow: 0 0 6px #ffcc00aa;
       transition: background 0.2s ease;
     }
+
     .back-btn:hover {
       background: rgba(255,255,255,0.12);
     }
   </style>
 </head>
 <body>
-  <h1>Your wallet will appear here 💰</h1>
+
+  <h1>🏆 Your Cups</h1>
+
+  <div class="cup-row">
+    <div class="cup-item">
+      <img src="images/cups/bronze-cup.png" alt="Bronze Cup" />
+      <div class="cup-label">Bronze</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/silver-cup.png" alt="Silver Cup" />
+      <div class="cup-label">Silver</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/gold-cup.png" alt="Gold Cup" />
+      <div class="cup-label">Gold</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/emerald-cup.png" alt="Emerald Cup" />
+      <div class="cup-label">Emerald</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/sapphire-cup.png" alt="Sapphire Cup" />
+      <div class="cup-label">Sapphire</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/ruby-cup.png" alt="Ruby Cup" />
+      <div class="cup-label">Ruby</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/diamond-cup.png" alt="Diamond Cup" />
+      <div class="cup-label">Diamond</div>
+    </div>
+    <div class="cup-item">
+      <img src="images/cups/legendary-cup.png" alt="Legendary Cup" />
+      <div class="cup-label">Legendary</div>
+    </div>
+  </div>
+
   <a href="index.html" class="back-btn">← Back to Home</a>
+
 </body>
 </html>
