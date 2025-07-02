@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!sunCoin || !window.ZerinCore) return;
 
   sunCoin.addEventListener("click", () => {
-    if (ZerinCore.useEnergy(1)) {
+    if (ZerinCore.useEnergy(0.01)) {
       ZerinCore.addSun(0.01);
       ZerinCore.addTap();
 
