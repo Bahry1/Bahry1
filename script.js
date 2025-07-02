@@ -5,37 +5,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const leagueLabel = document.getElementById("current-league-label");
 
   let score = 0;
-  let energy = 50;
-  const energyMax = 50;
+  let energy = 50.0;
+  const energyMax = 50.0;
+  const costPerClick = 0.01;
 
   function updateUI() {
-    // نمایش امتیاز
-    scoreDisplay.innerHTML = `${score} <span class="score-label">SUN</span>`;
+    // به‌روزرسانی امتیاز
+    scoreDisplay.innerHTML = `${score.toFixed(2)} <span class="score-label">SUN</span>`;
 
-    // بروزرسانی نوار انرژی پایین
-    const percent = Math.max(0, Math.min((energy / energyMax) * 100, 100));
+    // آپدیت نوار انرژی
+    const percent = Math.max(0, (energy / energyMax) * 100);
     energyBarFill.style.width = `${percent}%`;
   }
 
+  // کلیک روی سکه
   sunCoin.addEventListener("click", () => {
-    const cost = 0.5;
-    if (energy < cost) return;
+    if (energy >= costPerClick) {
+      score += costPerClick;
+      energy -= costPerClick;
 
-    score++;
-    energy -= cost;
+      // افکت کلیک روی سکه
+      sunCoin.style.transform = "scale(0.96)";
+      setTimeout(() => {
+        sunCoin.style.transform = "scale(1)";
+      }, 150);
 
-    // انیمیشن سکه
-    sunCoin.style.transform = "scale(1.07)";
-    setTimeout(() => {
-      sunCoin.style.transform = "scale(1)";
-    }, 150);
-
-    updateUI();
+      updateUI();
+    }
   });
 
-  // کلیک روی نوشتهٔ لیگ → هدایت به صفحهٔ کاپ‌ها
+  // کلیک روی نوشته لیگ → رفتن به صفحه کاپ‌ها
   leagueLabel.addEventListener("click", () => {
-    window.location.href = "cups.html"; // می‌تونی لینک دلخواه بزاری اینجا
+    window.location.href = "cups.html";
   });
 
   updateUI();
