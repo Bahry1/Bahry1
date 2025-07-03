@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to ZerinSun</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: radial-gradient(ellipse at center, #111 0%, #000 100%);
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .splash-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1.6s ease;
+    }
+
+    .splash-title {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: #ffdd33;
+      text-shadow: 0 0 10px #ffcc00;
+    }
+
+    .splash-subtitle {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 2.5rem;
+    }
+
+    .start-btn {
+      padding: 14px 34px;
+      font-size: 1rem;
+      background: #ffe14a;
+      border: none;
+      border-radius: 12px;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 12px #ffd700aa;
+      transition: background 0.3s ease;
+    }
+
+    .start-btn:hover {
+      background: #ffcc33;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="splash-container">
+    <div class="splash-title">☀️ ZerinSun</div>
+    <div class="splash-subtitle">Welcome to the golden experience</div>
+    <button class="start-btn" onclick="startApp()">Start</button>
+  </div>
+
+  <script>
+    function startApp() {
+      localStorage.setItem("splashSeen", "true");
+      window.location.href = "index.html";
+    }
+
+    // اختیاری: رد شدن خودکار اگر splashSeen قبلاً دیده شده
+    const splashSeen = localStorage.getItem("splashSeen");
+    if (splashSeen === "true") {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>
