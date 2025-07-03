@@ -66,8 +66,10 @@
     function updateEnergyBar() {
       const fill = document.getElementById("energy-bar-fill");
       if (fill && window.ZerinCore) {
-        const energy = ZerinCore.getEnergy(); // عدد بین ۰ تا ۱
-        fill.style.width = (energy * 100) + "%";
+        const energy = ZerinCore.getEnergy();
+        const max = ZerinCore.MAX_ENERGY;
+        const percent = (energy / max) * 100;
+        fill.style.width = percent + "%";
       }
     }
 
@@ -100,8 +102,8 @@
       if (sunCoin && sunCountEl && window.ZerinCore) {
         sunCoin.addEventListener("click", () => {
           if (ZerinCore.useEnergy(1)) {
-            ZerinCore.addSun(0.01);      // ← مقدار SUN در هر کلیک
-            ZerinCore.addTap();          // ← شمارنده تب‌ها
+            ZerinCore.addSun(0.01);
+            ZerinCore.addTap();
             sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
             updateEnergyBar();
           }
