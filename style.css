@@ -1,4 +1,4 @@
-/* Reset و پایه */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -10,31 +10,32 @@ html, body {
   background: #000;
   font-family: "Segoe UI", sans-serif;
   overflow-x: hidden;
+  color: #fff;
 }
 
-/* بوم ستاره‌ها */
+/* Stars Canvas */
 #stars-canvas {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
 }
 
-/* بدنه اصلی */
+/* Main Container */
 .main-container {
   position: relative;
   z-index: 1;
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 20px 0;
 }
 
-/* امتیاز SUN */
+/* Scores */
 .sun-score {
   font-size: 2.4em;
   color: #ffe14a;
@@ -45,7 +46,6 @@ html, body {
   font-size: 0.5em;
 }
 
-/* بخش لیگ */
 .league-info {
   margin-top: 4px;
 }
@@ -61,7 +61,7 @@ html, body {
   text-decoration: underline;
 }
 
-/* سکه */
+/* Coin */
 .coin-panel {
   flex-grow: 1;
   display: flex;
@@ -73,68 +73,45 @@ html, body {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: url("background-coin.png") no-repeat center/cover;
-  box-shadow: 0 0 25px rgba(255, 255, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
 }
 
-#sun-coin {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-}
-
-#sun-coin:active {
-  transform: scale(0.94);
-}
-
-/* ناوبری پایین */
+/* Bottom Nav */
 .bottom-nav {
-  width: 100%;
   display: flex;
   justify-content: space-around;
+  width: 100%;
+  padding: 12px 0;
+  border-top: 1px solid #333;
+  background: #111;
   position: fixed;
-  bottom: 36px;
-  left: 0;
-  right: 0;
-  z-index: 2;
+  bottom: 0;
+  z-index: 10;
 }
 
 .nav-btn {
-  background: none;
-  border: none;
-  color: white;
-  text-align: center;
-  font-size: 0.75em;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #ffd700;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .nav-btn img {
   width: 28px;
   height: 28px;
-  margin-bottom: 4px;
-  filter: drop-shadow(0 0 5px #ffffff55);
 }
 
-.nav-btn span {
-  font-size: 0.7em;
-  color: #ccc;
-}
-
-/* نوار انرژی */
+/* Energy Bar */
 .energy-bar-container {
   width: 100%;
   height: 6px;
   background: #222;
   position: fixed;
-  bottom: 8px;
+  bottom: 48px;
   left: 0;
   right: 0;
   z-index: 3;
@@ -145,36 +122,56 @@ html, body {
 #energy-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, #00ffcc, #00e6ff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: width 0.3s ease;
 }
 
-/* متن وسط نوار انرژی */
-.energy-label {
-  font-size: 0.7em;
-  color: #000;
-  font-weight: bold;
-  text-shadow: 0 0 2px #ffffffaa;
-  pointer-events: none;
+/* Daily Page */
+.timer {
+  text-align: center;
+  margin-top: 2rem;
 }
 
-/* کاپ فعال */
-.cup-item.active {
-  border: 2px solid #4caf50;
-  background-color: #1d3f1d;
+.clock-text {
+  font-size: 1.8rem;
+  margin-top: 1rem;
+}
+
+.energy-bar-wrapper {
+  width: 90%;
+  height: 14px;
   border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 0 10px #4caf50;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid #555;
 }
 
-/* دکمه برگشت مستطیلی */
+.energy-bar-fill {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.energy-bar-fill.normal {
+  background: linear-gradient(90deg, #00ffcc, #00e6ff);
+}
+
+.energy-bar-fill.low {
+  background: linear-gradient(90deg, #ff3366, #ff4444);
+}
+
+.energy-text {
+  margin: 1rem 0 1.5rem;
+  color: #ccc;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Back Button */
 .back-wrapper {
   background: #222;
   border: 2px solid #ffaa00aa;
   border-radius: 16px;
   padding: 1rem 2rem;
-  margin: 2.5rem auto 2rem;
+  margin: 2rem auto;
   box-shadow: 0 0 12px #000a;
   display: flex;
   justify-content: center;
@@ -200,7 +197,7 @@ html, body {
   background: rgba(255,255,255,0.12);
 }
 
-/* 🔔 نوتیف‌یار زرینی */
+/* Notifier */
 #notifier {
   position: fixed;
   top: 20px;
@@ -229,7 +226,6 @@ html, body {
   transform: translateX(-50%) translateY(10px);
 }
 
-/* 💡 حالت‌های مختلف پیام */
 #notifier.success {
   color: #00ff99;
   border-color: #00ff99aa;
@@ -252,4 +248,59 @@ html, body {
   color: #ff4444;
   border-color: #ff4444aa;
   box-shadow: 0 0 12px #ff444455;
+}
+
+/* Misc */
+.heading {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+
+h1 {
+  color: #00e6ff;
+  margin-bottom: 0.5rem;
+}
+
+.splash-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 1.6s ease;
+}
+
+.splash-title {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: #ffdd33;
+  text-shadow: 0 0 10px #ffcc00;
+}
+
+.splash-subtitle {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-bottom: 2.5rem;
+}
+
+.start-btn {
+  padding: 14px 34px;
+  font-size: 1rem;
+  background: #ffe14a;
+  border: none;
+  border-radius: 12px;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 12px #ffd700aa;
+  transition: background 0.3s ease;
+}
+
+.start-btn:hover {
+  background: #ffcc33;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
 }
