@@ -12,20 +12,17 @@
       padding: 20px;
       text-align: center;
     }
-
     .invite-box {
       background: #111;
       border: 1px solid #333;
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 60px;
     }
-
     .invite-count {
       font-size: 1.2em;
       margin-bottom: 10px;
     }
-
     .reward-box {
       background: #222;
       padding: 14px;
@@ -34,6 +31,31 @@
       color: #ffe14a;
       font-weight: bold;
     }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      background: #111;
+      border-top: 1px solid #333;
+      padding: 10px 0;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 0.9em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .nav-btn img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
@@ -41,15 +63,13 @@
   <h2>🎁 دعوت دوستان</h2>
 
   <div class="invite-box">
-    <div class="invite-count" id="invite-count">شما تاکنون <span>0</span> نفر را دعوت کرده‌اید.</div>
-    <div class="reward-box" id="reward-display">پاداش شما: 0 SUN</div>
-    <div class="reward-box" id="next-goal">🎯 برای دریافت پاداش بعدی، <span>1</span> دعوت دیگر نیاز دارید.</div>
+    <div class="invite-count" id="invite-count">در حال بارگذاری...</div>
+    <div class="reward-box" id="reward-display">پاداش شما: -- SUN</div>
+    <div class="reward-box" id="next-goal">🎯 ...</div>
   </div>
 
   <script src="core.js"></script>
   <script>
-    const inviteCount = 12; // 👈 اینو بعداً از دیتای واقعی بگیر
-
     function getReferralReward(count) {
       if (count >= 1 && count <= 5) return 5;
       if (count >= 6 && count <= 10) return 10;
@@ -69,6 +89,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      const inviteCount = ZerinCore.getInviteCount(); // ✅ شمارنده واقعی
+
       document.getElementById("invite-count").innerHTML =
         `شما تاکنون <span>${inviteCount}</span> نفر را دعوت کرده‌اید.`;
 
@@ -81,6 +103,13 @@
         : `✅ شما به بالاترین پاداش رسیدید!`;
     });
   </script>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn" onclick="location.href='index.html'">
+      <img src="home-icon.png" alt="بازگشت" />
+      <span>بازگشت</span>
+    </button>
+  </nav>
 
 </body>
 </html>
