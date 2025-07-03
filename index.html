@@ -17,8 +17,11 @@
       <div class="sun-score">
         <span id="sun-count">0.00</span> <span class="unit">SUN</span>
       </div>
+
       <div class="league-info">
-        <span id="league-label">🔰 Starter League</span>
+        <span onclick="location.href='cups.html'" style="cursor: pointer;">
+          💚 Emerald League
+        </span>
       </div>
     </section>
 
@@ -52,8 +55,6 @@
         <img src="daily-icon.png" />
         <span>Daily</span>
       </button>
-      <!-- ✅ فقط متن ساده برای دکمه League Cup -->
-      <button class="nav-btn" onclick="location.href='cups.html'">League Cup</button>
     </nav>
 
   </main>
@@ -67,11 +68,6 @@
       if (window.ZerinCore) {
         ZerinCore.loadData();
         ZerinCore.updateUI();
-
-        const leagueEl = document.getElementById("league-label");
-        if (leagueEl) {
-          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
-        }
       }
     }
 
