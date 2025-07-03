@@ -12,26 +12,31 @@
 
   <main class="main-container">
 
-    <!-- 🔢 SUN + لیگ -->
+    <!-- 🔆 نمایش امتیاز و لیگ -->
     <section class="top-panel">
       <div class="sun-score">
         <span id="sun-count">0.00</span> <span class="unit">SUN</span>
       </div>
       <div class="league-info">
-        <span id="league-label" onclick="location.href='cups.html'" style="cursor:pointer;">
-          Bronze League
+        <span id="league-label" style="cursor: default;">
+          🔰 Starter League
         </span>
       </div>
     </section>
 
-    <!-- 🪙 سکه -->
+    <!-- 🌞 سکه مرکزی -->
     <section class="coin-panel">
       <div class="coin-wrapper">
         <img id="sun-coin" src="sun-icon.png" alt="Sun Coin" />
       </div>
     </section>
 
-    <!-- 📱 نوار پایین -->
+    <!-- ⚡ نوار انرژی -->
+    <div class="energy-bar-container">
+      <div id="energy-bar-fill"></div>
+    </div>
+
+    <!-- 📱 ناوبری پایین -->
     <nav class="bottom-nav">
       <button class="nav-btn" onclick="location.href='referral.html'">
         <img src="referral-icon.png" />
@@ -51,18 +56,12 @@
       </button>
     </nav>
 
-    <!-- ⚡ نوار انرژی -->
-    <div class="energy-bar-container">
-      <div id="energy-bar-fill"></div>
-    </div>
-
   </main>
 
+  <!-- 📜 اسکریپت‌ها -->
   <script src="core.js"></script>
-  <script src="script.js"></script>
   <script src="stars.js"></script>
 
-  <!-- ✨ آپدیت UI از داده‌های مرکزی -->
   <script>
     function refreshMainUI() {
       if (window.ZerinCore) {
@@ -77,10 +76,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", refreshMainUI);
-    window.addEventListener("pageshow", refreshMainUI);
     window.addEventListener("focus", refreshMainUI);
 
-    // 🎯 کلیک روی سکه برای کسب SUN و مصرف انرژی
     const sunCoin = document.getElementById("sun-coin");
     sunCoin.addEventListener("click", () => {
       if (ZerinCore.useEnergy(1)) {
