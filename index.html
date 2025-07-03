@@ -102,7 +102,7 @@
       const coin = document.getElementById("sun-coin");
       if (coin) {
         coin.addEventListener("click", () => {
-          const tapValue = 0.25;
+          const tapValue = 0.01;
           if (ZerinCore.useEnergy(tapValue)) {
             ZerinCore.addSun(tapValue);
             ZerinCore.addTap();
