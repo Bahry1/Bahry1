@@ -159,6 +159,7 @@ html, body {
   pointer-events: none;
 }
 
+/* کاپ فعال */
 .cup-item.active {
   border: 2px solid #4caf50;
   background-color: #1d3f1d;
@@ -167,7 +168,7 @@ html, body {
   box-shadow: 0 0 10px #4caf50;
 }
 
-/* --- دکمه بازگشت در کادر مستطیلی --- */
+/* دکمه برگشت مستطیلی */
 .back-wrapper {
   background: #222;
   border: 2px solid #ffaa00aa;
@@ -197,4 +198,58 @@ html, body {
 
 .back-btn:hover {
   background: rgba(255,255,255,0.12);
+}
+
+/* 🔔 نوتیف‌یار زرینی */
+#notifier {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #ffd700;
+  padding: 12px 20px;
+  border: 2px solid #ffaa00aa;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1rem;
+  z-index: 9999;
+  box-shadow: 0 0 10px #ffaa0088;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  max-width: 90%;
+  text-align: center;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+#notifier.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* 💡 حالت‌های مختلف پیام */
+#notifier.success {
+  color: #00ff99;
+  border-color: #00ff99aa;
+  box-shadow: 0 0 12px #00ff9966;
+}
+
+#notifier.warning {
+  color: #ffaa00;
+  border-color: #ffaa00aa;
+  box-shadow: 0 0 12px #ffaa0055;
+}
+
+#notifier.info {
+  color: #00e6ff;
+  border-color: #00e6ffaa;
+  box-shadow: 0 0 12px #00e6ff55;
+}
+
+#notifier.error {
+  color: #ff4444;
+  border-color: #ff4444aa;
+  box-shadow: 0 0 12px #ff444455;
 }
