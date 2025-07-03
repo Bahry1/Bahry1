@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invite Friends - ZerinSun</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="notifier.js"></script>
+</head>
+<body>
+  <canvas id="stars-canvas"></canvas>
+
+  <div class="main-container">
+    <div class="heading">
+      <h1>🎁 Invite Friends</h1>
+      <p>Share your link and earn SUN from your friends!</p>
+    </div>
+
+    <div class="invite-box">
+      <div class="section-title">Referral Summary</div>
+
+      <div class="reward-text" id="reward">Your Reward: 0 SUN</div>
+      <div class="reward-text" id="invite-count">Invited: 0</div>
+
+      <input id="ref-link" readonly />
+      <button id="copy-btn">📋 Copy Link</button>
+
+      <div class="share-buttons">
+        <button class="share-btn" id="whatsapp-btn">📱 WhatsApp</button>
+        <button class="share-btn" id="telegram-btn">💬 Telegram</button>
+        <button class="share-btn" id="share-btn">🔗 Share</button>
+      </div>
+    </div>
+
+    <div class="back-wrapper">
+      <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+  </div>
+
+  <div id="notifier"></div>
+
+  <script src="core.js"></script>
+  <script src="stars.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      ZerinCore.loadData();
+      const user = ZerinCore.getUserId();
+      const inviteCount = ZerinCore.getInviteCount();
+      const reward = ZerinCore.getReferralReward(inviteCount);
+
+      document.getElementById("invite-count").textContent = `Invited: ${inviteCount}`;
+      document.getElementById("reward").textContent = `Your Reward: ${reward} SUN`;
+
+      const refLink = `${window.location.origin}/index.html?ref=${user}`;
+      document.getElementById("ref-link").value = refLink;
+
+      document.getElementById("copy-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText(refLink);
+        notify("📋 Link copied!", "success");
+      });
+
+      document.getElementById("whatsapp-btn").addEventListener("click", () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent("Join ZerinSun and earn SUN:\n" + refLink)}`);
+      });
+
+      document.getElementById("telegram-btn").addEventListener("click", () => {
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent("Join ZerinSun and earn SUN!")}`);
+      });
+
+      document.getElementById("share-btn").addEventListener("click", async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: "ZerinSun Referral",
+              text: "Join ZerinSun and earn SUN!",
+              url: refLink
+            });
+          } catch {
+            notify("❌ Share canceled or failed.", "warning");
+          }
+        } else {
+          navigator.clipboard.writeText(refLink);
+          notify("🔗 Link copied! Share manually.", "info");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
