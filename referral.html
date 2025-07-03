@@ -70,10 +70,11 @@
       left: 0;
       right: 0;
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
       background: #111;
       border-top: 1px solid #333;
       padding: 10px 0;
+      z-index: 1000;
     }
 
     .nav-btn {
@@ -132,20 +133,33 @@
       const refLink = `${window.location.origin}/index.html?ref=${user}`;
       document.getElementById("ref-link").value = refLink;
 
-      document.getElementById("copy-btn").addEventListener("click", () => {
+      const copyBtn = document.getElementById("copy-btn");
+      copyBtn.addEventListener("click", () => {
         navigator.clipboard.writeText(refLink);
-        document.getElementById("copy-btn").textContent = "✅ Copied!";
+        copyBtn.textContent = "✅ Copied!";
         setTimeout(() => {
-          document.getElementById("copy-btn").textContent = "📋 Copy Link";
+          copyBtn.textContent = "📋 Copy Link";
         }, 1500);
       });
     });
   </script>
 
   <nav class="bottom-nav">
+    <button class="nav-btn" onclick="location.href='referral.html'">
+      <img src="referral-icon.png" />
+      <span>Referral</span>
+    </button>
+    <button class="nav-btn" onclick="location.href='channels.html'">
+      <img src="channels-icon.png" />
+      <span>Channels</span>
+    </button>
+    <button class="nav-btn" onclick="location.href='wallet.html'">
+      <img src="wallet-icon.png" />
+      <span>Wallet</span>
+    </button>
     <button class="nav-btn" onclick="location.href='index.html'">
-      <img src="home-icon.png" alt="Back" />
-      <span>Back</span>
+      <img src="home-icon.png" />
+      <span>Home</span>
     </button>
   </nav>
 
