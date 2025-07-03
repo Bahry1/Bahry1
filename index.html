@@ -101,7 +101,7 @@
 
       if (sunCoin && sunCountEl && window.ZerinCore) {
         sunCoin.addEventListener("click", () => {
-          if (ZerinCore.useEnergy(1)) {
+          if (ZerinCore.useEnergy(0.01)) {
             ZerinCore.addSun(0.01);
             ZerinCore.addTap();
             sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
