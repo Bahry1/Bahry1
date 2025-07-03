@@ -158,3 +158,10 @@ html, body {
   text-shadow: 0 0 2px #ffffffaa;
   pointer-events: none;
 }
+
+.cup-item.active {
+  border: 2px solid #4caf50;
+  background-color: #e6ffe6;
+  border-radius: 8px;
+  font-weight: bold;
+}
