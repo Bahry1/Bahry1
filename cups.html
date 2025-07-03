@@ -73,6 +73,8 @@
     .active-cup {
       transform: scale(1.12);
       box-shadow: 0 0 18px #ffdd55aa, 0 0 10px #ffaa00aa;
+      border: 2px solid #ffd700;
+      border-radius: 8px;
     }
 
     .spacer {
@@ -191,13 +193,5 @@
     });
   </script>
 
-    cups.forEach(cup => {
-      const title = cup.querySelector('h2');
-      if (title && title.textContent.includes(currentCup)) {
-        cup.classList.add('active');
-      }
-    });
-  </script>
 </body>
 </html>
-
