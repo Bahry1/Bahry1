@@ -5,104 +5,29 @@
   <title>انرژی روزانه - ZerinSun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .timer {
-      text-align: center;
-      margin-top: 24px;
-      color: #ffe14a;
-      font-size: 1.2em;
-    }
-
-    .clock-text {
-      margin-top: 4px;
-      font-size: 1.1em;
-    }
-
-    .spacer {
-      height: 100px;
-    }
-
-    .daily-bottom {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 10;
-    }
-
-    .energy-bar-wrapper {
-      height: 12px;
-      width: 80%;
-      max-width: 300px;
-      background: #222;
-      border-radius: 6px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-
-    .energy-bar-fill {
-      height: 100%;
-      width: 0%;
-      transition: width 0.3s ease, background 0.3s ease;
-    }
-
-    .energy-bar-fill.normal {
-      background: linear-gradient(90deg, #00ffcc, #00e6ff);
-    }
-
-    .energy-bar-fill.low {
-      background: linear-gradient(90deg, #ffc0a8, #ff8a65);
-    }
-
-    .energy-text {
-      margin-top: 6px;
-      font-size: 0.9em;
-      color: #fff;
-    }
-
-    .back-btn {
-      margin-top: 10px;
-      display: inline-block;
-      text-decoration: none;
-      font-size: 0.9em;
-      color: #ccc;
-      padding: 6px 14px;
-      border: 1px solid #555;
-      border-radius: 6px;
-    }
-
-    .back-btn:hover {
-      background: #111;
-      color: #fff;
-    }
-  </style>
 </head>
 <body>
-  <div class="timer" id="daily-timer">
-    <div id="daily-date">📅 امروز</div>
-    <div class="clock-text" id="clock-time">🕒 حالا</div>
-  </div>
+  <canvas id="stars-canvas"></canvas>
 
-  <div class="spacer"></div>
-
-  <div class="daily-bottom">
-    <div class="energy-bar-wrapper">
-      <div class="energy-bar-fill normal" id="energy-fill"></div>
+  <div class="main-container">
+    <div class="timer" id="daily-timer">
+      <div id="daily-date">📅 امروز</div>
+      <div class="clock-text" id="clock-time">🕒 حالا</div>
     </div>
-    <div class="energy-text" id="energy-remaining">باقی‌مانده خط انرژی: ...</div>
-    <a href="index.html" class="back-btn">← بازگشت به خانه</a>
+
+    <div class="spacer"></div>
+
+    <div class="daily-bottom">
+      <div class="energy-bar-wrapper">
+        <div class="energy-bar-fill normal" id="energy-fill"></div>
+      </div>
+      <div class="energy-text" id="energy-remaining">باقی‌مانده خط انرژی: ...</div>
+      <a href="index.html" class="back-btn">← بازگشت به خانه</a>
+    </div>
   </div>
 
   <script src="core.js"></script>
+  <script src="stars.js"></script>
   <script>
     function updateEnergyDisplay() {
       const energy = ZerinCore.getEnergy();
@@ -143,6 +68,7 @@
 
     function fullUpdate() {
       ZerinCore.loadData();
+      ZerinCore.checkDailyCycle();
       updateDate();
       updateClock();
       updateEnergyDisplay();
@@ -154,7 +80,7 @@
       setInterval(() => {
         ZerinCore.checkDailyCycle();
         updateEnergyDisplay();
-      }, 60000); // بررسی پایان روز و شارژ
+      }, 60000);
     });
 
     window.addEventListener("pageshow", fullUpdate);
