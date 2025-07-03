@@ -18,9 +18,7 @@
         <span id="sun-count">0.00</span> <span class="unit">SUN</span>
       </div>
       <div class="league-info">
-        <span id="league-label" style="cursor: default;">
-          🔰 Starter League
-        </span>
+        <span id="league-label">🔰 Starter League</span>
       </div>
     </section>
 
@@ -75,7 +73,8 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", refreshMainUI);
+    // بارگذاری مطمئن بعد از لود کامل فایل‌ها
+    window.addEventListener("load", refreshMainUI);
     window.addEventListener("focus", refreshMainUI);
 
     const sunCoin = document.getElementById("sun-coin");
