@@ -36,7 +36,7 @@
     #ref-link {
       width: 90%;
       padding: 8px;
-      margin-top: 12px;
+      margin-top: 14px;
       border-radius: 5px;
       border: none;
       text-align: center;
@@ -69,28 +69,28 @@
       bottom: 0;
       left: 0;
       right: 0;
-      display: flex;
-      justify-content: space-around;
+      padding: 12px;
       background: #111;
       border-top: 1px solid #333;
-      padding: 10px 0;
+      display: flex;
+      justify-content: center;
       z-index: 1000;
     }
 
-    .nav-btn {
-      background: none;
-      border: none;
+    .back-btn {
+      padding: 10px 30px;
+      font-size: 0.95em;
       color: #fff;
-      font-size: 0.9em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: none;
+      border: 2px solid #888;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    .nav-btn img {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 4px;
+    .back-btn:hover {
+      border-color: #ffe14a;
+      color: #ffe14a;
     }
   </style>
 </head>
@@ -145,22 +145,7 @@
   </script>
 
   <nav class="bottom-nav">
-    <button class="nav-btn" onclick="location.href='referral.html'">
-      <img src="referral-icon.png" />
-      <span>Referral</span>
-    </button>
-    <button class="nav-btn" onclick="location.href='channels.html'">
-      <img src="channels-icon.png" />
-      <span>Channels</span>
-    </button>
-    <button class="nav-btn" onclick="location.href='wallet.html'">
-      <img src="wallet-icon.png" />
-      <span>Wallet</span>
-    </button>
-    <button class="nav-btn" onclick="location.href='index.html'">
-      <img src="home-icon.png" />
-      <span>Home</span>
-    </button>
+    <button class="back-btn" onclick="location.href='index.html'">Back</button>
   </nav>
 
 </body>
