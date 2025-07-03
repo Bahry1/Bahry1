@@ -1,147 +1,131 @@
-(function () {
-  const maxEnergyRaw = 5000; // معادل 50.00
-  let sun = 0;
-  let energy = maxEnergyRaw;
-  let tapCount = 0;
+const MAX_ENERGY = 50;
+let energy = 0;
+let sun = 0;
+let tapCount = 0;
+let currentCup = ""; // سطح فعلی ذخیره‌شده
 
-  function getTodayKey() {
-    return new Date().toDateString(); // "Mon Jul 8 2025"
+const saveData = () => {
+  localStorage.setItem("energy", energy.toString());
+  localStorage.setItem("sun", sun.toString());
+  localStorage.setItem("tapCount", tapCount.toString());
+  localStorage.setItem("currentCup", currentCup);
+};
+
+const loadData = () => {
+  energy = parseFloat(localStorage.getItem("energy")) || 0;
+  sun = parseFloat(localStorage.getItem("sun")) || 0;
+  tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
+  currentCup = localStorage.getItem("currentCup") || "";
+};
+
+const updateUI = () => {
+  const bar = document.getElementById("energy-bar-fill");
+  if (bar) {
+    const percent = (energy / MAX_ENERGY) * 100;
+    bar.style.width = percent + "%";
+    bar.style.background = percent <= 10 ? "#f33" : "#0cf";
   }
 
-  function loadData() {
-    const rawSun = localStorage.getItem("sunRaw");
-    sun = rawSun !== null ? parseFloat(rawSun) : 0;
-
-    const rawEnergy = localStorage.getItem("energyRaw");
-    energy = rawEnergy !== null ? parseFloat(rawEnergy) : maxEnergyRaw;
-
-    const rawTap = localStorage.getItem("tapCount");
-    tapCount = rawTap !== null ? parseInt(rawTap) : 0;
-
-    sun = Math.round(sun);
-    energy = Math.round(energy);
+  const sunEl = document.getElementById("sun-count");
+  if (sunEl) {
+    sunEl.textContent = sun.toFixed(2);
   }
 
-  function saveData() {
-    localStorage.setItem("sunRaw", sun.toString());
-    localStorage.setItem("energyRaw", energy.toString());
-    localStorage.setItem("tapCount", tapCount.toString());
+  const tapEl = document.getElementById("tap-count");
+  if (tapEl) {
+    tapEl.textContent = tapCount;
   }
+};
 
-  function updateSun() {
-    const el = document.getElementById("sun-count");
-    if (el) el.textContent = (sun / 100).toFixed(2);
-  }
+window.ZerinCore = {
+  MAX_ENERGY,
 
-  function updateEnergyBar() {
-    const bar = document.getElementById("energy-bar-fill");
-    const label = document.getElementById("energy-display") || document.querySelector(".energy-label");
-    const percent = (energy / maxEnergyRaw) * 100;
+  getEnergy: () => energy,
+  getSun: () => sun,
+  getTapCount: () => tapCount,
 
-    if (bar) {
-      bar.style.width = percent + "%";
-      bar.classList.remove("low", "normal");
-      bar.classList.add(percent <= 10 ? "low" : "normal");
-    }
+  loadData: () => {
+    loadData();
+    updateUI();
+  },
 
-    if (label) {
-      label.textContent = `${(energy / 100).toFixed(0)} / ${(maxEnergyRaw / 100).toFixed(0)} Energy`;
-    }
-  }
+  saveData: () => {
+    saveData();
+  },
 
-  function updateTap() {
-    const el = document.getElementById("tap-count");
-    if (el) el.textContent = tapCount.toString();
-  }
+  updateUI: () => {
+    updateUI();
+  },
 
-  function checkEnergyReset() {
-    const now = new Date();
-    const today = getTodayKey();
-    const alreadyReset = localStorage.getItem("energyReset") === today;
-
-    if (!alreadyReset && now.getHours() === 23 && now.getMinutes() >= 55) {
-      energy = 0;
+  useEnergy: (amount) => {
+    if (energy >= amount) {
+      energy -= amount;
       saveData();
-      localStorage.setItem("energyReset", today);
-      console.log("🔥 Energy burned at 23:55");
+      updateUI();
+      return true;
     }
-  }
+    return false;
+  },
 
-  function checkEnergyCharge() {
-    const now = new Date();
-    const today = getTodayKey();
-    const alreadyCharged = localStorage.getItem("energyCharge") === today;
+  addSun: (amount) => {
+    sun += amount;
 
-    if (!alreadyCharged && now.getHours() === 0 && now.getMinutes() >= 5) {
-      energy = maxEnergyRaw;
-      saveData();
-      localStorage.setItem("energyCharge", today);
-      console.log("⚡ Energy charged at 00:05");
-    }
-  }
+    const newCup = ZerinCore.getCupLevel();
+    if (newCup !== currentCup) {
+      currentCup = newCup;
 
-  window.ZerinCore = {
-    getSun: () => sun / 100,
-    getEnergy: () => energy / 100,
-    getTapCount: () => tapCount,
-    addSun: (val) => {
-      sun += Math.round(val * 100);
-      saveData();
-      updateSun();
-    },
-    addTap: () => {
-      tapCount++;
-      saveData();
-      updateTap();
-    },
-    useEnergy: (val) => {
-      const cost = Math.round(val * 100);
-      if (energy >= cost) {
-        energy -= cost;
-        saveData();
-        updateEnergyBar();
-        return true;
+      let reward = 0;
+      switch (newCup) {
+        case "🥉 Bronze":    reward = 10; break;
+        case "🥈 Silver":    reward = 20; break;
+        case "🏆 Gold":      reward = 30; break;
+        case "💚 Emerald":   reward = 40; break;
+        case "💙 Sapphire":  reward = 50; break;
+        case "❤️ Ruby":      reward = 60; break;
+        case "💎 Diamond":   reward = 70; break;
+        case "🌟 Legendary": reward = 80; break;
       }
-      return false;
-    },
-    rechargeEnergy: (val) => {
-      energy = Math.min(energy + Math.round(val * 100), maxEnergyRaw);
-      saveData();
-      updateEnergyBar();
-    },
-    resetAll: () => {
-      sun = 0;
-      energy = maxEnergyRaw;
-      tapCount = 0;
-      saveData();
-      ZerinCore.updateUI();
-    },
-    updateUI: () => {
-      updateSun();
-      updateEnergyBar();
-      updateTap();
-    },
-    loadData: loadData,
-    MAX_ENERGY: maxEnergyRaw / 100,
-    checkDailyCycle: () => {
-      checkEnergyReset();
-      checkEnergyCharge();
+
+      if (reward > 0) {
+        sun += reward;
+        console.log(`🎉 کاپ جدید: ${newCup}! 🎁 پاداش: +${reward} SUN`);
+      }
     }
-  };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    loadData();
-    ZerinCore.updateUI();
-    setInterval(ZerinCore.checkDailyCycle, 60000); // بررسی هر ۶۰ ثانیه
-  });
+    saveData();
+    updateUI();
+  },
 
-  window.addEventListener("pageshow", () => {
-    loadData();
-    ZerinCore.updateUI();
-  });
+  addTap: () => {
+    tapCount++;
+    saveData();
+    updateUI();
+  },
 
-  window.addEventListener("focus", () => {
-    loadData();
-    ZerinCore.updateUI();
-  });
-})();
+  rechargeEnergy: (amount) => {
+    energy = Math.min(MAX_ENERGY, energy + amount);
+    saveData();
+    updateUI();
+  },
+
+  resetAll: () => {
+    energy = MAX_ENERGY;
+    sun = 0;
+    tapCount = 0;
+    currentCup = "";
+    saveData();
+    updateUI();
+  },
+
+  getCupLevel: () => {
+    if (sun >= 600) return "🌟 Legendary";
+    if (sun >= 500) return "💎 Diamond";
+    if (sun >= 410) return "❤️ Ruby";
+    if (sun >= 340) return "💙 Sapphire";
+    if (sun >= 250) return "💚 Emerald";
+    if (sun >= 180) return "🏆 Gold";
+    if (sun >= 100) return "🥈 Silver";
+    if (sun >= 50)  return "🥉 Bronze";
+    return "🔰 Starter";
+  }
+};
