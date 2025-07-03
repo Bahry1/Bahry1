@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>ZerinSun</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="notifier.js"></script>
 </head>
 <body>
   <canvas id="stars-canvas"></canvas>
@@ -57,6 +58,8 @@
     </div>
   </div>
 
+  <div id="notifier"></div>
+
   <script src="core.js"></script>
   <script src="stars.js"></script>
   <script>
@@ -66,50 +69,52 @@
 
       const sunValue = document.getElementById("sun-value");
       const leagueLabel = document.getElementById("league-label");
-      const btn = document.getElementById("daily-btn");
+      const dailyBtn = document.getElementById("daily-btn");
 
       const sun = ZerinCore.getSun();
       const league = ZerinCore.getLeague(sun);
       const reward = ZerinCore.getLeagueReward(sun);
 
-      sunValue.textContent = sun;
+      sunValue.textContent = sun.toFixed(2);
       leagueLabel.textContent = `League: ${league}`;
 
       if (reward === 0) {
-        btn.textContent = "Available in Silver League ↑";
-        btn.disabled = true;
+        dailyBtn.textContent = "Available in Silver League ↑";
+        dailyBtn.disabled = true;
       } else if (ZerinCore.canClaimDaily()) {
-        btn.textContent = `Claim +${reward} SUN`;
-        btn.disabled = false;
+        dailyBtn.textContent = `Claim +${reward} SUN`;
+        dailyBtn.disabled = false;
       } else {
-        btn.textContent = "Come back tomorrow 🌙";
-        btn.disabled = true;
+        dailyBtn.textContent = "Come back tomorrow 🌙";
+        dailyBtn.disabled = true;
       }
 
-      btn.addEventListener("click", () => {
+      dailyBtn.addEventListener("click", () => {
         const gained = ZerinCore.claimDailyReward();
         if (gained > 0) {
-          btn.textContent = `✅ Claimed ${gained} SUN`;
-          btn.disabled = true;
-          sunValue.textContent = ZerinCore.getSun();
+          dailyBtn.textContent = `✅ Claimed ${gained} SUN`;
+          dailyBtn.disabled = true;
+          sunValue.textContent = ZerinCore.getSun().toFixed(2);
+          notify(`+${gained} SUN received! ☀️`, "success");
         }
       });
+
+      const coin = document.getElementById("sun-coin");
+      if (coin) {
+        coin.addEventListener("click", () => {
+          const tapValue = 0.25;
+          if (ZerinCore.useEnergy(tapValue)) {
+            ZerinCore.addSun(tapValue);
+            ZerinCore.addTap();
+            coin.style.transform = "scale(0.94)";
+            setTimeout(() => (coin.style.transform = "scale(1)"), 120);
+            sunValue.textContent = ZerinCore.getSun().toFixed(2);
+          } else {
+            notify("⚡ Not enough energy!", "warning");
+          }
+        });
+      }
     });
-  </script>
-  <script>
-    const sunCoin = document.getElementById("sun-coin");
-    if (sunCoin) {
-      sunCoin.addEventListener("click", () => {
-        const TAP_VALUE = 0.25;
-        if (ZerinCore.useEnergy(TAP_VALUE)) {
-          ZerinCore.addSun(TAP_VALUE);
-          ZerinCore.addTap();
-          sunCoin.style.transform = "scale(0.94)";
-          setTimeout(() => sunCoin.style.transform = "scale(1)", 150);
-          document.getElementById("sun-value").textContent = ZerinCore.getSun().toFixed(2);
-        }
-      });
-    }
   </script>
 </body>
 </html>
