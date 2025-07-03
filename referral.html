@@ -12,40 +12,58 @@
       padding: 20px;
       text-align: center;
     }
+
     .invite-box {
       background: #111;
       border: 1px solid #333;
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 100px;
+      margin-bottom: 120px;
     }
+
     .section-title {
       font-size: 1.5em;
       font-weight: bold;
       margin-bottom: 20px;
     }
+
     .reward-text {
       font-size: 1.2em;
       margin: 10px 0;
       color: #ffe14a;
     }
+
     #ref-link {
       width: 90%;
       padding: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
       border-radius: 5px;
       border: none;
       text-align: center;
+      background: #222;
+      color: #fff;
     }
+
     #copy-btn {
-      margin-top: 10px;
-      padding: 6px 12px;
+      margin-top: 8px;
+      padding: 6px 14px;
       border: none;
-      background: #333;
+      background: #444;
       color: #fff;
       border-radius: 5px;
       cursor: pointer;
     }
+
+    select {
+      margin-top: 14px;
+      padding: 10px;
+      background: #222;
+      border: 1px solid #555;
+      color: #999;
+      border-radius: 6px;
+      width: 90%;
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -57,6 +75,7 @@
       border-top: 1px solid #333;
       padding: 10px 0;
     }
+
     .nav-btn {
       background: none;
       border: none;
@@ -66,18 +85,11 @@
       flex-direction: column;
       align-items: center;
     }
+
     .nav-btn img {
       width: 24px;
       height: 24px;
       margin-bottom: 4px;
-    }
-    select {
-      margin-top: 12px;
-      padding: 8px;
-      background: #222;
-      border: 1px solid #444;
-      color: #fff;
-      border-radius: 5px;
     }
   </style>
 </head>
@@ -94,8 +106,7 @@
     </select>
 
     <input id="ref-link" readonly />
-    <br />
-    <button id="copy-btn">📋 Copy Your Link</button>
+    <button id="copy-btn">📋 Copy Link</button>
   </div>
 
   <script src="core.js"></script>
@@ -111,17 +122,22 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       const user = ZerinCore.getUserId();
-      const inviteCount = ZerinCore.getInviteCount(); // اتصال واقعی ✅
+      const inviteCount = ZerinCore.getInviteCount();
+
+      const reward = getReferralReward(inviteCount);
 
       document.getElementById("invite-count").textContent = `Invited: ${inviteCount}`;
-      document.getElementById("reward").textContent = `Your Reward: ${getReferralReward(inviteCount)} SUN`;
+      document.getElementById("reward").textContent = `Your Reward: ${reward} SUN`;
 
-      const link = `${window.location.origin}/index.html?ref=${user}`;
-      document.getElementById("ref-link").value = link;
+      const refLink = `${window.location.origin}/index.html?ref=${user}`;
+      document.getElementById("ref-link").value = refLink;
 
       document.getElementById("copy-btn").addEventListener("click", () => {
-        navigator.clipboard.writeText(link);
+        navigator.clipboard.writeText(refLink);
         document.getElementById("copy-btn").textContent = "✅ Copied!";
+        setTimeout(() => {
+          document.getElementById("copy-btn").textContent = "📋 Copy Link";
+        }, 1500);
       });
     });
   </script>
