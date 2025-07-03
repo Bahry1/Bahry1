@@ -63,26 +63,49 @@
   <script src="stars.js"></script>
 
   <script>
+    function updateEnergyBar() {
+      const fill = document.getElementById("energy-bar-fill");
+      if (fill && window.ZerinCore) {
+        const energy = ZerinCore.getEnergy(); // عدد بین ۰ تا ۱
+        fill.style.width = (energy * 100) + "%";
+      }
+    }
+
     function refreshMainUI() {
       if (window.ZerinCore) {
         ZerinCore.loadData();
         ZerinCore.updateUI();
 
+        // 🎖️ آپدیت نام لیگ
         const leagueEl = document.getElementById("league-label");
         if (leagueEl) {
           leagueEl.textContent = ZerinCore.getCupLevel() + " League";
         }
+
+        // ⚡ آپدیت نوار انرژی و عدد SUN
+        updateEnergyBar();
+        const sunCount = ZerinCore.getSun().toFixed(2);
+        document.getElementById("sun-count").textContent = sunCount;
       }
     }
 
     window.addEventListener("load", refreshMainUI);
     window.addEventListener("focus", refreshMainUI);
 
-    const sunCoin = document.getElementById("sun-coin");
-    sunCoin.addEventListener("click", () => {
-      if (ZerinCore.useEnergy(1)) {
-        ZerinCore.addSun(0.01);
-        ZerinCore.addTap();
+    // 🌞 کلیک روی خورشید
+    document.addEventListener("DOMContentLoaded", () => {
+      const sunCoin = document.getElementById("sun-coin");
+      const sunCountEl = document.getElementById("sun-count");
+
+      if (sunCoin && sunCountEl && window.ZerinCore) {
+        sunCoin.addEventListener("click", () => {
+          if (ZerinCore.useEnergy(1)) {
+            ZerinCore.addSun(0.01);      // ← مقدار SUN در هر کلیک
+            ZerinCore.addTap();          // ← شمارنده تب‌ها
+            sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
+            updateEnergyBar();
+          }
+        });
       }
     });
   </script>
