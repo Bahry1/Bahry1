@@ -2,29 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Wallet - ZerinSun</title>
+  <title>Channels - ZerinSun</title>
   <style>
     body {
       background: #111;
       color: #eee;
       font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+    }
+
+    .heading {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .heading h1 {
+      color: #00e6ff;
+      margin-bottom: 0.5rem;
+    }
+
+    .heading p {
+      color: #ccc;
+      font-size: 1rem;
       margin: 0;
     }
 
-    h1 {
-      color: #00e6ff;
-      margin-bottom: 40px;
+    .channel-box {
+      margin: 40px auto;
+      width: 90%;
+      max-width: 500px;
+      background: #222;
+      border: 2px solid #ffaa00aa;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 0 12px #000a;
+    }
+
+    .channel-box p {
+      color: #aaa;
+      margin: 0.5rem 0;
     }
 
     .back-btn {
-      display: block;
-      margin: 16px auto 40px;
-      padding: 8px 20px;
+      margin: 32px 0;
+      padding: 10px 24px;
       background: rgba(255,255,255,0.05);
       color: #ffd700;
       font-weight: bold;
@@ -34,13 +61,26 @@
       box-shadow: 0 0 6px #ffcc00aa;
       transition: background 0.2s ease;
     }
+
     .back-btn:hover {
       background: rgba(255,255,255,0.12);
     }
   </style>
 </head>
 <body>
-  <h1>Your wallet will appear here 💰</h1>
+  <div class="heading">
+    <h1>📡 ZerinSun Channels</h1>
+    <p>Welcome to our channels — pick your favorite topics and explore!</p>
+  </div>
+
+  <div class="channel-box">
+    <!-- کانال‌ها اینجا اضافه می‌شن -->
+    <p>🔗 Tech Channel</p>
+    <p>📈 Crypto News</p>
+    <p>🎮 Gaming Zone</p>
+    <!-- می‌تونی بعداً با JS این بخشو دینامیک کنی -->
+  </div>
+
   <a href="index.html" class="back-btn">← Back to Home</a>
 </body>
 </html>
