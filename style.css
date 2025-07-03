@@ -167,3 +167,34 @@ html, body {
   box-shadow: 0 0 10px #4caf50;
 }
 
+/* --- دکمه بازگشت در کادر مستطیلی --- */
+.back-wrapper {
+  background: #222;
+  border: 2px solid #ffaa00aa;
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  margin: 2.5rem auto 2rem;
+  box-shadow: 0 0 12px #000a;
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  max-width: 90%;
+  z-index: 2;
+}
+
+.back-btn {
+  padding: 12px 28px;
+  background: rgba(255,255,255,0.05);
+  color: #ffd700;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid #ffaa00aa;
+  font-size: 1.1rem;
+  transition: background 0.2s ease;
+  display: inline-block;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
