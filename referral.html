@@ -9,35 +9,61 @@
       background: #000;
       color: #fff;
       font-family: "Vazirmatn", sans-serif;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .heading {
       text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
+    .heading h1 {
+      color: #00e6ff;
+      margin-bottom: 0.5rem;
+    }
+
+    .heading p {
+      color: #ccc;
+      margin: 0;
+      font-size: 1rem;
     }
 
     .invite-box {
+      flex-grow: 1;
+      margin: 1rem auto;
+      width: 90%;
+      max-width: 500px;
       background: #111;
-      border: 1px solid #333;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 120px;
+      border: 2px solid #ffaa00aa;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 0 12px #000a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .section-title {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .reward-text {
-      font-size: 1.2em;
-      margin: 10px 0;
+      font-size: 1.4em;
+      margin-bottom: 1rem;
       color: #ffe14a;
     }
 
+    .reward-text {
+      font-size: 1.1em;
+      margin: 0.3rem 0;
+      color: #ffd700;
+    }
+
     #ref-link {
-      width: 90%;
-      padding: 8px;
-      margin-top: 14px;
-      border-radius: 5px;
+      width: 100%;
+      padding: 10px;
+      margin-top: 1rem;
+      border-radius: 8px;
       border: none;
       text-align: center;
       background: #222;
@@ -45,59 +71,69 @@
     }
 
     #copy-btn {
-      margin-top: 8px;
-      padding: 6px 14px;
+      margin-top: 10px;
+      padding: 8px 20px;
       border: none;
       background: #444;
       color: #fff;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: 0.3s ease;
     }
 
-    select {
+    #copy-btn:hover {
+      background: #666;
+    }
+
+    .invite-box select {
       margin-top: 14px;
       padding: 10px;
       background: #222;
       border: 1px solid #555;
-      color: #999;
+      color: #aaa;
       border-radius: 6px;
-      width: 90%;
+      width: 100%;
     }
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 12px;
-      background: #111;
-      border-top: 1px solid #333;
+    .back-wrapper {
+      background: #222;
+      border: 2px solid #ffaa00aa;
+      border-radius: 16px;
+      padding: 1rem 2rem;
+      margin: 2rem auto;
+      box-shadow: 0 0 12px #000a;
       display: flex;
       justify-content: center;
-      z-index: 1000;
+      width: fit-content;
+      max-width: 90%;
     }
 
     .back-btn {
-      padding: 10px 30px;
-      font-size: 0.95em;
-      color: #fff;
-      background: none;
-      border: 2px solid #888;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      padding: 12px 28px;
+      background: rgba(255,255,255,0.05);
+      color: #ffd700;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 10px;
+      border: 1px solid #ffaa00aa;
+      font-size: 1.1rem;
+      transition: background 0.2s ease;
     }
 
     .back-btn:hover {
-      border-color: #ffe14a;
-      color: #ffe14a;
+      background: rgba(255,255,255,0.12);
     }
   </style>
 </head>
 <body>
 
+  <div class="heading">
+    <h1>🎁 Invite Friends</h1>
+    <p>Share your link and earn SUN from your friends!</p>
+  </div>
+
   <div class="invite-box">
-    <div class="section-title">🎁 Invite Friends</div>
+    <div class="section-title">Referral Summary</div>
 
     <div class="reward-text" id="reward">Your Reward: 0 SUN</div>
     <div class="reward-text" id="invite-count">Invited: 0</div>
@@ -108,6 +144,10 @@
 
     <input id="ref-link" readonly />
     <button id="copy-btn">📋 Copy Link</button>
+  </div>
+
+  <div class="back-wrapper">
+    <a href="index.html" class="back-btn">← Back to Home</a>
   </div>
 
   <script src="core.js"></script>
@@ -126,7 +166,6 @@
       const inviteCount = ZerinCore.getInviteCount();
 
       const reward = getReferralReward(inviteCount);
-
       document.getElementById("invite-count").textContent = `Invited: ${inviteCount}`;
       document.getElementById("reward").textContent = `Your Reward: ${reward} SUN`;
 
@@ -143,10 +182,6 @@
       });
     });
   </script>
-
-  <nav class="bottom-nav">
-    <button class="back-btn" onclick="location.href='index.html'">Back</button>
-  </nav>
 
 </body>
 </html>
