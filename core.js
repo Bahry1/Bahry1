@@ -127,5 +127,20 @@ window.ZerinCore = {
     if (sun >= 100) return "🥈 Silver";
     if (sun >= 50)  return "🥉 Bronze";
     return "🔰 Starter";
-  }
-};
+  },
+
+  // 👉 شروع بخش Referral
+
+  getUserId: () => {
+    let id = localStorage.getItem("userId");
+    if (!id) {
+      id = "user" + Math.floor(Math.random() * 100000);
+      localStorage.setItem("userId", id);
+    }
+    return id;
+  },
+
+  getInviteCount: () => {
+    const user = ZerinCore.getUserId();
+    const stats = JSON.parse(localStorage.getItem("refStats") || "{}");
+    return stats
