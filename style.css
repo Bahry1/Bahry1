@@ -161,7 +161,9 @@ html, body {
 
 .cup-item.active {
   border: 2px solid #4caf50;
-  background-color: #e6ffe6;
+  background-color: #1d3f1d;
   border-radius: 8px;
   font-weight: bold;
+  box-shadow: 0 0 10px #4caf50;
 }
+
