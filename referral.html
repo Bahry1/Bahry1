@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>دعوت دوستان - ZerinSun</title>
+  <meta charset="UTF-8" />
+  <title>Invite Friends - ZerinSun</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
@@ -17,19 +17,34 @@
       border: 1px solid #333;
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 60px;
+      margin-bottom: 100px;
     }
-    .invite-count {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-    }
-    .reward-box {
-      background: #222;
-      padding: 14px;
-      border-radius: 8px;
-      margin-top: 10px;
-      color: #ffe14a;
+    .section-title {
+      font-size: 1.5em;
       font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .reward-text {
+      font-size: 1.2em;
+      margin: 10px 0;
+      color: #ffe14a;
+    }
+    #ref-link {
+      width: 90%;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+      text-align: center;
+    }
+    #copy-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border: none;
+      background: #333;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
     }
     .bottom-nav {
       position: fixed;
@@ -56,16 +71,31 @@
       height: 24px;
       margin-bottom: 4px;
     }
+    select {
+      margin-top: 12px;
+      padding: 8px;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
 
-  <h2>🎁 دعوت دوستان</h2>
-
   <div class="invite-box">
-    <div class="invite-count" id="invite-count">در حال بارگذاری...</div>
-    <div class="reward-box" id="reward-display">پاداش شما: -- SUN</div>
-    <div class="reward-box" id="next-goal">🎯 ...</div>
+    <div class="section-title">🎁 Invite Friends</div>
+
+    <div class="reward-text" id="reward">Your Reward: 0 SUN</div>
+    <div class="reward-text" id="invite-count">Invited: 0</div>
+
+    <select disabled>
+      <option>Invited Friends (not visible)</option>
+    </select>
+
+    <input id="ref-link" readonly />
+    <br />
+    <button id="copy-btn">📋 Copy Your Link</button>
   </div>
 
   <script src="core.js"></script>
@@ -79,35 +109,27 @@
       return 0;
     }
 
-    function getNextThreshold(count) {
-      if (count < 5) return 5;
-      if (count < 10) return 10;
-      if (count < 15) return 15;
-      if (count < 20) return 20;
-      if (count < 30) return 30;
-      return null;
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
-      const inviteCount = ZerinCore.getInviteCount(); // ✅ شمارنده واقعی
+      const user = ZerinCore.getUserId();
+      const inviteCount = ZerinCore.getInviteCount(); // اتصال واقعی ✅
 
-      document.getElementById("invite-count").innerHTML =
-        `شما تاکنون <span>${inviteCount}</span> نفر را دعوت کرده‌اید.`;
+      document.getElementById("invite-count").textContent = `Invited: ${inviteCount}`;
+      document.getElementById("reward").textContent = `Your Reward: ${getReferralReward(inviteCount)} SUN`;
 
-      const reward = getReferralReward(inviteCount);
-      document.getElementById("reward-display").textContent = `پاداش شما: ${reward} SUN`;
+      const link = `${window.location.origin}/index.html?ref=${user}`;
+      document.getElementById("ref-link").value = link;
 
-      const next = getNextThreshold(inviteCount);
-      document.getElementById("next-goal").textContent = next
-        ? `🎯 برای دریافت پاداش بعدی، ${next - inviteCount} دعوت دیگر نیاز دارید.`
-        : `✅ شما به بالاترین پاداش رسیدید!`;
+      document.getElementById("copy-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText(link);
+        document.getElementById("copy-btn").textContent = "✅ Copied!";
+      });
     });
   </script>
 
   <nav class="bottom-nav">
     <button class="nav-btn" onclick="location.href='index.html'">
-      <img src="home-icon.png" alt="بازگشت" />
-      <span>بازگشت</span>
+      <img src="home-icon.png" alt="Back" />
+      <span>Back</span>
     </button>
   </nav>
 
