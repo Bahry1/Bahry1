@@ -164,8 +164,8 @@
     document.addEventListener("DOMContentLoaded", () => {
       const user = ZerinCore.getUserId();
       const inviteCount = ZerinCore.getInviteCount();
-
       const reward = getReferralReward(inviteCount);
+
       document.getElementById("invite-count").textContent = `Invited: ${inviteCount}`;
       document.getElementById("reward").textContent = `Your Reward: ${reward} SUN`;
 
