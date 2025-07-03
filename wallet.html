@@ -3,108 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <title>Wallet - ZerinSun</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #111;
-      color: #eee;
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .heading {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
-
-    .heading h1 {
-      color: #ffc107;
-      margin-bottom: 0.5rem;
-    }
-
-    .heading p {
-      color: #ccc;
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .wallet-box {
-      flex-grow: 1;
-      margin: 0 auto;
-      width: 90%;
-      max-width: 500px;
-      background: #222;
-      border: 2px solid #ffaa00aa;
-      border-radius: 16px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 12px #000a;
-    }
-
-    .wallet-box img {
-      width: 80px;
-      margin-bottom: 1rem;
-    }
-
-    .wallet-box .balance {
-      font-size: 2rem;
-      color: #00e6ff;
-      margin: 0.5rem 0;
-    }
-
-    .wallet-box .label {
-      color: #ccc;
-      font-size: 1rem;
-    }
-
-    .back-btn {
-      margin: 1.5rem auto 2rem;
-      padding: 12px 28px;
-      background: rgba(255,255,255,0.05);
-      color: #ffd700;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 10px;
-      border: 1px solid #ffaa00aa;
-      box-shadow: 0 0 6px #ffcc00aa;
-      font-size: 1.1rem;
-      transition: background 0.2s ease;
-    }
-
-    .back-btn:hover {
-      background: rgba(255,255,255,0.12);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <canvas id="stars-canvas"></canvas>
 
-  <div class="heading">
-    <h1>💰 Your Wallet</h1>
-    <p>Here’s your ZerinSun balance — stay shining!</p>
+  <div class="main-container">
+    <div class="sun-score">
+      <span id="wallet-sun">0</span> <span class="unit">SUN</span>
+    </div>
+
+    <div class="league-info">
+      <span id="wallet-league">League: 🥉 Bronze</span>
+    </div>
+
+    <div class="coin-panel">
+      <div class="coin-wrapper">
+        <img src="coin.png" alt="SUN Coin" style="width: 120px; height: 120px;" />
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="back-wrapper">
+      <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
   </div>
 
-  <div class="wallet-box">
-    <img src="assets/icons/wallet.png" alt="Wallet Icon" />
-    <div class="balance" id="sunBalance">0 SUN</div>
-    <div class="label">Current Balance</div>
-  </div>
-
-  <a href="index.html" class="back-btn">← Back to Home</a>
-
+  <script src="core.js"></script>
+  <script src="stars.js"></script>
   <script>
-    // Load balance from localStorage or default to 0
-    const balance = localStorage.getItem("sun") || 0;
-    document.getElementById("sunBalance").innerText = balance + " SUN";
+    document.addEventListener("DOMContentLoaded", () => {
+      ZerinCore.loadData();
+      const sun = ZerinCore.getSun();
+      const league = ZerinCore.getLeague();
+
+      document.getElementById("wallet-sun").textContent = sun.toFixed(2);
+      document.getElementById("wallet-league").textContent = `League: ${league}`;
+    });
   </script>
 </body>
 </html>
