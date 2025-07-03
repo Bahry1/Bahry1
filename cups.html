@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cups - ZerinSun</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,60 +9,44 @@
   <canvas id="stars-canvas"></canvas>
 
   <div class="main-container">
-    <h1>🏆 Your Cups</h1>
-
-    <div class="cup-row">
-      <div class="cup-item" data-name="Bronze">
-        <img src="images/cups/bronze-cup.png" alt="Bronze Cup" />
-        <div class="cup-label">Bronze</div>
-        <div class="cup-stage">50+</div>
-        <div class="cup-reward">Reward: +10</div>
-      </div>
-      <div class="cup-item" data-name="Silver">
-        <img src="images/cups/silver-cup.png" alt="Silver Cup" />
-        <div class="cup-label">Silver</div>
-        <div class="cup-stage">100+</div>
-        <div class="cup-reward">Reward: +20</div>
-      </div>
-      <div class="cup-item" data-name="Gold">
-        <img src="images/cups/gold-cup.png" alt="Gold Cup" />
-        <div class="cup-label">Gold</div>
-        <div class="cup-stage">180+</div>
-        <div class="cup-reward">Reward: +30</div>
-      </div>
-      <div class="cup-item" data-name="Emerald">
-        <img src="images/cups/emerald-cup.png" alt="Emerald Cup" />
-        <div class="cup-label">Emerald</div>
-        <div class="cup-stage">250+</div>
-        <div class="cup-reward">Reward: +40</div>
-      </div>
-      <div class="cup-item" data-name="Sapphire">
-        <img src="images/cups/sapphire-cup.png" alt="Sapphire Cup" />
-        <div class="cup-label">Sapphire</div>
-        <div class="cup-stage">340+</div>
-        <div class="cup-reward">Reward: +50</div>
-      </div>
-      <div class="cup-item" data-name="Ruby">
-        <img src="images/cups/ruby-cup.png" alt="Ruby Cup" />
-        <div class="cup-label">Ruby</div>
-        <div class="cup-stage">410+</div>
-        <div class="cup-reward">Reward: +60</div>
-      </div>
-      <div class="cup-item" data-name="Diamond">
-        <img src="images/cups/diamond-cup.png" alt="Diamond Cup" />
-        <div class="cup-label">Diamond</div>
-        <div class="cup-stage">500+</div>
-        <div class="cup-reward">Reward: +70</div>
-      </div>
-      <div class="cup-item" data-name="Legendary">
-        <img src="images/cups/legendary-cup.png" alt="Legendary Cup" />
-        <div class="cup-label">Legendary</div>
-        <div class="cup-stage">600+</div>
-        <div class="cup-reward">Reward: +80</div>
-      </div>
+    <div class="heading">
+      <h1>🏆 Your Cups</h1>
     </div>
 
-    <div class="spacer"></div>
+    <div class="cup-row">
+      <div class="cup-item" data-cup="🥉 Bronze">
+        <img src="images/cups/bronze-cup.png" alt="Bronze" />
+        <div class="cup-label">🥉 Bronze</div>
+      </div>
+      <div class="cup-item" data-cup="🥈 Silver">
+        <img src="images/cups/silver-cup.png" alt="Silver" />
+        <div class="cup-label">🥈 Silver</div>
+      </div>
+      <div class="cup-item" data-cup="🏆 Gold">
+        <img src="images/cups/gold-cup.png" alt="Gold" />
+        <div class="cup-label">🏆 Gold</div>
+      </div>
+      <div class="cup-item" data-cup="💚 Emerald">
+        <img src="images/cups/emerald-cup.png" alt="Emerald" />
+        <div class="cup-label">💚 Emerald</div>
+      </div>
+      <div class="cup-item" data-cup="💙 Sapphire">
+        <img src="images/cups/sapphire-cup.png" alt="Sapphire" />
+        <div class="cup-label">💙 Sapphire</div>
+      </div>
+      <div class="cup-item" data-cup="❤️ Ruby">
+        <img src="images/cups/ruby-cup.png" alt="Ruby" />
+        <div class="cup-label">❤️ Ruby</div>
+      </div>
+      <div class="cup-item" data-cup="💎 Diamond">
+        <img src="images/cups/diamond-cup.png" alt="Diamond" />
+        <div class="cup-label">💎 Diamond</div>
+      </div>
+      <div class="cup-item" data-cup="🌟 Legendary">
+        <img src="images/cups/legendary-cup.png" alt="Legendary" />
+        <div class="cup-label">🌟 Legendary</div>
+      </div>
+    </div>
 
     <div class="back-wrapper">
       <a href="index.html" class="back-btn">← Back to Home</a>
@@ -75,13 +58,12 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       ZerinCore.loadData();
-      const sun = ZerinCore.getSun();
-      const currentCup = ZerinCore.getCupLevel().replace(/[^a-z]/gi, '');
+      const cup = ZerinCore.getCupLevel();
+      const items = document.querySelectorAll(".cup-item");
 
-      const cupItems = document.querySelectorAll('.cup-item');
-      cupItems.forEach(item => {
-        if (item.dataset.name && item.dataset.name.toLowerCase() === currentCup.toLowerCase()) {
-          item.classList.add('active-cup');
+      items.forEach(el => {
+        if (el.dataset.cup === cup) {
+          el.classList.add("active");
         }
       });
     });
