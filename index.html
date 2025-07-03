@@ -9,7 +9,6 @@
   <canvas id="stars-canvas"></canvas>
 
   <div class="main-container">
-
     <div class="sun-score">
       <span id="sun-value">0</span> <span class="unit">SUN</span>
     </div>
@@ -24,16 +23,12 @@
       </div>
     </div>
 
-    <!-- 🪙 پاداش روزانه -->
     <div class="daily-wrapper">
       <button id="daily-btn" disabled>Loading...</button>
     </div>
-
   </div>
 
-  <!-- ناوبری پایین -->
   <div class="bottom-nav">
-    <!-- مثال ناوبری -->
     <button class="nav-btn" onclick="location.href='wallet.html'">
       <img src="wallet-icon.png" alt="Wallet" />
       <span>Wallet</span>
@@ -42,9 +37,20 @@
       <img src="channel-icon.png" alt="Channels" />
       <span>Channels</span>
     </button>
+    <button class="nav-btn" onclick="location.href='profile.html'">
+      <img src="profile-icon.png" alt="Profile" />
+      <span>Profile</span>
+    </button>
+    <button class="nav-btn" onclick="location.href='invite.html'">
+      <img src="invite-icon.png" alt="Invite" />
+      <span>Invite</span>
+    </button>
+    <button class="nav-btn" onclick="location.href='settings.html'">
+      <img src="settings-icon.png" alt="Settings" />
+      <span>Settings</span>
+    </button>
   </div>
 
-  <!-- نوار انرژی -->
   <div class="energy-bar-container">
     <div id="energy-bar-fill">
       <span class="energy-label">Energy</span>
@@ -52,8 +58,12 @@
   </div>
 
   <script src="core.js"></script>
+  <script src="stars.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      ZerinCore.loadData();
+      ZerinCore.checkDailyCycle();
+
       const sunValue = document.getElementById("sun-value");
       const leagueLabel = document.getElementById("league-label");
       const btn = document.getElementById("daily-btn");
@@ -85,6 +95,21 @@
         }
       });
     });
+  </script>
+  <script>
+    const sunCoin = document.getElementById("sun-coin");
+    if (sunCoin) {
+      sunCoin.addEventListener("click", () => {
+        const TAP_VALUE = 0.25;
+        if (ZerinCore.useEnergy(TAP_VALUE)) {
+          ZerinCore.addSun(TAP_VALUE);
+          ZerinCore.addTap();
+          sunCoin.style.transform = "scale(0.94)";
+          setTimeout(() => sunCoin.style.transform = "scale(1)", 150);
+          document.getElementById("sun-value").textContent = ZerinCore.getSun().toFixed(2);
+        }
+      });
+    }
   </script>
 </body>
 </html>
