@@ -190,18 +190,18 @@
       }
     });
   </script>
+<!-- انتهای cups.html -->
+  <script>
+    const currentCup = ZerinCore.getCupLevel(); // مثلاً Emerald
+    const cups = document.querySelectorAll('.cup-item');
 
+    cups.forEach(cup => {
+      const title = cup.querySelector('h2');
+      if (title && title.textContent.includes(currentCup)) {
+        cup.classList.add('active');
+      }
+    });
+  </script>
 </body>
 </html>
 
-<script>
-  const currentCup = ZerinCore.getCupLevel(); // مثلاً "Emerald"
-  const cups = document.querySelectorAll('.cup-item');
-
-  cups.forEach(cup => {
-    const title = cup.querySelector('h2');
-    if (title && title.textContent.includes(currentCup)) {
-      cup.classList.add('active');
-    }
-  });
-</script>
