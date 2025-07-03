@@ -2,7 +2,7 @@ const MAX_ENERGY = 50;
 let energy = 0;
 let sun = 0;
 let tapCount = 0;
-let currentCup = ""; // سطح فعلی ذخیره‌شده
+let currentCup = "";
 
 const saveData = () => {
   localStorage.setItem("energy", energy.toString());
@@ -88,7 +88,7 @@ window.ZerinCore = {
 
       if (reward > 0) {
         sun += reward;
-        console.log(`🎉 کاپ جدید: ${newCup}! 🎁 پاداش: +${reward} SUN`);
+        console.log(`🎉 New Cup: ${newCup}! 🎁 Bonus: +${reward} SUN`);
       }
     }
 
@@ -113,6 +113,7 @@ window.ZerinCore = {
     sun = 0;
     tapCount = 0;
     currentCup = "";
+    localStorage.removeItem("ref-counted");
     saveData();
     updateUI();
   },
@@ -129,18 +130,47 @@ window.ZerinCore = {
     return "🔰 Starter";
   },
 
-  // 👉 شروع بخش Referral
+  // ☀️ Referral Features
 
   getUserId: () => {
     let id = localStorage.getItem("userId");
     if (!id) {
-      id = "user" + Math.floor(Math.random() * 100000);
+      id = "user" + Math.floor(Math.random() * 1000000);
       localStorage.setItem("userId", id);
     }
     return id;
   },
 
   getInviteCount: () => {
-    const user = ZerinCore.getUserId();
+    const id = ZerinCore.getUserId();
     const stats = JSON.parse(localStorage.getItem("refStats") || "{}");
-    return stats
+    return stats[id] || 0;
+  },
+
+  sendReferral: (referrerId) => {
+    if (!referrerId) return;
+    const stats = JSON.parse(localStorage.getItem("refStats") || "{}");
+    stats[referrerId] = (stats[referrerId] || 0) + 1;
+    localStorage.setItem("refStats", JSON.stringify(stats));
+  },
+
+  getReferralReward: (count) => {
+    if (count >= 1 && count <= 5) return 5;
+    if (count <= 10) return 10;
+    if (count <= 15) return 15;
+    if (count <= 20) return 20;
+    if (count <= 30) return 30;
+    return 0;
+  },
+
+  addReferralReward: () => {
+    const count = ZerinCore.getInviteCount();
+    const reward = ZerinCore.getReferralReward(count);
+    if (reward > 0) {
+      sun += reward;
+      saveData();
+      updateUI();
+      console.log(`🎯 Referral reward added: ${reward} SUN`);
+    }
+  }
+};
