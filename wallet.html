@@ -4,27 +4,72 @@
   <meta charset="UTF-8" />
   <title>Wallet - ZerinSun</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       background: #111;
       color: #eee;
       font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .heading {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
+    .heading h1 {
+      color: #ffc107;
+      margin-bottom: 0.5rem;
+    }
+
+    .heading p {
+      color: #ccc;
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .wallet-box {
+      flex-grow: 1;
+      margin: 0 auto;
+      width: 90%;
+      max-width: 500px;
+      background: #222;
+      border: 2px solid #ffaa00aa;
+      border-radius: 16px;
+      padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      margin: 0;
+      box-shadow: 0 0 12px #000a;
     }
 
-    h1 {
+    .wallet-box img {
+      width: 80px;
+      margin-bottom: 1rem;
+    }
+
+    .wallet-box .balance {
+      font-size: 2rem;
       color: #00e6ff;
-      margin-bottom: 40px;
+      margin: 0.5rem 0;
+    }
+
+    .wallet-box .label {
+      color: #ccc;
+      font-size: 1rem;
     }
 
     .back-btn {
-      display: block;
-      margin: 16px auto 40px;
-      padding: 8px 20px;
+      margin: 1.5rem auto 2rem;
+      padding: 12px 28px;
       background: rgba(255,255,255,0.05);
       color: #ffd700;
       font-weight: bold;
@@ -32,15 +77,34 @@
       border-radius: 10px;
       border: 1px solid #ffaa00aa;
       box-shadow: 0 0 6px #ffcc00aa;
+      font-size: 1.1rem;
       transition: background 0.2s ease;
     }
+
     .back-btn:hover {
       background: rgba(255,255,255,0.12);
     }
   </style>
 </head>
 <body>
-  <h1>Your wallet will appear here 💰</h1>
+
+  <div class="heading">
+    <h1>💰 Your Wallet</h1>
+    <p>Here’s your ZerinSun balance — stay shining!</p>
+  </div>
+
+  <div class="wallet-box">
+    <img src="assets/icons/wallet.png" alt="Wallet Icon" />
+    <div class="balance" id="sunBalance">0 SUN</div>
+    <div class="label">Current Balance</div>
+  </div>
+
   <a href="index.html" class="back-btn">← Back to Home</a>
+
+  <script>
+    // Load balance from localStorage or default to 0
+    const balance = localStorage.getItem("sun") || 0;
+    document.getElementById("sunBalance").innerText = balance + " SUN";
+  </script>
 </body>
 </html>
