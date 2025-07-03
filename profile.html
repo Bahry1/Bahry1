@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile - ZerinSun</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Vazirmatn", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .heading {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
+    .heading h1 {
+      color: #00e6ff;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-box {
+      background: #111;
+      border: 2px solid #ffaa00aa;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      width: 90%;
+      max-width: 500px;
+      margin: 1rem auto;
+      box-shadow: 0 0 12px #000a;
+      text-align: center;
+    }
+
+    .profile-item {
+      margin: 0.8rem 0;
+      font-size: 1.1rem;
+      color: #ffd700;
+    }
+
+    .profile-item span {
+      color: #ccc;
+      font-weight: normal;
+      font-size: 0.95em;
+    }
+
+    .back-wrapper {
+      background: #222;
+      border: 2px solid #ffaa00aa;
+      border-radius: 16px;
+      padding: 1rem 2rem;
+      margin: 2rem auto;
+      box-shadow: 0 0 12px #000a;
+      display: flex;
+      justify-content: center;
+      width: fit-content;
+      max-width: 90%;
+    }
+
+    .back-btn {
+      padding: 12px 28px;
+      background: rgba(255,255,255,0.05);
+      color: #ffd700;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 10px;
+      border: 1px solid #ffaa00aa;
+      font-size: 1.1rem;
+      transition: background 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.12);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heading">
+    <h1>👤 My Profile</h1>
+  </div>
+
+  <div class="profile-box">
+    <div class="profile-item">User ID: <span id="user-id">Loading...</span></div>
+    <div class="profile-item">League: <span id="user-league">Loading...</span></div>
+    <div class="profile-item">Total SUN: <span id="user-sun">0</span></div>
+    <div class="profile-item">Joined: <span id="join-date">N/A</span></div>
+  </div>
+
+  <div class="back-wrapper">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </div>
+
+  <script src="core.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = ZerinCore.getUserId();
+      const sun = ZerinCore.getSun();
+      const league = ZerinCore.getLeague(sun);
+      const joinDate = localStorage.getItem("joinDate") || new Date().toISOString().split("T")[0];
+
+      document.getElementById("user-id").textContent = user;
+      document.getElementById("user-sun").textContent = sun;
+      document.getElementById("user-league").textContent = league;
+      document.getElementById("join-date").textContent = joinDate;
+
+      localStorage.setItem("joinDate", joinDate); // فقط یک‌بار ذخیره می‌شه
+    });
+  </script>
+
+</body>
+</html>
