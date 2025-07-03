@@ -17,10 +17,9 @@
       <div class="sun-score">
         <span id="sun-count">0.00</span> <span class="unit">SUN</span>
       </div>
-
       <div class="league-info">
-        <span onclick="location.href='cups.html'" style="cursor: pointer;">
-          💚 Emerald League
+        <span id="league-label" onclick="location.href='cups.html'" style="cursor: pointer;">
+          League
         </span>
       </div>
     </section>
@@ -68,6 +67,11 @@
       if (window.ZerinCore) {
         ZerinCore.loadData();
         ZerinCore.updateUI();
+
+        const leagueEl = document.getElementById("league-label");
+        if (leagueEl) {
+          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
+        }
       }
     }
 
