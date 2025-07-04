@@ -47,3 +47,6 @@ bot.hears("📨 Invite friends", (ctx) => {
 });
 
 bot.launch();
+
+// ✅ این خط برای اجرا شدن express server روی Render
+require("./server");
