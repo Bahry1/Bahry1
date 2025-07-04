@@ -12,7 +12,9 @@ const saveData = () => {
 };
 
 const loadData = () => {
-  energy = parseFloat(localStorage.getItem("energy")) || 0;
+  const storedEnergy = parseFloat(localStorage.getItem("energy"));
+  energy = isNaN(storedEnergy) ? MAX_ENERGY : storedEnergy;
+
   sun = parseFloat(localStorage.getItem("sun")) || 0;
   tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
   currentCup = localStorage.getItem("currentCup") || "";
@@ -130,7 +132,18 @@ window.ZerinCore = {
     return "🔰 Starter";
   },
 
-  // ☀️ Referral Features
+  checkDailyCycle: () => {
+    const today = new Date().toDateString();
+    const last = localStorage.getItem("last-claim");
+
+    if (last !== today) {
+      localStorage.setItem("last-claim", today);
+      energy = MAX_ENERGY;
+      saveData();
+      updateUI();
+      console.log("⚡ انرژی روزانه شارژ شد!");
+    }
+  },
 
   getUserId: () => {
     let id = localStorage.getItem("userId");
