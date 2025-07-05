@@ -93,9 +93,20 @@
     }
 
     window.addEventListener("load", refreshMainUI);
-    window.addEventListener("focus", refreshMainUI);
 
-    // 🌞 کلیک روی خورشید
+    // 🎯 نسخه حرفه‌ای: جلوگیری از لرزش با کنترل زمان focus
+    let lastFocusTime = 0;
+    window.addEventListener("focus", () => {
+      const now = Date.now();
+      if (now - lastFocusTime > 2000) {
+        refreshMainUI();
+        lastFocusTime = now;
+      } else {
+        console.log("🔁 Skipped duplicate UI refresh on focus");
+      }
+    });
+
+    // 🌞 کلیک روی خورشید و ثبت رفرال
     document.addEventListener("DOMContentLoaded", () => {
       const sunCoin = document.getElementById("sun-coin");
       const sunCountEl = document.getElementById("sun-count");
