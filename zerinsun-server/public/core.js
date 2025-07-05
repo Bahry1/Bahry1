@@ -3,16 +3,17 @@ let energy = 0;
 let sun = 0;
 let tapCount = 0;
 let currentCup = "";
+let lastClaim = localStorage.getItem("last-claim") || "";
+let lastReferralLevel = parseInt(localStorage.getItem("lastReferralLevel")) || 0;
 
 const saveData = () => {
   localStorage.setItem("energy", energy.toString());
   localStorage.setItem("sun", sun.toString());
   localStorage.setItem("tapCount", tapCount.toString());
   localStorage.setItem("currentCup", currentCup);
-  localStorage.setItem("last-claim", lastClaim); // 👈 ذخیره تاریخ آخرین شارژ
+  localStorage.setItem("last-claim", lastClaim);
+  localStorage.setItem("lastReferralLevel", lastReferralLevel.toString());
 };
-
-let lastClaim = localStorage.getItem("last-claim") || ""; // ⏱ متغیر تاریخ قبلی
 
 const loadData = () => {
   const storedEnergy = parseFloat(localStorage.getItem("energy"));
@@ -21,7 +22,8 @@ const loadData = () => {
   sun = parseFloat(localStorage.getItem("sun")) || 0;
   tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
   currentCup = localStorage.getItem("currentCup") || "";
-  lastClaim = localStorage.getItem("last-claim") || ""; // 👈 بازیابی تاریخ قبلی
+  lastClaim = localStorage.getItem("last-claim") || "";
+  lastReferralLevel = parseInt(localStorage.getItem("lastReferralLevel")) || 0;
 };
 
 const updateUI = () => {
@@ -52,17 +54,13 @@ window.ZerinCore = {
 
   loadData: () => {
     loadData();
-    ZerinCore.checkDailyCycle(); // ✅ اینجا صدا زده می‌شه
+    ZerinCore.checkDailyCycle();
+    ZerinCore.addReferralReward();
     updateUI();
   },
 
-  saveData: () => {
-    saveData();
-  },
-
-  updateUI: () => {
-    updateUI();
-  },
+  saveData: () => saveData(),
+  updateUI: () => updateUI(),
 
   useEnergy: (amount) => {
     if (energy >= amount) {
@@ -120,7 +118,8 @@ window.ZerinCore = {
     sun = 0;
     tapCount = 0;
     currentCup = "";
-    lastClaim = ""; // 🔄 ریست کردن تاریخ
+    lastClaim = "";
+    lastReferralLevel = 0;
     localStorage.removeItem("ref-counted");
     saveData();
     updateUI();
@@ -131,10 +130,9 @@ window.ZerinCore = {
     if (lastClaim !== today) {
       energy = MAX_ENERGY;
       lastClaim = today;
-      localStorage.setItem("last-claim", today);
+      console.log("⚡ انرژی روزانه شارژ شد!");
       saveData();
       updateUI();
-      console.log("⚡ انرژی روزانه شارژ شد!");
     }
   },
 
@@ -183,9 +181,13 @@ window.ZerinCore = {
 
   addReferralReward: () => {
     const count = ZerinCore.getInviteCount();
-    const reward = ZerinCore.getReferralReward(count);
-    if (reward > 0) {
+    const newLevel = ZerinCore.getReferralReward(count);
+
+    if (newLevel > lastReferralLevel) {
+      const reward = newLevel - lastReferralLevel;
       sun += reward;
+      lastReferralLevel = newLevel;
+      localStorage.setItem("lastReferralLevel", newLevel.toString());
       saveData();
       updateUI();
       console.log(`🎯 Referral reward added: ${reward} SUN`);
