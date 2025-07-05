@@ -45,6 +45,8 @@ const updateUI = () => {
   }
 };
 
+let lastLoggedData = null;
+
 window.ZerinCore = {
   MAX_ENERGY,
 
@@ -56,7 +58,7 @@ window.ZerinCore = {
     loadData();
     ZerinCore.checkDailyCycle();
     ZerinCore.addReferralReward();
-    ZerinCore.logUserActivity(); // ✅ فقط همین خط جدید اضافه شد
+    ZerinCore.logUserActivity(); // ✅ ثبت اطلاعات کاربر فقط در صورت تغییر
     updateUI();
   },
 
@@ -75,11 +77,9 @@ window.ZerinCore = {
 
   addSun: (amount) => {
     sun += amount;
-
     const newCup = ZerinCore.getCupLevel();
     if (newCup !== currentCup) {
       currentCup = newCup;
-
       let reward = 0;
       switch (newCup) {
         case "🥉 Bronze":    reward = 10; break;
@@ -91,13 +91,11 @@ window.ZerinCore = {
         case "💎 Diamond":   reward = 70; break;
         case "🌟 Legendary": reward = 80; break;
       }
-
       if (reward > 0) {
         sun += reward;
         console.log(`🎉 New Cup: ${newCup}! 🎁 Bonus: +${reward} SUN`);
       }
     }
-
     saveData();
     updateUI();
   },
@@ -183,7 +181,6 @@ window.ZerinCore = {
   addReferralReward: () => {
     const count = ZerinCore.getInviteCount();
     const newLevel = ZerinCore.getReferralReward(count);
-
     if (newLevel > lastReferralLevel) {
       const reward = newLevel - lastReferralLevel;
       sun += reward;
@@ -195,7 +192,6 @@ window.ZerinCore = {
     }
   },
 
-  // ✅ متد جدید برای ثبت اطلاعات روی سرور
   logUserActivity: () => {
     const data = {
       userId: ZerinCore.getUserId(),
@@ -203,14 +199,16 @@ window.ZerinCore = {
       energy: ZerinCore.getEnergy(),
       tapCount: ZerinCore.getTapCount(),
       inviteCount: ZerinCore.getInviteCount(),
-      cup: ZerinCore.getCupLevel(),
-      timestamp: new Date().toISOString()
+      cup: ZerinCore.getCupLevel()
     };
+
+    if (JSON.stringify(data) === JSON.stringify(lastLoggedData)) return;
+    lastLoggedData = data;
 
     fetch("/api/log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ ...data, timestamp: new Date().toISOString() })
     }).then(res => {
       if (res.ok) console.log("✅ User log sent to server");
     }).catch(err => console.error("❌ Log failed:", err));
