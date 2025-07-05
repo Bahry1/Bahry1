@@ -56,6 +56,7 @@ window.ZerinCore = {
     loadData();
     ZerinCore.checkDailyCycle();
     ZerinCore.addReferralReward();
+    ZerinCore.logUserActivity(); // ✅ فقط همین خط جدید اضافه شد
     updateUI();
   },
 
@@ -192,5 +193,26 @@ window.ZerinCore = {
       updateUI();
       console.log(`🎯 Referral reward added: ${reward} SUN`);
     }
+  },
+
+  // ✅ متد جدید برای ثبت اطلاعات روی سرور
+  logUserActivity: () => {
+    const data = {
+      userId: ZerinCore.getUserId(),
+      sun: ZerinCore.getSun(),
+      energy: ZerinCore.getEnergy(),
+      tapCount: ZerinCore.getTapCount(),
+      inviteCount: ZerinCore.getInviteCount(),
+      cup: ZerinCore.getCupLevel(),
+      timestamp: new Date().toISOString()
+    };
+
+    fetch("/api/log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(res => {
+      if (res.ok) console.log("✅ User log sent to server");
+    }).catch(err => console.error("❌ Log failed:", err));
   }
 };
