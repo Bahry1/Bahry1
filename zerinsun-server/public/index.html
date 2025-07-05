@@ -109,19 +109,23 @@
             updateEnergyBar();
           }
         });
+
+        // ✅ ثبت رفرال با جلوگیری از خوددعوتی
+        const params = new URLSearchParams(window.location.search);
+        const ref = params.get("ref");
+        const myId = ZerinCore.getUserId();
+
+        if (ref && ref !== myId && !localStorage.getItem("ref-counted")) {
+          if (typeof ZerinCore.sendReferral === "function") {
+            ZerinCore.sendReferral(ref);
+            localStorage.setItem("ref-counted", "true");
+            console.log("✅ Referral registered for:", ref);
+          }
+        } else if (ref === myId) {
+          console.warn("🚫 Self-referral blocked:", ref);
+        }
       }
     });
-
-    // ✅ ثبت رفرال
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-    if (ref && !localStorage.getItem("ref-counted")) {
-      if (window.ZerinCore && typeof ZerinCore.sendReferral === "function") {
-        ZerinCore.sendReferral(ref);
-        localStorage.setItem("ref-counted", "true");
-        console.log("✅ Referral registered for:", ref);
-      }
-    }
   </script>
 
 </body>
