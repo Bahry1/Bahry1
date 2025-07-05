@@ -9,7 +9,10 @@ const saveData = () => {
   localStorage.setItem("sun", sun.toString());
   localStorage.setItem("tapCount", tapCount.toString());
   localStorage.setItem("currentCup", currentCup);
+  localStorage.setItem("last-claim", lastClaim); // 👈 ذخیره تاریخ آخرین شارژ
 };
+
+let lastClaim = localStorage.getItem("last-claim") || ""; // ⏱ متغیر تاریخ قبلی
 
 const loadData = () => {
   const storedEnergy = parseFloat(localStorage.getItem("energy"));
@@ -18,6 +21,7 @@ const loadData = () => {
   sun = parseFloat(localStorage.getItem("sun")) || 0;
   tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
   currentCup = localStorage.getItem("currentCup") || "";
+  lastClaim = localStorage.getItem("last-claim") || ""; // 👈 بازیابی تاریخ قبلی
 };
 
 const updateUI = () => {
@@ -48,6 +52,7 @@ window.ZerinCore = {
 
   loadData: () => {
     loadData();
+    ZerinCore.checkDailyCycle(); // ✅ اینجا صدا زده می‌شه
     updateUI();
   },
 
@@ -115,9 +120,22 @@ window.ZerinCore = {
     sun = 0;
     tapCount = 0;
     currentCup = "";
+    lastClaim = ""; // 🔄 ریست کردن تاریخ
     localStorage.removeItem("ref-counted");
     saveData();
     updateUI();
+  },
+
+  checkDailyCycle: () => {
+    const today = new Date().toDateString();
+    if (lastClaim !== today) {
+      energy = MAX_ENERGY;
+      lastClaim = today;
+      localStorage.setItem("last-claim", today);
+      saveData();
+      updateUI();
+      console.log("⚡ انرژی روزانه شارژ شد!");
+    }
   },
 
   getCupLevel: () => {
@@ -130,19 +148,6 @@ window.ZerinCore = {
     if (sun >= 100) return "🥈 Silver";
     if (sun >= 50)  return "🥉 Bronze";
     return "🔰 Starter";
-  },
-
-  checkDailyCycle: () => {
-    const today = new Date().toDateString();
-    const last = localStorage.getItem("last-claim");
-
-    if (last !== today) {
-      localStorage.setItem("last-claim", today);
-      energy = MAX_ENERGY;
-      saveData();
-      updateUI();
-      console.log("⚡ انرژی روزانه شارژ شد!");
-    }
   },
 
   getUserId: () => {
