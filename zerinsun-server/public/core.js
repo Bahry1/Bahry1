@@ -53,12 +53,13 @@ window.ZerinCore = {
   getEnergy: () => energy,
   getSun: () => sun,
   getTapCount: () => tapCount,
+  getUserTotalMined: () => sun, // ✅ خط اضافه‌شده برای نمایش کل استخراج
 
   loadData: () => {
     loadData();
     ZerinCore.checkDailyCycle();
     ZerinCore.addReferralReward();
-    ZerinCore.logUserActivity(); // ✅ ثبت اطلاعات کاربر فقط در صورت تغییر
+    ZerinCore.logUserActivity();
     updateUI();
   },
 
@@ -73,31 +74,6 @@ window.ZerinCore = {
       return true;
     }
     return false;
-  },
-
-  addSun: (amount) => {
-    sun += amount;
-    const newCup = ZerinCore.getCupLevel();
-    if (newCup !== currentCup) {
-      currentCup = newCup;
-      let reward = 0;
-      switch (newCup) {
-        case "🥉 Bronze":    reward = 10; break;
-        case "🥈 Silver":    reward = 20; break;
-        case "🏆 Gold":      reward = 30; break;
-        case "💚 Emerald":   reward = 40; break;
-        case "💙 Sapphire":  reward = 50; break;
-        case "❤️ Ruby":      reward = 60; break;
-        case "💎 Diamond":   reward = 70; break;
-        case "🌟 Legendary": reward = 80; break;
-      }
-      if (reward > 0) {
-        sun += reward;
-        console.log(`🎉 New Cup: ${newCup}! 🎁 Bonus: +${reward} SUN`);
-      }
-    }
-    saveData();
-    updateUI();
   },
 
   addTap: () => {
