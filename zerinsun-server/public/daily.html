@@ -1,181 +1,163 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>انرژی روزانه - ZerinSun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZerinSun</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .timer {
-      text-align: center;
-      margin-top: 24px;
-      color: #ffe14a;
-      font-size: 1.2em;
-    }
-
-    .clock-text {
-      margin-top: 4px;
-      font-size: 1.1em;
-    }
-
-    .extra-info {
-      margin-top: 12px;
-      font-size: 1em;
-      color: #ffd700;
-    }
-
-    .spacer {
-      height: 100px;
-    }
-
-    .daily-bottom {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 10;
-    }
-
-    .energy-bar-wrapper {
-      height: 12px;
-      width: 80%;
-      max-width: 300px;
-      background: #222;
-      border-radius: 6px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-
-    .energy-bar-fill {
-      height: 100%;
-      width: 0%;
-      transition: width 0.3s ease, background 0.3s ease;
-    }
-
-    .energy-bar-fill.normal {
-      background: linear-gradient(90deg, #00ffcc, #00e6ff);
-    }
-
-    .energy-bar-fill.low {
-      background: linear-gradient(90deg, #ffc0a8, #ff8a65);
-    }
-
-    .energy-text {
-      margin-top: 6px;
-      font-size: 0.9em;
-      color: #fff;
-    }
-
-    .back-btn {
-      margin-top: 10px;
-      display: inline-block;
-      text-decoration: none;
-      font-size: 0.9em;
-      color: #ccc;
-      padding: 6px 14px;
-      border: 1px solid #555;
-      border-radius: 6px;
-    }
-
-    .back-btn:hover {
-      background: #111;
-      color: #fff;
-    }
-  </style>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <div class="timer" id="daily-timer">
-    <div id="daily-date">📅 امروز</div>
-    <div class="clock-text" id="clock-time">🕒 حالا</div>
-    <div class="extra-info" id="invite-count">تعداد دعوت‌شده‌ها: ...</div>
-    <div class="extra-info" id="total-mined">کل استخراج‌شده: ... SUN</div>
-  </div>
 
-  <div class="spacer"></div>
+  <canvas id="stars-canvas"></canvas>
 
-  <div class="daily-bottom">
-    <div class="energy-bar-wrapper">
-      <div class="energy-bar-fill normal" id="energy-fill"></div>
+  <main class="main-container">
+    <!-- 🔆 نمایش امتیاز و لیگ -->
+    <section class="top-panel">
+      <div class="sun-score">
+        <span id="sun-count">0.00</span> <span class="unit">SUN</span>
+      </div>
+      <div class="league-info">
+        <span id="league-label" onclick="location.href='cups.html'" style="cursor: pointer;">
+          League
+        </span>
+      </div>
+    </section>
+
+    <!-- 🌞 سکه مرکزی -->
+    <section class="coin-panel">
+      <div class="coin-wrapper">
+        <img id="sun-coin" src="sun-icon.png" alt="Sun Coin" />
+      </div>
+    </section>
+
+    <!-- ⚡ نوار انرژی -->
+    <div class="energy-bar-container">
+      <div id="energy-bar-fill"></div>
     </div>
-    <div class="energy-text" id="energy-remaining">باقی‌مانده خط انرژی: ...</div>
-    <a href="index.html" class="back-btn">← بازگشت به خانه</a>
-  </div>
 
+    <!-- 📱 ناوبری پایین -->
+    <nav class="bottom-nav">
+      <button class="nav-btn" onclick="location.href='referral.html'">
+        <img src="referral-icon.png" />
+        <span>Referral</span>
+      </button>
+      <button class="nav-btn" onclick="location.href='channels.html'">
+        <img src="channels-icon.png" />
+        <span>Channels</span>
+      </button>
+      <button class="nav-btn" onclick="location.href='wallet.html'">
+        <img src="wallet-icon.png" />
+        <span>Wallet</span>
+      </button>
+      <button class="nav-btn" onclick="location.href='daily.html'">
+        <img src="daily-icon.png" />
+        <span>Daily</span>
+      </button>
+    </nav>
+  </main>
+
+  <!-- 📜 اسکریپت‌ها -->
   <script src="core.js"></script>
+  <script src="stars.js"></script>
+
   <script>
-    function updateEnergyDisplay() {
-      const energy = ZerinCore.getEnergy();
-      const max = ZerinCore.MAX_ENERGY;
-      const percent = (energy / max) * 100;
-
-      const bar = document.getElementById("energy-fill");
-      const label = document.getElementById("energy-remaining");
-
-      if (bar) {
-        bar.style.width = percent + "%";
-        bar.classList.remove("normal", "low");
-        bar.classList.add(percent <= 10 ? "low" : "normal");
-      }
-
-      if (label) {
-        label.textContent = `باقی‌مانده خط انرژی: ${energy.toFixed(3)}`;
+    function updateEnergyBar() {
+      const fill = document.getElementById("energy-bar-fill");
+      if (fill && window.ZerinCore) {
+        const energy = ZerinCore.getEnergy();
+        const max = ZerinCore.MAX_ENERGY;
+        const percent = (energy / max) * 100;
+        fill.style.width = percent + "%";
       }
     }
 
-    function updateClock() {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2, "0");
-      const m = now.getMinutes().toString().padStart(2, "0");
-      const s = now.getSeconds().toString().padStart(2, "0");
-      document.getElementById("clock-time").textContent = `🕒 حالا: ${h}:${m}:${s}`;
+    function refreshMainUI() {
+      if (window.ZerinCore) {
+        ZerinCore.loadData();
+        ZerinCore.updateUI();
+
+        const leagueEl = document.getElementById("league-label");
+        if (leagueEl) {
+          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
+        }
+
+        updateEnergyBar();
+        const sunCount = ZerinCore.getSun().toFixed(2);
+        document.getElementById("sun-count").textContent = sunCount;
+      }
     }
 
-    function updateDate() {
-      const now = new Date();
-      const dateString = now.toLocaleDateString("fa-IR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      });
-      document.getElementById("daily-date").textContent = `📅 امروز: ${dateString}`;
-    }
+    window.addEventListener("load", refreshMainUI);
 
-    function updateReferralInfo() {
-      const inviteCount = ZerinCore.getInviteCount();
-      const totalMined = ZerinCore.getUserTotalMined();
-
-      document.getElementById("invite-count").textContent = `تعداد دعوت‌شده‌ها: ${inviteCount}`;
-      document.getElementById("total-mined").textContent = `کل استخراج‌شده: ${totalMined} SUN`;
-    }
-
-    function fullUpdate() {
-      ZerinCore.loadData();
-      updateDate();
-      updateClock();
-      updateEnergyDisplay();
-      updateReferralInfo();
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      fullUpdate();
-      setInterval(updateClock, 1000);
-      setInterval(() => {
-        ZerinCore.checkDailyCycle();
-        updateEnergyDisplay();
-      }, 60000);
+    let lastFocusTime = 0;
+    window.addEventListener("focus", () => {
+      const now = Date.now();
+      if (now - lastFocusTime > 2000) {
+        refreshMainUI();
+        lastFocusTime = now;
+      } else {
+        console.log("🔁 Skipped duplicate UI refresh on focus");
+      }
     });
 
-    window.addEventListener("pageshow", fullUpdate);
-    window.addEventListener("focus", fullUpdate);
+    document.addEventListener("DOMContentLoaded", () => {
+      const sunCoin = document.getElementById("sun-coin");
+      const sunCountEl = document.getElementById("sun-count");
+
+      if (sunCoin && sunCountEl && window.ZerinCore) {
+        sunCoin.addEventListener("click", () => {
+          if (ZerinCore.useEnergy(0.01)) {
+            ZerinCore.addTap(); // 👈 ثبت ضربه و ذخیره‌سازی
+            sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
+            updateEnergyBar();
+          }
+        });
+
+        // ✅ ثبت رفرال (جلوگیری از دعوت خودی)
+        const params = new URLSearchParams(window.location.search);
+        const ref = params.get("ref");
+        const myId = ZerinCore.getUserId();
+
+        if (ref && ref !== myId && !localStorage.getItem("ref-counted")) {
+          if (typeof ZerinCore.sendReferral === "function") {
+            ZerinCore.sendReferral(ref);
+            localStorage.setItem("ref-counted", "true");
+            console.log("✅ Referral registered for:", ref);
+          }
+        } else if (ref === myId) {
+          console.warn("🚫 Self-referral blocked:", ref);
+        }
+      }
+    });
   </script>
+
+  <!-- ✨ بارگذاری داینامیک کانال‌ها (برای channels.html) -->
+  <script>
+    async function loadChannelList() {
+      try {
+        const res = await fetch("channels.json");
+        const channels = await res.json();
+        const list = document.getElementById("channel-list");
+        if (list) {
+          list.innerHTML = "";
+          channels.forEach(c => {
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="${c.url}" target="_blank">${c.name}</a>`;
+            list.appendChild(li);
+          });
+        }
+      } catch (err) {
+        console.error("⛔ خطا در بارگذاری کانال‌ها:", err);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.location.pathname.endsWith("channels.html")) {
+        loadChannelList();
+      }
+    });
+  </script>
+
 </body>
 </html>
