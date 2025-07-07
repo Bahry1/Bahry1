@@ -3,183 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZerinSun – Daily</title>
+  <title>ZerinSun – Daily Stats</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 30px 10px;
+    }
+    .box {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .energy-btn {
+      background: none;
+      border: 2px solid #0cf;
+      color: #0cf;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .energy-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: #0cf;
+      width: 0%;
+      opacity: 0.2;
+      transition: width 0.4s ease;
+    }
+  </style>
 </head>
 <body>
 
-  <canvas id="stars-canvas"></canvas>
+  <!-- 🗓️ تاریخ امروز -->
+  <h2 id="current-date">Loading date...</h2>
 
-  <main class="main-container">
-    <!-- 🔆 نمایش امتیاز و لیگ -->
-    <section class="top-panel">
-      <div class="sun-score">
-        <span id="sun-count">0.00</span> <span class="unit">SUN</span>
-      </div>
-      <div class="league-info">
-        <span id="league-label" onclick="location.href='cups.html'" style="cursor: pointer;">
-          League
-        </span>
-      </div>
-    </section>
+  <!-- ⏰ تایمر ریست روزانه -->
+  <div class="box">
+    <h3>🔁 Next Reset In</h3>
+    <p id="reset-timer" style="font-size: 24px;">--:--:--</p>
+  </div>
 
-    <!-- 🔢 آمار روزانه -->
-    <section class="daily-stats" style="margin: 30px auto; color: #fff; text-align: center;">
-      <h2>📊 آمار روزانه</h2>
-      <p>👆 تعداد ضربه‌های شما: <span id="userTapCount">0</span></p>
-      <p>🌍 تعداد کل اعضا: <span id="totalUsers">در حال بارگذاری...</span></p>
-      <p>☀️ مجموع SUN کل: <span id="totalSun">در حال بارگذاری...</span></p>
-    </section>
+  <!-- 🌍 آمار کلی -->
+  <div class="box">
+    <h3>📊 Global Stats</h3>
+    <p>👥 Total Users: <span id="totalUsers">...</span></p>
+    <p>☀️ Total SUN Mined: <span id="totalSun">...</span></p>
+    <p>🌀 Total Taps: <span id="totalTaps">...</span></p>
+  </div>
 
-    <!-- 🌞 سکه مرکزی -->
-    <section class="coin-panel">
-      <div class="coin-wrapper">
-        <img id="sun-coin" src="sun-icon.png" alt="Sun Coin" />
-      </div>
-    </section>
+  <!-- 🔙 دکمه بازگشت با نوار انرژی -->
+  <button class="energy-btn" onclick="location.href='index.html'">
+    <div class="energy-fill" id="energyFill"></div>
+    ⬅️ Back to Main Page
+  </button>
 
-    <!-- ⚡ نوار انرژی -->
-    <div class="energy-bar-container">
-      <div id="energy-bar-fill"></div>
-    </div>
-
-    <!-- 📱 ناوبری پایین -->
-    <nav class="bottom-nav">
-      <button class="nav-btn" onclick="location.href='referral.html'">
-        <img src="referral-icon.png" />
-        <span>Referral</span>
-      </button>
-      <button class="nav-btn" onclick="location.href='channels.html'">
-        <img src="channels-icon.png" />
-        <span>Channels</span>
-      </button>
-      <button class="nav-btn" onclick="location.href='wallet.html'">
-        <img src="wallet-icon.png" />
-        <span>Wallet</span>
-      </button>
-      <button class="nav-btn" onclick="location.href='daily.html'">
-        <img src="daily-icon.png" />
-        <span>Daily</span>
-      </button>
-    </nav>
-  </main>
-
-  <!-- 📜 اسکریپت‌ها -->
   <script src="core.js"></script>
-  <script src="stars.js"></script>
-
   <script>
-    function updateEnergyBar() {
-      const fill = document.getElementById("energy-bar-fill");
-      if (fill && window.ZerinCore) {
+    // تاریخ میلادی
+    const now = new Date();
+    document.getElementById("current-date").textContent = now.toDateString();
+
+    // تایمر ریست تا 00:00 UTC
+    function updateResetTimer() {
+      const now = new Date();
+      const reset = new Date();
+      reset.setUTCHours(24, 0, 0, 0);
+      const diff = reset - now;
+      const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      document.getElementById("reset-timer").textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateResetTimer, 1000);
+    updateResetTimer();
+
+    // آمار از سرور
+    fetch("/api/stats")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("totalUsers").textContent = data.totalUsers;
+        document.getElementById("totalSun").textContent = data.totalSun + " SUN";
+        document.getElementById("totalTaps").textContent = data.totalTaps;
+      })
+      .catch(err => {
+        console.warn("❌ Error loading stats:", err);
+      });
+
+    // نوار انرژی روی دکمه
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.ZerinCore) {
+        ZerinCore.loadData();
+        const fill = document.getElementById("energyFill");
         const energy = ZerinCore.getEnergy();
         const max = ZerinCore.MAX_ENERGY;
         const percent = (energy / max) * 100;
         fill.style.width = percent + "%";
-      }
-    }
-
-    function refreshMainUI() {
-      if (window.ZerinCore) {
-        ZerinCore.loadData();
-        ZerinCore.updateUI();
-
-        document.getElementById("sun-count").textContent = ZerinCore.getSun().toFixed(2);
-        document.getElementById("league-label").textContent = ZerinCore.getCupLevel() + " League";
-
-        updateEnergyBar();
-
-        // 🎯 نمایش تعداد ضربه‌ها در daily page
-        const tapCountEl = document.getElementById("userTapCount");
-        if (tapCountEl) {
-          tapCountEl.textContent = ZerinCore.getTapCount();
-        }
-
-        // 📡 آمار کلی از سرور
-        fetch("/api/stats")
-          .then(res => res.json())
-          .then(data => {
-            document.getElementById("totalUsers").textContent = data.totalUsers;
-            document.getElementById("totalSun").textContent = data.totalSun + " SUN";
-          })
-          .catch(err => {
-            console.error("⛔ خطا در آمار کل:", err);
-            document.getElementById("totalUsers").textContent = "نامشخص";
-            document.getElementById("totalSun").textContent = "نامشخص";
-          });
-      }
-    }
-
-    window.addEventListener("load", refreshMainUI);
-
-    let lastFocusTime = 0;
-    window.addEventListener("focus", () => {
-      const now = Date.now();
-      if (now - lastFocusTime > 2000) {
-        refreshMainUI();
-        lastFocusTime = now;
-      }
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const sunCoin = document.getElementById("sun-coin");
-      const sunCountEl = document.getElementById("sun-count");
-
-      if (sunCoin && sunCountEl && window.ZerinCore) {
-        sunCoin.addEventListener("click", () => {
-          if (ZerinCore.useEnergy(0.01)) {
-            ZerinCore.addTap();
-            sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
-            updateEnergyBar();
-
-            const tapCountEl = document.getElementById("userTapCount");
-            if (tapCountEl) {
-              tapCountEl.textContent = ZerinCore.getTapCount();
-            }
-          }
-        });
-
-        const params = new URLSearchParams(window.location.search);
-        const ref = params.get("ref");
-        const myId = ZerinCore.getUserId();
-
-        if (ref && ref !== myId && !localStorage.getItem("ref-counted")) {
-          if (typeof ZerinCore.sendReferral === "function") {
-            ZerinCore.sendReferral(ref);
-            localStorage.setItem("ref-counted", "true");
-            console.log("✅ Referral registered for:", ref);
-          }
-        } else if (ref === myId) {
-          console.warn("🚫 Self-referral blocked:", ref);
-        }
-      }
-    });
-  </script>
-
-  <!-- ✨ بارگذاری داینامیک کانال‌ها -->
-  <script>
-    async function loadChannelList() {
-      try {
-        const res = await fetch("channels.json");
-        const channels = await res.json();
-        const list = document.getElementById("channel-list");
-        if (list) {
-          list.innerHTML = "";
-          channels.forEach(c => {
-            const li = document.createElement("li");
-            li.innerHTML = `<a href="${c.url}" target="_blank">${c.name}</a>`;
-            list.appendChild(li);
-          });
-        }
-      } catch (err) {
-        console.error("⛔ خطا در بارگذاری کانال‌ها:", err);
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      if (window.location.pathname.endsWith("channels.html")) {
-        loadChannelList();
       }
     });
   </script>
