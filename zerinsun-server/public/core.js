@@ -53,13 +53,13 @@ window.ZerinCore = {
   getEnergy: () => energy,
   getSun: () => sun,
   getTapCount: () => tapCount,
-  getUserTotalMined: () => sun, // ✅ اضافه شده برای total SUN
+  getUserTotalMined: () => sun,
 
   loadData: () => {
     loadData();
     ZerinCore.checkDailyCycle();
     ZerinCore.addReferralReward();
-    ZerinCore.logUserActivity(); // ✅ ثبت اطلاعات کاربر فقط در صورت تغییر
+    ZerinCore.logUserActivity();
     updateUI();
   },
 
@@ -78,6 +78,7 @@ window.ZerinCore = {
 
   addTap: () => {
     tapCount++;
+    sun += 0.01; // ☀️ اصلاح کلیدی برای افزایش SUN
     saveData();
     updateUI();
   },
@@ -186,9 +187,9 @@ window.ZerinCore = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...data, timestamp: new Date().toISOString() })
     })
-      .then((res) => {
-        if (res.ok) console.log("✅ User log sent to server");
-      })
-      .catch((err) => console.error("❌ Log failed:", err));
+    .then((res) => {
+      if (res.ok) console.log("✅ User log sent to server");
+    })
+    .catch((err) => console.error("❌ Log failed:", err));
   }
 };
