@@ -12,8 +12,6 @@
   <canvas id="stars-canvas"></canvas>
 
   <main class="main-container">
-
-    <!-- 🔆 نمایش امتیاز و لیگ -->
     <section class="top-panel">
       <div class="sun-score">
         <span id="sun-count">0.00</span> <span class="unit">SUN</span>
@@ -25,19 +23,16 @@
       </div>
     </section>
 
-    <!-- 🌞 سکه مرکزی -->
     <section class="coin-panel">
       <div class="coin-wrapper">
         <img id="sun-coin" src="sun-icon.png" alt="Sun Coin" />
       </div>
     </section>
 
-    <!-- ⚡ نوار انرژی -->
     <div class="energy-bar-container">
       <div id="energy-bar-fill"></div>
     </div>
 
-    <!-- 📱 ناوبری پایین -->
     <nav class="bottom-nav">
       <button class="nav-btn" onclick="location.href='referral.html'">
         <img src="referral-icon.png" />
@@ -56,10 +51,8 @@
         <span>Daily</span>
       </button>
     </nav>
-
   </main>
 
-  <!-- 📜 اسکریپت‌ها -->
   <script src="core.js"></script>
   <script src="stars.js"></script>
 
@@ -79,13 +72,11 @@
         ZerinCore.loadData();
         ZerinCore.updateUI();
 
-        // 🎖️ آپدیت نام لیگ
         const leagueEl = document.getElementById("league-label");
         if (leagueEl) {
           leagueEl.textContent = ZerinCore.getCupLevel() + " League";
         }
 
-        // ⚡ آپدیت نوار انرژی و عدد SUN
         updateEnergyBar();
         const sunCount = ZerinCore.getSun().toFixed(2);
         document.getElementById("sun-count").textContent = sunCount;
@@ -94,7 +85,6 @@
 
     window.addEventListener("load", refreshMainUI);
 
-    // 🎯 نسخه حرفه‌ای: جلوگیری از لرزش با کنترل زمان focus
     let lastFocusTime = 0;
     window.addEventListener("focus", () => {
       const now = Date.now();
@@ -106,7 +96,6 @@
       }
     });
 
-    // 🌞 کلیک روی خورشید و ثبت رفرال
     document.addEventListener("DOMContentLoaded", () => {
       const sunCoin = document.getElementById("sun-coin");
       const sunCountEl = document.getElementById("sun-count");
@@ -114,14 +103,12 @@
       if (sunCoin && sunCountEl && window.ZerinCore) {
         sunCoin.addEventListener("click", () => {
           if (ZerinCore.useEnergy(0.01)) {
-            ZerinCore.addSun(0.01);
             ZerinCore.addTap();
             sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
             updateEnergyBar();
           }
         });
 
-        // ✅ ثبت رفرال با جلوگیری از خوددعوتی
         const params = new URLSearchParams(window.location.search);
         const ref = params.get("ref");
         const myId = ZerinCore.getUserId();
@@ -135,33 +122,6 @@
         } else if (ref === myId) {
           console.warn("🚫 Self-referral blocked:", ref);
         }
-      }
-    });
-  </script>
-
-  <!-- ✨ اسکریپت داینامیک بارگذاری کانال‌ها (برای صفحه channels.html) -->
-  <script>
-    async function loadChannelList() {
-      try {
-        const res = await fetch("channels.json");
-        const channels = await res.json();
-        const list = document.getElementById("channel-list");
-        if (list) {
-          list.innerHTML = "";
-          channels.forEach(c => {
-            const li = document.createElement("li");
-            li.innerHTML = `<a href="${c.url}" target="_blank">${c.name}</a>`;
-            list.appendChild(li);
-          });
-        }
-      } catch (err) {
-        console.error("⛔ خطا در بارگذاری کانال‌ها:", err);
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      if (window.location.pathname.endsWith("channels.html")) {
-        loadChannelList();
       }
     });
   </script>
