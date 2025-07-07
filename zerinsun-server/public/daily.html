@@ -26,6 +26,12 @@
       font-size: 1.1em;
     }
 
+    .extra-info {
+      margin-top: 12px;
+      font-size: 1em;
+      color: #ffd700;
+    }
+
     .spacer {
       height: 100px;
     }
@@ -90,6 +96,8 @@
   <div class="timer" id="daily-timer">
     <div id="daily-date">📅 امروز</div>
     <div class="clock-text" id="clock-time">🕒 حالا</div>
+    <div class="extra-info" id="invite-count">تعداد دعوت‌شده‌ها: ...</div>
+    <div class="extra-info" id="total-mined">کل استخراج‌شده: ... SUN</div>
   </div>
 
   <div class="spacer"></div>
@@ -141,11 +149,20 @@
       document.getElementById("daily-date").textContent = `📅 امروز: ${dateString}`;
     }
 
+    function updateReferralInfo() {
+      const inviteCount = ZerinCore.getInviteCount();
+      const totalMined = ZerinCore.getUserTotalMined();
+
+      document.getElementById("invite-count").textContent = `تعداد دعوت‌شده‌ها: ${inviteCount}`;
+      document.getElementById("total-mined").textContent = `کل استخراج‌شده: ${totalMined} SUN`;
+    }
+
     function fullUpdate() {
       ZerinCore.loadData();
       updateDate();
       updateClock();
       updateEnergyDisplay();
+      updateReferralInfo();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -154,7 +171,7 @@
       setInterval(() => {
         ZerinCore.checkDailyCycle();
         updateEnergyDisplay();
-      }, 60000); // بررسی پایان روز و شارژ
+      }, 60000);
     });
 
     window.addEventListener("pageshow", fullUpdate);
