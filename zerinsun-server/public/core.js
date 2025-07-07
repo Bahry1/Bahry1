@@ -53,13 +53,13 @@ window.ZerinCore = {
   getEnergy: () => energy,
   getSun: () => sun,
   getTapCount: () => tapCount,
-  getUserTotalMined: () => sun, // ✅ خط اضافه‌شده برای نمایش کل استخراج
+  getUserTotalMined: () => sun, // ✅ اضافه شده برای total SUN
 
   loadData: () => {
     loadData();
     ZerinCore.checkDailyCycle();
     ZerinCore.addReferralReward();
-    ZerinCore.logUserActivity();
+    ZerinCore.logUserActivity(); // ✅ ثبت اطلاعات کاربر فقط در صورت تغییر
     updateUI();
   },
 
@@ -119,7 +119,7 @@ window.ZerinCore = {
     if (sun >= 250) return "💚 Emerald";
     if (sun >= 180) return "🏆 Gold";
     if (sun >= 100) return "🥈 Silver";
-    if (sun >= 50)  return "🥉 Bronze";
+    if (sun >= 50) return "🥉 Bronze";
     return "🔰 Starter";
   },
 
@@ -185,8 +185,10 @@ window.ZerinCore = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...data, timestamp: new Date().toISOString() })
-    }).then(res => {
-      if (res.ok) console.log("✅ User log sent to server");
-    }).catch(err => console.error("❌ Log failed:", err));
+    })
+      .then((res) => {
+        if (res.ok) console.log("✅ User log sent to server");
+      })
+      .catch((err) => console.error("❌ Log failed:", err));
   }
 };
