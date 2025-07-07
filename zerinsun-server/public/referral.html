@@ -103,12 +103,16 @@
     <div class="reward-text" id="invite-count">Invited: 0</div>
 
     <select disabled>
-      <option>Invited Friends (not visible)</option>
+      <option>No friends invited yet</option>
     </select>
 
     <input id="ref-link" readonly />
     <button id="copy-btn">📋 Copy Link</button>
   </div>
+
+  <nav class="bottom-nav">
+    <button class="back-btn" onclick="location.href='index.html'">Back</button>
+  </nav>
 
   <script src="core.js"></script>
   <script>
@@ -122,6 +126,11 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      if (!window.ZerinCore) {
+        console.error("ZerinCore not loaded");
+        return;
+      }
+
       const user = ZerinCore.getUserId();
       const inviteCount = ZerinCore.getInviteCount();
 
@@ -143,10 +152,6 @@
       });
     });
   </script>
-
-  <nav class="bottom-nav">
-    <button class="back-btn" onclick="location.href='index.html'">Back</button>
-  </nav>
 
 </body>
 </html>
