@@ -16,6 +16,12 @@
       text-align: center;
     }
 
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
     .section {
       padding: 20px;
     }
@@ -28,20 +34,24 @@
       max-width: 320px;
     }
 
-    #energy-bar-fill {
-      width: 0%;
-      height: 10px;
-      background-color: #0cf;
-      transition: width 0.3s ease;
+    .spacer {
+      flex-grow: 1;
     }
 
     .energy-bar-container {
       background: #444;
       width: 80%;
       height: 10px;
-      margin: 10px auto 30px;
+      margin: 0 auto 15px;
       border-radius: 5px;
       overflow: hidden;
+    }
+
+    #energy-bar-fill {
+      width: 0%;
+      height: 100%;
+      background-color: #0cf;
+      transition: width 0.3s ease;
     }
 
     .back-button {
@@ -52,56 +62,54 @@
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      margin-bottom: 10px;
-    }
-
-    .spacer {
-      height: 80px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
+  <div class="page-container">
 
-  <!-- 📅 تاریخ میلادی -->
-  <div class="section">
-    <h2 id="current-date">Loading Date...</h2>
+    <!-- 🗓️ تاریخ میلادی -->
+    <div class="section">
+      <h2 id="current-date">Loading Date...</h2>
+    </div>
+
+    <!-- ⏰ تایمر ریست روزانه -->
+    <div class="section stats-box">
+      <h3>🔁 Next Reset In</h3>
+      <div id="reset-timer" style="font-size: 24px;">--:--:--</div>
+    </div>
+
+    <!-- 📊 آمار کلی اپ -->
+    <div class="section stats-box">
+      <h3>📊 Global Stats</h3>
+      <p>👥 Total Users: <span id="totalUsers">...</span></p>
+      <p>☀️ Total SUN: <span id="totalSun">...</span></p>
+      <p>🌀 Total Taps: <span id="totalTaps">...</span></p>
+    </div>
+
+    <!-- ⬜ فضای خالی وسط -->
+    <div class="spacer"></div>
+
+    <!-- 🔋 نوار انرژی -->
+    <div class="energy-bar-container">
+      <div id="energy-bar-fill"></div>
+    </div>
+
+    <!-- 🔙 دکمه بازگشت -->
+    <button class="back-button" onclick="location.href='index.html'">
+      ⬅️ Back to Main
+    </button>
+
   </div>
 
-  <!-- ⏰ تایمر ریست روزانه -->
-  <div class="section stats-box">
-    <h3>🔁 Next Reset In</h3>
-    <div id="reset-timer" style="font-size: 24px;">--:--:--</div>
-  </div>
-
-  <!-- 🌍 آمار کلی اپ -->
-  <div class="section stats-box">
-    <h3>📊 Global Stats</h3>
-    <p>👥 Total Users: <span id="totalUsers">...</span></p>
-    <p>☀️ Total SUN: <span id="totalSun">...</span></p>
-    <p>🌀 Total Taps: <span id="totalTaps">...</span></p>
-  </div>
-
-  <!-- ⬜ فضای خالی وسط -->
-  <div class="spacer"></div>
-
-  <!-- 🔋 نوار انرژی -->
-  <div class="energy-bar-container">
-    <div id="energy-bar-fill"></div>
-  </div>
-
-  <!-- 🔙 دکمه بازگشت -->
-  <button class="back-button" onclick="location.href='index.html'">
-    ⬅️ Back to Main
-  </button>
-
-  <!-- 📜 اسکریپت‌ها -->
   <script src="core.js"></script>
   <script>
-    // 🗓 نمایش تاریخ
+    // نمایش تاریخ میلادی
     const now = new Date();
     document.getElementById("current-date").textContent = now.toDateString();
 
-    // ⏰ تایمر ریست تا 00:00 UTC
+    // تایمر تا ریست
     function updateResetTimer() {
       const now = new Date();
       const reset = new Date();
@@ -115,7 +123,7 @@
     setInterval(updateResetTimer, 1000);
     updateResetTimer();
 
-    // 📡 گرفتن آمار از سرور
+    // آمار کلی
     fetch("/api/stats")
       .then(res => res.json())
       .then(data => {
@@ -127,7 +135,7 @@
         console.warn("❌ مشکل در دریافت آمار:", err);
       });
 
-    // 🔋 نمایش انرژی کاربر
+    // نوار انرژی
     window.addEventListener("DOMContentLoaded", () => {
       if (window.ZerinCore) {
         ZerinCore.loadData();
@@ -139,6 +147,5 @@
       }
     });
   </script>
-
 </body>
 </html>
