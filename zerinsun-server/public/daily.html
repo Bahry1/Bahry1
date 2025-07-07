@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZerinSun</title>
+  <title>ZerinSun – Daily</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
@@ -22,6 +22,14 @@
           League
         </span>
       </div>
+    </section>
+
+    <!-- 🔢 آمار روزانه -->
+    <section class="daily-stats" style="margin: 30px auto; color: #fff; text-align: center;">
+      <h2>📊 آمار روزانه</h2>
+      <p>👆 تعداد ضربه‌های شما: <span id="userTapCount">0</span></p>
+      <p>🌍 تعداد کل اعضا: <span id="totalUsers">در حال بارگذاری...</span></p>
+      <p>☀️ مجموع SUN کل: <span id="totalSun">در حال بارگذاری...</span></p>
     </section>
 
     <!-- 🌞 سکه مرکزی -->
@@ -77,14 +85,29 @@
         ZerinCore.loadData();
         ZerinCore.updateUI();
 
-        const leagueEl = document.getElementById("league-label");
-        if (leagueEl) {
-          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
-        }
+        document.getElementById("sun-count").textContent = ZerinCore.getSun().toFixed(2);
+        document.getElementById("league-label").textContent = ZerinCore.getCupLevel() + " League";
 
         updateEnergyBar();
-        const sunCount = ZerinCore.getSun().toFixed(2);
-        document.getElementById("sun-count").textContent = sunCount;
+
+        // 🎯 نمایش تعداد ضربه‌ها در daily page
+        const tapCountEl = document.getElementById("userTapCount");
+        if (tapCountEl) {
+          tapCountEl.textContent = ZerinCore.getTapCount();
+        }
+
+        // 📡 آمار کلی از سرور
+        fetch("/api/stats")
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("totalUsers").textContent = data.totalUsers;
+            document.getElementById("totalSun").textContent = data.totalSun + " SUN";
+          })
+          .catch(err => {
+            console.error("⛔ خطا در آمار کل:", err);
+            document.getElementById("totalUsers").textContent = "نامشخص";
+            document.getElementById("totalSun").textContent = "نامشخص";
+          });
       }
     }
 
@@ -96,8 +119,6 @@
       if (now - lastFocusTime > 2000) {
         refreshMainUI();
         lastFocusTime = now;
-      } else {
-        console.log("🔁 Skipped duplicate UI refresh on focus");
       }
     });
 
@@ -108,13 +129,17 @@
       if (sunCoin && sunCountEl && window.ZerinCore) {
         sunCoin.addEventListener("click", () => {
           if (ZerinCore.useEnergy(0.01)) {
-            ZerinCore.addTap(); // 👈 ثبت ضربه و ذخیره‌سازی
+            ZerinCore.addTap();
             sunCountEl.textContent = ZerinCore.getSun().toFixed(2);
             updateEnergyBar();
+
+            const tapCountEl = document.getElementById("userTapCount");
+            if (tapCountEl) {
+              tapCountEl.textContent = ZerinCore.getTapCount();
+            }
           }
         });
 
-        // ✅ ثبت رفرال (جلوگیری از دعوت خودی)
         const params = new URLSearchParams(window.location.search);
         const ref = params.get("ref");
         const myId = ZerinCore.getUserId();
@@ -132,7 +157,7 @@
     });
   </script>
 
-  <!-- ✨ بارگذاری داینامیک کانال‌ها (برای channels.html) -->
+  <!-- ✨ بارگذاری داینامیک کانال‌ها -->
   <script>
     async function loadChannelList() {
       try {
