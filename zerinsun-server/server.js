@@ -3,28 +3,52 @@ const app = express();
 const path = require("path");
 
 const PORT = process.env.PORT || 3000;
-const logs = []; // 🗂 ذخیره لاگ‌های کاربران
+const logs = []; // 🗂 ذخیره لاگ‌های کاربران در حافظه موقتی
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json()); // ← برای پردازش JSON ارسالی از کلاینت
+app.use(express.json());
 
 // 📄 صفحه اصلی
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-// 📥 دریافت لاگ از کاربر
+// 📥 ثبت اطلاعات هر کاربر
 app.post("/api/log", (req, res) => {
-  const log = {
-    ...req.body,
-    timestamp: new Date().toISOString()
-  };
-  logs.push(log);
-  console.log("📥 Log received:", log);
+  const { userId } = req.body;
+
+  // جلوگیری از ثبت چندباره‌ی userId
+  const existing = logs.find(log => log.userId === userId);
+  if (existing) {
+    existing.sun = req.body.sun;
+    existing.energy = req.body.energy;
+    existing.tapCount = req.body.tapCount;
+    existing.inviteCount = req.body.inviteCount;
+    existing.cup = req.body.cup;
+    existing.timestamp = new Date().toISOString();
+  } else {
+    logs.push({
+      ...req.body,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  console.log("📥 Log received:", req.body);
   res.sendStatus(200);
 });
 
-// 🔎 نمایش همه لاگ‌ها در پنل admin
+// 📊 API برای نمایش آمار کلی سیستم
+app.get("/api/stats", (req, res) => {
+  const uniqueUsers = new Set(logs.map(log => log.userId));
+  const totalSun = logs.reduce((sum, log) => sum + (Number(log.sun) || 0), 0);
+
+  res.json({
+    totalUsers: uniqueUsers.size,
+    totalSun: totalSun.toFixed(2)
+  });
+});
+
+// 🧑‍💻 پنل لاگ‌های مدیریتی
 app.get("/admin/logs", (req, res) => {
   res.send(`
     <html>
@@ -51,5 +75,5 @@ app.get("/admin/logs", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 ZerinSun server is running on http://localhost:${PORT}`);
+  console.log(`🚀 ZerinSun server running at http://localhost:${PORT}`);
 });
