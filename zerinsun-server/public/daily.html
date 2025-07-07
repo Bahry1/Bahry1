@@ -3,78 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZerinSun – Daily Stats</title>
+  <title>ZerinSun – Daily</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
     body {
-      background: black;
-      color: white;
+      background-color: #000;
+      color: #fff;
       font-family: sans-serif;
+      margin: 0;
+      padding: 0;
       text-align: center;
-      padding: 30px 10px;
     }
-    .box {
-      background: #1e1e1e;
-      border-radius: 12px;
+
+    .section {
       padding: 20px;
-      margin-bottom: 25px;
     }
-    .energy-btn {
-      background: none;
-      border: 2px solid #0cf;
-      color: #0cf;
-      padding: 12px 24px;
-      font-weight: bold;
+
+    .stats-box {
+      background: #1c1c1c;
+      margin: 10px auto;
+      padding: 15px;
       border-radius: 12px;
-      cursor: pointer;
-      position: relative;
+      max-width: 320px;
+    }
+
+    #energy-bar-fill {
+      width: 0%;
+      height: 10px;
+      background-color: #0cf;
+      transition: width 0.3s ease;
+    }
+
+    .energy-bar-container {
+      background: #444;
+      width: 80%;
+      height: 10px;
+      margin: 10px auto 30px;
+      border-radius: 5px;
       overflow: hidden;
     }
-    .energy-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
+
+    .back-button {
+      padding: 12px 24px;
+      border-radius: 12px;
       background: #0cf;
-      width: 0%;
-      opacity: 0.2;
-      transition: width 0.4s ease;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .spacer {
+      height: 80px;
     }
   </style>
 </head>
 <body>
 
-  <!-- 🗓️ تاریخ امروز -->
-  <h2 id="current-date">Loading date...</h2>
-
-  <!-- ⏰ تایمر ریست روزانه -->
-  <div class="box">
-    <h3>🔁 Next Reset In</h3>
-    <p id="reset-timer" style="font-size: 24px;">--:--:--</p>
+  <!-- 📅 تاریخ میلادی -->
+  <div class="section">
+    <h2 id="current-date">Loading Date...</h2>
   </div>
 
-  <!-- 🌍 آمار کلی -->
-  <div class="box">
+  <!-- ⏰ تایمر ریست روزانه -->
+  <div class="section stats-box">
+    <h3>🔁 Next Reset In</h3>
+    <div id="reset-timer" style="font-size: 24px;">--:--:--</div>
+  </div>
+
+  <!-- 🌍 آمار کلی اپ -->
+  <div class="section stats-box">
     <h3>📊 Global Stats</h3>
     <p>👥 Total Users: <span id="totalUsers">...</span></p>
-    <p>☀️ Total SUN Mined: <span id="totalSun">...</span></p>
+    <p>☀️ Total SUN: <span id="totalSun">...</span></p>
     <p>🌀 Total Taps: <span id="totalTaps">...</span></p>
   </div>
 
-  <!-- 🔙 دکمه بازگشت با نوار انرژی -->
-  <button class="energy-btn" onclick="location.href='index.html'">
-    <div class="energy-fill" id="energyFill"></div>
-    ⬅️ Back to Main Page
+  <!-- ⬜ فضای خالی وسط -->
+  <div class="spacer"></div>
+
+  <!-- 🔋 نوار انرژی -->
+  <div class="energy-bar-container">
+    <div id="energy-bar-fill"></div>
+  </div>
+
+  <!-- 🔙 دکمه بازگشت -->
+  <button class="back-button" onclick="location.href='index.html'">
+    ⬅️ Back to Main
   </button>
 
+  <!-- 📜 اسکریپت‌ها -->
   <script src="core.js"></script>
   <script>
-    // تاریخ میلادی
+    // 🗓 نمایش تاریخ
     const now = new Date();
     document.getElementById("current-date").textContent = now.toDateString();
 
-    // تایمر ریست تا 00:00 UTC
+    // ⏰ تایمر ریست تا 00:00 UTC
     function updateResetTimer() {
       const now = new Date();
       const reset = new Date();
@@ -88,7 +115,7 @@
     setInterval(updateResetTimer, 1000);
     updateResetTimer();
 
-    // آمار از سرور
+    // 📡 گرفتن آمار از سرور
     fetch("/api/stats")
       .then(res => res.json())
       .then(data => {
@@ -97,14 +124,14 @@
         document.getElementById("totalTaps").textContent = data.totalTaps;
       })
       .catch(err => {
-        console.warn("❌ Error loading stats:", err);
+        console.warn("❌ مشکل در دریافت آمار:", err);
       });
 
-    // نوار انرژی روی دکمه
+    // 🔋 نمایش انرژی کاربر
     window.addEventListener("DOMContentLoaded", () => {
       if (window.ZerinCore) {
         ZerinCore.loadData();
-        const fill = document.getElementById("energyFill");
+        const fill = document.getElementById("energy-bar-fill");
         const energy = ZerinCore.getEnergy();
         const max = ZerinCore.MAX_ENERGY;
         const percent = (energy / max) * 100;
