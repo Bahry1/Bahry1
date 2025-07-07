@@ -68,19 +68,39 @@
     }
 
     function refreshMainUI() {
-      if (window.ZerinCore) {
-        ZerinCore.loadData();
-        ZerinCore.updateUI();
+      if (!window.ZerinCore) return;
 
-        const leagueEl = document.getElementById("league-label");
-        if (leagueEl) {
-          leagueEl.textContent = ZerinCore.getCupLevel() + " League";
-        }
+      ZerinCore.loadData();
+      ZerinCore.updateUI();
 
-        updateEnergyBar();
-        const sunCount = ZerinCore.getSun().toFixed(2);
-        document.getElementById("sun-count").textContent = sunCount;
+      document.getElementById("sun-count").textContent = ZerinCore.getSun().toFixed(2);
+
+      const leagueEl = document.getElementById("league-label");
+      if (leagueEl) {
+        leagueEl.textContent = ZerinCore.getCupLevel() + " League";
       }
+
+      updateEnergyBar();
+
+      // 📤 ارسال لاگ به سرور
+      fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: ZerinCore.getUserId(),
+          sun: ZerinCore.getSun(),
+          energy: ZerinCore.getEnergy(),
+          tapCount: ZerinCore.getTapCount(),
+          inviteCount: ZerinCore.getInviteCount(),
+          cup: ZerinCore.getCupLevel()
+        })
+      }).then(res => {
+        if (res.ok) {
+          console.log("📤 Log sent to server");
+        } else {
+          console.warn("⛔ Log failed");
+        }
+      });
     }
 
     window.addEventListener("load", refreshMainUI);
@@ -91,8 +111,6 @@
       if (now - lastFocusTime > 2000) {
         refreshMainUI();
         lastFocusTime = now;
-      } else {
-        console.log("🔁 Skipped duplicate UI refresh on focus");
       }
     });
 
@@ -117,7 +135,6 @@
           if (typeof ZerinCore.sendReferral === "function") {
             ZerinCore.sendReferral(ref);
             localStorage.setItem("ref-counted", "true");
-            console.log("✅ Referral registered for:", ref);
           }
         } else if (ref === myId) {
           console.warn("🚫 Self-referral blocked:", ref);
